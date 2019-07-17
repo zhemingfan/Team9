@@ -11,9 +11,17 @@ public class Towers {
 		damage = aDamage;
 	}
 	
-	public Towers(){
+	private double getDistancefromEnemy(Enemy anEnemy) {
+		int otherX = anEnemy.getXCoor();
+		int otherY = anEnemy.getYCoor();
+		double deltaXsquared = Math.pow((double)(xCoor - otherX), 2.0);
+		double deltaYsquared = Math.pow((double)(yCoor - otherY), 2.0);
+		return Math.sqrt(deltaXsquared + deltaYsquared);
+	}
+	
+	public void attack() {
 		
-	}	
+	}
 	
 
 }

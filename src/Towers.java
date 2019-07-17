@@ -24,10 +24,7 @@ public class Towers {
 		return range;
 	}
 
-	public void setRange(int range) {
-		this.range = range;
-	}
-
+	
 	public int getDamage() {
 		return damage;
 	}

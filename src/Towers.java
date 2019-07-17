@@ -4,6 +4,38 @@ public class Towers {
 	private int range;
 	private int damage;
 	
+	public int getxCoor() {
+		return xCoor;
+	}
+
+	public void setxCoor(int xCoor) {
+		this.xCoor = xCoor;
+	}
+
+	public int getyCoor() {
+		return yCoor;
+	}
+
+	public void setyCoor(int yCoor) {
+		this.yCoor = yCoor;
+	}
+
+	public int getRange() {
+		return range;
+	}
+
+	public void setRange(int range) {
+		this.range = range;
+	}
+
+	public int getDamage() {
+		return damage;
+	}
+
+	public void setDamage(int damage) {
+		this.damage = damage;
+	}
+
 	public Towers(int X, int Y, int aRange, int aDamage) {
 		xCoor = X;
 		yCoor = Y;

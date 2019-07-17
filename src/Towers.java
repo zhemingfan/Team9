@@ -11,6 +11,9 @@ public class Towers {
 		damage = aDamage;
 	}
 	
+	public Towers(){
+		
+	}	
 	
 
 }

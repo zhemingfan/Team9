@@ -1,11 +1,14 @@
 import java.util.Scanner;
 /**
- * Main Game Function
+ * Main class that calls all other classes and their methods.
  *
  *
  */
 public class Game{
-
+  /**
+   * main
+   * @param args
+   */
   public static void main(String[] args) {
     // Open Title
     System.out.println("T O W E R  D E F E N S E\n");
@@ -16,7 +19,7 @@ public class Game{
     // Generate Map
     Map m = new Map();
     // Generate Enemy
-    Enemy e = new Enemy(5);
+    Enemy e = new Enemy(5,0,0);
     // Generate Player
     Player p = new Player(10,10);
     // Generate Defender Class
@@ -29,7 +32,8 @@ public class Game{
     //d.generateTower(grid);
     e.generateEnemy(grid,e);
     m.printGrid(grid);
-    e.enemyFunction(e,m,grid,input);
+    //1st enemy wave
+    e.enemyWave1(e,m,grid,input);
 
   }
 

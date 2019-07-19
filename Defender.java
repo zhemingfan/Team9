@@ -2,15 +2,15 @@ import java.lang.Math;
 import java.util.Scanner;
 
 
-public class Defender extends Point {
+public class Defender{
   private int damage;
   private int price;
   private int xCoord;
   private int yCoord;
-  private double range;
+  private int range;
 
-  public Defender(int x, int y, int aDamage, int aPrice, double aRange) {
-      super(x, y);
+  public Defender(int aDamage, int aPrice, int aRange) {
+      //super(x, y);
       damage = aDamage;
       range = aRange;
       price = aPrice;
@@ -49,12 +49,12 @@ public class Defender extends Point {
     return price;
   }
 
-  public double getDistance(Enemy anEnemy) {
+  public int getDistance(Enemy anEnemy) {
     int otherX = anEnemy.x;
     int otherY = anEnemy.y;
     double deltaXsquared = Math.pow((double)(xCoord - otherX), 2.0);
     double deltaYsquared = Math.pow((double)(yCoord - otherY), 2.0);
-    return Math.sqrt(deltaXsquared + deltaYsquared);
+    return (int)(Math.sqrt(deltaXsquared + deltaYsquared));
   }
 
   public boolean isWithinRange(Enemy anEnemy) {

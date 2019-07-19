@@ -23,13 +23,13 @@ public class Game{
     // Generate Player
     Player p = new Player(20, 200, 4, 2);
     // Generate Defender Class
-    //Defender d = new Defender();
+    Defender d = new Defender(2, 50, 1);
     // Generate 2D Array
     String[][] grid = new String[5][5];
     //Generate Grid
     m.generateGrid(grid);
     m.printGrid(grid);
-    //d.generateTower(grid);
+    d.generateTower(grid);
     e.generateEnemy(grid,e);
     m.printGrid(grid);
     //1st enemy wave

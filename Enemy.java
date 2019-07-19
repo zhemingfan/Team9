@@ -47,7 +47,7 @@ public class Enemy extends Map{
    * @return x: int
    */
 
-  public int getXCoord(String[][]grid,Enemy anEnemy) {
+  public int getXCoord(String[][]grid, Enemy anEnemy) {
     for (int r = 0; r < grid.length; r++) {
       for(int c = 0; c < grid[r].length; c++) {
         if (grid[c][r].equals(healthToString(anEnemy))) {

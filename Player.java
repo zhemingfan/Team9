@@ -5,10 +5,11 @@ public class Player{
   private int ycoord;
   //private Point checkpoint;
 
-  public Player(int aHealth, int initCurrency, int xPos, int yPos){
+  public Player(int aHealth, int initCurrency, int xPos, int yPos, String[][] grid){
     this.setHealth(aHealth);
     this.setMoney(initCurrency);
     this.setPosition(xPos, yPos);
+    grid[xPos][yPos] = "X";
   }
 
   public void setHealth(int initHealth){

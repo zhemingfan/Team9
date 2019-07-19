@@ -11,7 +11,36 @@ public class Defender extends Point {
       range = aRange;
       price = aPrice;
   }
-  
+    /**
+    *method that generates tower
+    *@param grid
+    *
+    *
+    */
+    public void generateTower(String[][] grid) {
+    Scanner input = new Scanner(System.in);
+    System.out.println("Place your tower");
+    System.out.println("Enter an X Value");
+    XCoord = input.nextInt();
+    //While loop to ensure
+    while (XCoord < 0 || XCoord > 4) {
+      System.out.println("Your X Value is Out of Range.\nPlease Enter a Value Between 0 and 4");
+      XCoord = input.nextInt();
+    }
+    System.out.println("Enter a Y Value");
+    YCoord = input.nextInt();
+    while (YCoord < 0 || YCoord > 4) {
+      System.out.println("Your Y Value is Out of Range.\nPlease Enter a Value Between 0 and 4");
+      YCoord = input.nextInt();
+     }
+      for (int r = 0; r < grid.length; r++) {
+        for(int c = 0; c < grid[r].length; c++) {
+          if (grid[XCoord][YCoord] == "0") {
+             grid[XCoord][YCoord] = "T";        
+          } 
+        } 
+      }
+    }
   public int getPrice() {
     return price;
   }

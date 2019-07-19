@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * Map Class that creates/updates/prints map
  * with path.
  *
@@ -7,7 +7,7 @@
 
 public class Map extends Game{
 
-  
+
   public Map() {
   }
   /**
@@ -36,5 +36,3 @@ public class Map extends Game{
     System.out.println("\n");
   }
 }
-
-  

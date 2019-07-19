@@ -22,7 +22,7 @@ public class Enemy extends Map{
    * @param enemyHealth
    * @param x
    * @param y
-   * 
+   *
    */
   public Enemy(int enemyHealth,int x, int y) {
      this.enemyHealth = enemyHealth;
@@ -44,7 +44,7 @@ public class Enemy extends Map{
    * @param anEnemy
    * @return x: int
    */
-  
+
   public int getXCoord(String[][]grid,Enemy anEnemy) {
     for (int r = 0; r < grid.length; r++) {
       for(int c = 0; c < grid[r].length; c++) {
@@ -55,14 +55,14 @@ public class Enemy extends Map{
     }
     return x;
   }
-  
+
   /**
    * getter method that returns the y coordinate of the specified enemy.
    * @param grid
    * @param anEnemy
    * @return y: int
    */
-  
+
   public int getYCoord(String[][]grid,Enemy anEnemy) {
     for (int r = 0; r < grid.length; r++) {
       for(int c = 0; c < grid[r].length; c++) {
@@ -73,7 +73,7 @@ public class Enemy extends Map{
     }
     return y;
   }
-  
+
   /**
    * A getter method that returns the health of specified enemy
    * @return enemyHealth: int
@@ -112,7 +112,7 @@ public class Enemy extends Map{
   /**
    * Function takeDamage has enemy take damage from tower.
    * @param damage
-   * 
+   *
    */
   public void takeDamage(int damage) {
     this.enemyHealth -= damage;
@@ -175,4 +175,3 @@ public class Enemy extends Map{
     }
   }
 }
-

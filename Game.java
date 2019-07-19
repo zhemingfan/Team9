@@ -1,7 +1,7 @@
 import java.util.Scanner;
 /**
  * Main class that calls all other classes and their methods.
- * 
+ *
  *
  */
 public class Game{
@@ -9,7 +9,7 @@ public class Game{
    * main
    * @param args
    */
-  public static void main(String[] args) { 
+  public static void main(String[] args) {
     // Open Title
     System.out.println("T O W E R  D E F E N S E\n");
     // Press Enter
@@ -34,8 +34,8 @@ public class Game{
     m.printGrid(grid);
     //1st enemy wave
     e.enemyWave1(e,m,grid,input);
-  
+
   }
-    
-  
+
+
 }

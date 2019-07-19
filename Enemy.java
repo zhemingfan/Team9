@@ -29,7 +29,7 @@ public class Enemy extends Map{
      this.enemyHealth = enemyHealth;
      this.x = x;
      this.y = y;
-     this.moneyOnDeath = 50;
+     this.bounty = 50;
   }
   /**
    * Copy Constructor
@@ -178,14 +178,19 @@ public class Enemy extends Map{
   }
 
   public boolean isKilled(){
-    return true;
+    if(enemyHealth <= 0){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
   public int getBounty(){
     return this.bounty;
   }
 
-  public void giveBounty(Player p){
+  /*public void giveBounty(Player p){
     p.money += getBounty();
-  }
+  }*/
 }

@@ -1,4 +1,6 @@
 import java.lang.Math;
+import java.util.Scanner;
+
 
 public class Defender extends Point {
   private int damage;
@@ -48,8 +50,8 @@ public class Defender extends Point {
   }
 
   public double getDistance(Enemy anEnemy) {
-    int otherX = anEnemy.getXCoord();
-    int otherY = anEnemy.getYCoord();
+    int otherX = anEnemy.x;
+    int otherY = anEnemy.y;
     double deltaXsquared = Math.pow((double)(xCoord - otherX), 2.0);
     double deltaYsquared = Math.pow((double)(yCoord - otherY), 2.0);
     return Math.sqrt(deltaXsquared + deltaYsquared);

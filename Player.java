@@ -43,7 +43,7 @@ public class Player{
     playerHealth -= dealtDamage;
   }
 
-  public void gainMoney(int moneyGained){
-    money += moneyGained;
+  public void gainMoney(Enemy anEnemy){
+    money += anEnemy.getBounty();
   }
 }

@@ -11,9 +11,10 @@ import java.util.ArrayList;
  * enemyList : ArrayList<Enemy>
  */
 public class Enemy extends Map{
-   int x;
-   int y;
-   int startIndex = 0;
+   int x = 0;
+   int y = 2;
+   int startXIndex = 0;
+   int startYIndex = 2;
    int endIndex = 4;
    private int enemyHealth;
    ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
@@ -22,12 +23,15 @@ public class Enemy extends Map{
    * @param enemyHealth
    * @param x
    * @param y
-   *
+   * 
    */
-  public Enemy(int enemyHealth,int x, int y) {
+  public Enemy() {
+    
+  }
+  public Enemy(int enemyHealth) {
      this.enemyHealth = enemyHealth;
-     this.x = x;
-     this.y = y;
+     this.x = 0;
+     this.y = 2;
   }
   /**
    * Copy Constructor
@@ -44,36 +48,22 @@ public class Enemy extends Map{
    * @param anEnemy
    * @return x: int
    */
-
-  public int getXCoord(String[][]grid,Enemy anEnemy) {
-    for (int r = 0; r < grid.length; r++) {
-      for(int c = 0; c < grid[r].length; c++) {
-        if (grid[c][r].equals(healthToString(anEnemy))) {
-          x = c;
-        }
-      }
-    }
+  
+  public int getXCoord() {
     return x;
   }
-
+  
   /**
    * getter method that returns the y coordinate of the specified enemy.
    * @param grid
    * @param anEnemy
    * @return y: int
    */
-
-  public int getYCoord(String[][]grid,Enemy anEnemy) {
-    for (int r = 0; r < grid.length; r++) {
-      for(int c = 0; c < grid[r].length; c++) {
-        if (grid[c][r].equals(healthToString(anEnemy))) {
-          y = r;
-        }
-      }
-    }
+  
+  public int getYCoord() {
     return y;
   }
-
+  
   /**
    * A getter method that returns the health of specified enemy
    * @return enemyHealth: int
@@ -110,9 +100,9 @@ public class Enemy extends Map{
     return eHealth;
   }
   /**
-   * Function takeDamage has enemy take damage from tower.
+   * function takeDamage has enemy take damage from tower.
    * @param damage
-   *
+   * 
    */
   public void takeDamage(int damage) {
     this.enemyHealth -= damage;
@@ -123,40 +113,39 @@ public class Enemy extends Map{
    * @param anEnemy
    * @return grid : String[][]
    */
-  public String[][] generateEnemy(String[][] grid,Enemy anEnemy) {
+  public void generateEnemy(String[][] grid,Enemy anEnemy) {
     System.out.println("ENEMY HAS ARRIVED");
-    int startpoint = startIndex;
     for (int r = 0; r < grid.length; r++) {
       for (int c = 0; c < grid[r].length; c++) {
-        if (grid[startpoint][2] == "-") {
-          grid[startpoint][2] = ""+anEnemy.getEnemyHealth();
+        if (grid[startXIndex][2] == "-") {
+          grid[x][y] = healthToString(anEnemy);
         }
       }
     }
-    return grid;
   }
   /**
    * a single move method for the specified enemy.
    * @param grid
    * @param anEnemy
    */
+
   public void moveEnemy(String[][] grid,Enemy anEnemy) {
-    int col = getXCoord(grid,anEnemy);
+    this.x = this.getXCoord();
     for (int r = 0; r < grid.length; r++) {
       for (int c = 0; c < grid[r].length; c++) {
-        if(grid[col][2].equals(healthToString(anEnemy))){
-          if((col+1) < 5) {
-            grid[col+1][2] = healthToString(anEnemy);
-            grid[col][2] = "-";
-          } else if ((col+1) == grid[r].length) {
-              grid[col][2] = "-";
-              System.out.println("YOU TOOK DAMAGE");
-              break;
-            }
-          }
+        if((this.x+1) < 5) {
+          grid[this.x+1][2] = healthToString(anEnemy);
+          grid[this.x][2] = "-";
+        } 
+        else if ((x+1) == grid[r].length) {
+          grid[x][2] = "-";
+          break;
         }
       }
     }
+    this.x += 1;
+  }
+   
   /**
    * using moveEnemy method, this function will take the enemy from
    * startIndex to endIndex
@@ -164,14 +153,19 @@ public class Enemy extends Map{
    * @param aMap
    * @param grid
    * @param input
+   * 
    */
-  public void enemyWave1(Enemy anEnemy,Map aMap, String[][]grid, Scanner input) {
+  public void enemyWave1(Enemy anEnemy,Map aMap, String[][]grid, Scanner input,Defender aDefense) {
     String enter = input.nextLine();
+    System.out.println("W A V E  1");
     while (enter != "no") {
-      anEnemy.moveEnemy(grid,anEnemy);
+      
+      anEnemy.moveEnemy(grid,anEnemy); 
+      //aDefense.attack(anEnemy,grid);
       printGrid(grid);
       System.out.println("Press Enter");
       enter = input.nextLine();
     }
   }
 }
+

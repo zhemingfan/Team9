@@ -1,19 +1,20 @@
+import java.lang.Math;
 
-public class Defender {
-  private int xCoord, yCoord;
+public class Defender extends Point {
   private int damage;
   private int price;
   private double range;
   
   public Defender(int x, int y, int aDamage, int aPrice, double aRange) {
-      xCoord = x;
-      yCoord = y;
+      super(x, y);
       damage = aDamage;
       range = aRange;
       price = aPrice;
   }
   
-  
+  public int getPrice() {
+    return price;
+  }
   
   public double getDistance(Enemy anEnemy) {
     int otherX = anEnemy.getXCoord();
@@ -23,13 +24,18 @@ public class Defender {
     return Math.sqrt(deltaXsquared + deltaYsquared);
   }
 
-  
+  public boolean isWithinRange(Enemy anEnemy) {
+    return this.getDistance(anEnemy) <= range;
+  }
   
   public void attack(Enemy anEnemy) {
-    if (this.getDistance(anEnemy) <= range){
+    if (isWithinRange(anEnemy)){
       anEnemy.takeDamage(damage);
     }
-    
+  }
+  
+  public String toString() {
+    return "Price: "+ price + "\nDamage: " + damage +"\nRange: " + range; 
   }
   
 }

@@ -10,14 +10,15 @@ import java.util.ArrayList;
  * enemyHealth : private int
  * enemyList : ArrayList<Enemy>
  */
-public class Enemy extends Map{
+public class Enemy extends Game{
    int x = 0;
    int y = 2;
    int startXIndex = 0;
    int startYIndex = 2;
    int endIndex = 4;
+   int dealtDamage;
    private int enemyHealth;
-   ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
+
   /**
    * Constructor
    * @param enemyHealth
@@ -28,10 +29,11 @@ public class Enemy extends Map{
   public Enemy() {
     
   }
-  public Enemy(int enemyHealth) {
+  public Enemy(int enemyHealth, int dealtDamage) {
      this.enemyHealth = enemyHealth;
      this.x = 0;
      this.y = 2;
+     this.dealtDamage = dealtDamage;
   }
   /**
    * Copy Constructor
@@ -44,8 +46,6 @@ public class Enemy extends Map{
   }
   /**
    * getter method that returns the x coordinate of the specified enemy.
-   * @param grid
-   * @param anEnemy
    * @return x: int
    */
   
@@ -55,8 +55,6 @@ public class Enemy extends Map{
   
   /**
    * getter method that returns the y coordinate of the specified enemy.
-   * @param grid
-   * @param anEnemy
    * @return y: int
    */
   
@@ -72,24 +70,6 @@ public class Enemy extends Map{
     return enemyHealth;
   }
 
-  /**
-   * A getter method that returns the list of enemies for a specified wave.
-   * @return enemyList: ArrayList<Enemy>
-   */
-  public ArrayList<Enemy> getEnemyList() {
-    ArrayList<Enemy> anEnemyList = new ArrayList<Enemy>();
-    for (Enemy anEnemy : enemyList) {
-      anEnemyList.add(new Enemy(anEnemy));
-    }
-    return enemyList;
-  }
-  /**
-   * A method adding enemies into an array list.
-   * @param anEnemy
-   */
-  public void addEnemy(Enemy anEnemy) {
-    enemyList.add(new Enemy(anEnemy));
-  }
   /**
    * Returns health of specified enemy as a string.
    * @param anEnemy
@@ -111,7 +91,6 @@ public class Enemy extends Map{
    * a method that generates a new enemy and places it on a grid
    * @param grid
    * @param anEnemy
-   * @return grid : String[][]
    */
   public void generateEnemy(String[][] grid,Enemy anEnemy) {
     System.out.println("ENEMY HAS ARRIVED");
@@ -123,29 +102,128 @@ public class Enemy extends Map{
       }
     }
   }
+  public void moveAlgorithm(String[][] grid,Enemy anEnemy) {
+    
+  }
   /**
    * a single move method for the specified enemy.
    * @param grid
    * @param anEnemy
    */
 
-  public void moveEnemy(String[][] grid,Enemy anEnemy) {
+  public void moveRight(String[][] grid,Enemy anEnemy) {
     this.x = this.getXCoord();
+    this.y = this.getYCoord();
     for (int r = 0; r < grid.length; r++) {
       for (int c = 0; c < grid[r].length; c++) {
-        if((this.x+1) < 5) {
-          grid[this.x+1][2] = healthToString(anEnemy);
+        if ((this.x + 1) < 5) {
+          if(grid[this.x+1][this.y].equals("-")) {
+            grid[this.x+1][this.y] = healthToString(anEnemy);
+            grid[this.x][this.y] = "-";
+          }
+        }
+        else if ((this.x+1) == grid[r].length) {
           grid[this.x][2] = "-";
-        } 
-        else if ((x+1) == grid[r].length) {
-          grid[x][2] = "-";
           break;
         }
       }
     }
     this.x += 1;
   }
-   
+  /**
+   * a single move method for the specified enemy.
+   * @param grid
+   * @param anEnemy
+   */
+  public void moveLeft(String[][] grid,Enemy anEnemy) {
+    this.x = this.getXCoord();
+    this.y = this.getYCoord();
+    for (int r = 0; r < grid.length; r++) {
+      for (int c = 0; c < grid[r].length; c++) {
+        if ((this.x - 1) > 0) {
+          if(grid[this.x-1][this.y].equals("-")) {
+            grid[this.x-1][this.y] = healthToString(anEnemy);
+            grid[this.x][this.y] = "-";
+          }
+        }
+        else if ((this.x) == 0) {
+          grid[this.x][this.y] = "-";
+          break;
+        }
+      }
+    }
+    this.x -= 1;
+  }
+  /**
+   * a single move method for the specified enemy.
+   * @param grid
+   * @param anEnemy
+   */
+  public void moveUp(String[][] grid,Enemy anEnemy) {
+    this.x = this.getXCoord();
+    this.y = this.getYCoord();
+    for (int r = 0; r < grid.length; r++) {
+      for (int c = 0; c < grid[r].length; c++) {
+        if((this.y-1) > 0) {
+          if(grid[this.x][this.y-1].equals("|")) {
+            grid[this.x][this.y-1] = healthToString(anEnemy);
+            grid[this.x][this.y] = "|";
+          }
+        }
+        else if (this.y == 0) {
+          grid[this.x][this.y] = "|";
+          break;
+        }
+      }
+    }
+    this.y -= 1;
+  }
+  /**
+   * a single move method for the specified enemy.
+   * @param grid
+   * @param anEnemy
+   */
+  public void moveDown(String[][] grid,Enemy anEnemy) {
+    this.x = this.getXCoord();
+    this.y = this.getYCoord();
+    for (int r = 0; r < grid.length; r++) {
+      for (int c = 0; c < grid[r].length; c++) {
+        if((this.y+1) < grid.length) {
+          if(grid[this.x][this.y+1].equals("|"))
+          grid[this.x][this.y+1] = healthToString(anEnemy);
+          grid[this.x][this.y] = "|";
+        } 
+        else if (this.y+1 == grid.length) {
+          grid[this.x][this.y] = "|";
+          break;
+        }
+      }
+    }
+    this.y += 1;
+  }
+  /**
+   * method that returns a boolean if an enemy has crossed the map
+   * @param aMap
+   * @param anEnemy
+   * @return boolean
+   */
+  public boolean checkEnemyCrossed(Map aMap, Enemy anEnemy) {
+    return anEnemy.getXCoord() > aMap.xlength || anEnemy.getYCoord() > aMap.ywidth;
+  }
+  /**
+   * method that attacks Player if an Enemy has crossed
+   * @param aMap
+   * @param aPlayer
+   * @param anEnemy
+   */
+  public void attack(Map aMap, Player aPlayer,Enemy anEnemy) {
+    if(checkEnemyCrossed(aMap, anEnemy)) {
+      aPlayer.takeDamage(dealtDamage);
+      System.out.println("You have taken damage.");
+      System.out.println(aPlayer.getHealth());
+    }
+  }
+  
   /**
    * using moveEnemy method, this function will take the enemy from
    * startIndex to endIndex
@@ -155,17 +233,18 @@ public class Enemy extends Map{
    * @param input
    * 
    */
-  public void enemyWave1(Enemy anEnemy,Map aMap, String[][]grid, Scanner input,Defender aDefense) {
+  public static void enemyWave1(Enemy anEnemy,Player aPlayer, Map aMap, String[][]grid, Scanner input,Defender aDefense) {
     String enter = input.nextLine();
     System.out.println("W A V E  1");
     while (enter != "no") {
       
-      anEnemy.moveEnemy(grid,anEnemy); 
+      anEnemy.moveRight(grid,anEnemy); 
+      anEnemy.attack(aMap, aPlayer, anEnemy);
       //aDefense.attack(anEnemy,grid);
-      printGrid(grid);
+      aMap.printGrid(grid);
+      System.out.println(anEnemy.getXCoord());
       System.out.println("Press Enter");
       enter = input.nextLine();
     }
   }
 }
-

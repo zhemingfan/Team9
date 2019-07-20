@@ -8,22 +8,29 @@ public class Wave{
   
 //////////////ENEMY WAVE METHODS //////////////////
   
-  public void enemyWave(Enemy anEnemy,Player aPlayer, Map aMap, String[][]grid,Scanner input, String enter,Defender aDefense) {
-    while (anEnemy.getXCoord() != 6) {
-      anEnemy.moveRight(grid,anEnemy); 
-      anEnemy.attack(aMap, aPlayer, anEnemy);
 
+  public void enemyWave(Enemy anEnemy,Player aPlayer, Map aMap, String[][]grid,Scanner input,Defender aDefense) {
+    while (anEnemy.getXCoord() != 6) {
+      anEnemy.moveEnemy(grid,anEnemy); 
+      anEnemy.attack(aMap, aPlayer, anEnemy);
+      if (anEnemy.enemyHealth == 0) {
+        System.out.println("Enemy has: " + anEnemy.getEnemyHealth() + "HP");
+        System.out.println("Enemy has been killed.");
+        anEnemy.killEnemy(grid);
+        aPlayer.gainMoney(anEnemy.moneyGained);
+        break;
+      }
       aDefense.attack(aPlayer,anEnemy,grid);
-      aMap.printGrid(grid);
+
       
       
       aPlayer.checkIfPlayerKilled();
       if(aDefense.selection(input).equals("P")) {
-        aDefense.generateTower(grid);
+        aDefense.generateTower(aPlayer,grid,input);
       } else {
         continue;
       }
-      enter = input.nextLine();
+      input.nextLine();
     }
   }
   /**

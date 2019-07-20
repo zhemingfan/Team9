@@ -1,25 +1,25 @@
 import java.util.Scanner;
 
 public class Wave{
-  
+
   public Wave() {
-    
+
   }
-  
+
 //////////////ENEMY WAVE METHODS //////////////////
-  
+
   public void enemyWave(Enemy anEnemy,Player aPlayer, Map aMap, String[][]grid,Scanner input, String enter,Defender aDefense) {
     while (anEnemy.getXCoord() != 6) {
-      anEnemy.moveRight(grid,anEnemy); 
+      anEnemy.moveRight(grid,anEnemy);
       anEnemy.attack(aMap, aPlayer, anEnemy);
 
       aDefense.attack(aPlayer,anEnemy,grid);
       aMap.printGrid(grid);
-      
-      
+
+
       aPlayer.checkIfPlayerKilled();
       if(aDefense.selection(input).equals("P")) {
-        aDefense.generateTower(grid);
+        aDefense.generateTower(aPlayer, grid);
       } else {
         continue;
       }
@@ -33,7 +33,7 @@ public class Wave{
   * @param grid
   * @param input
   * @param aDefense
-  * 
+  *
   */
   public void wave1(Player aPlayer, Map aMap, String[][]grid,Defender aDefense,Scanner input) {
     System.out.println("\n\nW A V E  1\n\n");
@@ -51,7 +51,7 @@ public class Wave{
   * @param grid
   * @param input
   * @param aDefense
-  * 
+  *
   */
   public void wave2(Player aPlayer, Map aMap, String[][]grid,Defender aDefense,Scanner input) {
     System.out.println("\n\nW A V E  2\n\n");
@@ -72,7 +72,7 @@ public class Wave{
   * @param grid
   * @param input
   * @param aDefense
-  * 
+  *
   */
   public void wave3(Player aPlayer, Map aMap, String[][]grid,Defender aDefense,Scanner input) {
     System.out.println("\n\nW A V E  3\n\n");

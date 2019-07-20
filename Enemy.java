@@ -154,16 +154,24 @@ public class Enemy extends Map{
    * @param input
    *
    */
-  public void enemyWave1(Enemy anEnemy,Map aMap, String[][]grid, Scanner input,Defender aDefense) {
+  public void enemyWave1(Enemy anEnemy,Map aMap, String[][]grid, Scanner input, Defender tower) {
     String enter = input.nextLine();
     System.out.println("W A V E  1");
     while (enter != "no") {
 
-      anEnemy.moveEnemy(grid,anEnemy);
+    //original location  anEnemy.moveEnemy(grid,anEnemy);
       //aDefense.attack(anEnemy,grid);
-      printGrid(grid);
+      aMap.printGrid(grid);
+      tower.attack(anEnemy);
+      anEnemy.moveEnemy(grid,anEnemy); // test location of function
+
+      //anEnemy.isKilled();
+      System.out.println("Enemy has: " + enemyHealth + "HP");
       System.out.println("Press Enter");
       enter = input.nextLine();
+      if(enter.equals("exit")){ //type exit after the enemy disappears to exit the demo without
+        System.exit(0);         //having to close and reopen the console lol
+      }
     }
   }
 

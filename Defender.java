@@ -57,12 +57,12 @@ public class Defender{
     return (int)(Math.sqrt(deltaXsquared + deltaYsquared));
   }
 
-  public boolean isWithinRange(Enemy anEnemy) {
+  public boolean enemyIsWithinRange(Enemy anEnemy) {
     return this.getDistance(anEnemy) <= range;
   }
 
   public void attack(Enemy anEnemy) {
-    if (isWithinRange(anEnemy)){
+    if (enemyIsWithinRange(anEnemy)){
       anEnemy.takeDamage(damage);
     }
   }

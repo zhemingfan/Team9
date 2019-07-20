@@ -18,14 +18,15 @@ public class Game{
     String enter = input.nextLine();
     // Generate Map
     Map m = new Map();
-    // Generate Enemy
-    Enemy e = new Enemy(5,0,0);
-    // Generate Player
-    Player p = new Player(20, 200, 4, 2);
-    // Generate Defender Class
-    Defender d = new Defender(2, 50, 1);
     // Generate 2D Array
     String[][] grid = new String[5][5];
+    // Generate Enemy
+    Enemy e = new Enemy(5,0,2);
+    // Generate Player
+    Player p = new Player(20, 200, 4, 2, grid);
+    // Generate Defender Class
+    Defender d = new Defender(2, 50, 1); //Change first parameter if you want to adjust the damage
+
     //Generate Grid
     m.generateGrid(grid);
     m.printGrid(grid);
@@ -33,7 +34,7 @@ public class Game{
     e.generateEnemy(grid,e);
     m.printGrid(grid);
     //1st enemy wave
-    e.enemyWave1(e,m,grid,input);
+    e.enemyWave1(e,m,grid,input, d);
 
   }
 

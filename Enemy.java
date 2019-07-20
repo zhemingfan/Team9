@@ -201,6 +201,36 @@ public class Enemy extends Player{
     this.y += 1;
   }
   
+  
+  public void moveEnemy(String[][] grid,Enemy anEnemy) {
+  boolean reached = false;
+    this.x = this.getXCoord();
+    this.y = this.getYCoord();
+    for (int r = 0; r < grid.length; r++) {
+      for (int c = 0; c < grid[r].length; c++) {
+        if((this.x+1) < 5) {
+          grid[this.x+1][this.y] = healthToString(anEnemy);
+          grid[this.x][this.y] = "-";
+          printGrid(grid);
+        }
+       
+        else if (((this.x+1) == grid[r].length) && (grid[this.x][2] != "-")) {
+          reached = true;
+          grid[this.x][this.y] = "-";
+          grid[this.x][this.y+1] = healthToString(anEnemy);
+          printGrid(grid);
+        }
+        
+        else if (((this.x+1) == grid[r].length) && (grid[this.x][3] != "-") && reached == true) {
+            grid[this.x][this.y+1] = "-";
+            grid[this.x][this.y+2] = healthToString(anEnemy);
+          }
+        
+      }
+    }
+    this.x += 1;
+ 
+  }
 ////////////// ATTACK/TAKE DAMAGE METHODS //////////////////
   /**
    * method that returns a boolean if an enemy has crossed the map

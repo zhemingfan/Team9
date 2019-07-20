@@ -33,6 +33,9 @@ public class Map extends Game{
    */
   public void createPath(String[][] grid,int column,int row) {
     grid[column][2] = "-";
+    grid[4][3] = "-";
+    grid[4][4] = "-";
+       
   }
   /**
    *  Prints the grid.

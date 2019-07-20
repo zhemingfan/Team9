@@ -1,26 +1,31 @@
 /**
- *
+ * 
  * Map Class that creates/updates/prints map
  * with path.
  *
  */
 
 public class Map extends Game{
-
-
+  int xlength = 5;
+  int ywidth = 5;
+  
   public Map() {
   }
   /**
    * Generates a grid of nxn units.
-   * @param grid
    */
-  public void generateGrid(String[][] grid) {
+  public String[][] generateGrid() {
+    String[][] grid = new String[xlength][ywidth];
     for(int r = 0; r < grid.length; r++) {
-      for(int c = 0; c < grid[0].length; c++) {
+      for(int c = 0; c < grid[r].length; c++) {
         grid[c][r] = "0";
-        grid[c][2] = "-";
+        createPath(grid,c,r);
       }
     }
+    return grid;
+  }
+  public void createPath(String[][] grid,int column,int row) {
+    grid[column][2] = "-";
   }
   /**
    *  Prints the grid.

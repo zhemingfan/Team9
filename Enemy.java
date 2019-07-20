@@ -20,18 +20,18 @@ public class Enemy extends Player{
    int enemyHealth;
    int moneyGained;
 
-   
+
 ////////////// CONSTRUCTORS //////////////////
   /**
    * Constructor
    * @param enemyHealth
    * @param x
    * @param y
-   * 
+   *
    */
   public Enemy() {
   }
-  
+
   public Enemy(int enemyHealth, int dealtDamage,int moneyGained) {
      this.enemyHealth = enemyHealth;
      this.x = 0;
@@ -52,22 +52,22 @@ public class Enemy extends Player{
    * getter method that returns the x coordinate of the specified enemy.
    * @return x: int
    */
-  
+
 ////////////// GET METHODS //////////////////
-  
+
   public int getXCoord() {
     return x;
   }
-  
+
   /**
    * getter method that returns the y coordinate of the specified enemy.
    * @return y: int
    */
-  
+
   public int getYCoord() {
     return y;
   }
-  
+
   /**
    * A getter method that returns the health of specified enemy
    * @return enemyHealth: int
@@ -102,7 +102,7 @@ public class Enemy extends Player{
       }
     }
   }
-  
+
 ////////////// MOVE METHODS //////////////////
   /**
    * a single move method for the specified enemy.
@@ -191,7 +191,7 @@ public class Enemy extends Player{
           if(grid[this.x][this.y+1].equals("|"))
           grid[this.x][this.y+1] = healthToString(anEnemy);
           grid[this.x][this.y] = "|";
-        } 
+        }
         else if (this.y+1 == grid.length) {
           grid[this.x][this.y] = "|";
           break;
@@ -200,9 +200,9 @@ public class Enemy extends Player{
     }
     this.y += 1;
   }
-  
-  
-  public void moveEnemy(String[][] grid,Enemy anEnemy) {
+
+
+  public void moveEnemy(Map aMap, String[][] grid,Enemy anEnemy) {
   boolean reached = false;
     this.x = this.getXCoord();
     this.y = this.getYCoord();
@@ -211,25 +211,25 @@ public class Enemy extends Player{
         if((this.x+1) < 5) {
           grid[this.x+1][this.y] = healthToString(anEnemy);
           grid[this.x][this.y] = "-";
-          printGrid(grid);
+          aMap.printGrid(grid);
         }
-       
+
         else if (((this.x+1) == grid[r].length) && (grid[this.x][2] != "-")) {
           reached = true;
           grid[this.x][this.y] = "-";
           grid[this.x][this.y+1] = healthToString(anEnemy);
-          printGrid(grid);
+          aMap.printGrid(grid);
         }
-        
+
         else if (((this.x+1) == grid[r].length) && (grid[this.x][3] != "-") && reached == true) {
             grid[this.x][this.y+1] = "-";
             grid[this.x][this.y+2] = healthToString(anEnemy);
           }
-        
+
       }
     }
     this.x += 1;
- 
+
   }
 ////////////// ATTACK/TAKE DAMAGE METHODS //////////////////
   /**
@@ -257,7 +257,7 @@ public class Enemy extends Player{
   /**
    * function takeDamage has enemy take damage from tower.
    * @param damage
-   * 
+   *
    */
   public void takeDamage(int damage) {
     this.enemyHealth -= damage;
@@ -268,10 +268,10 @@ public class Enemy extends Player{
     for (int r = 0; r < grid.length; r++) {
       for (int c = 0; c < grid[r].length; c++) {
         grid[this.x][this.y] = "-";
-          
+
         }
       }
-      
+
     }
   }
 /*
@@ -279,4 +279,3 @@ public class Enemy extends Player{
     return this.bounty;
   }
   */
-

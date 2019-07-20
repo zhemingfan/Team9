@@ -8,7 +8,7 @@ public class Defender extends Player{
   private int xCoord;
   private int yCoord;
   private int range;
-  
+
   public Defender(int aDamage, int aPrice, int aRange) {
       super();
       damage = aDamage;
@@ -28,12 +28,13 @@ public class Defender extends Player{
       aPlayer.buyDefense(5);
       placeArcher(grid,input);
     }
+
     else if (defenderSelection(input).equals("S")) {
       System.out.println("You bought Sniper!");
       aPlayer.buyDefense(10);
       placeSniper(grid,input);
     }
-    
+
     }
   public String defenderSelection(Scanner input) {
     System.out.println("S E L E C T  Y O U R  D E F E N D E R:"
@@ -53,6 +54,7 @@ public class Defender extends Player{
     String enter = input.nextLine();
     return enter;
   }
+  
   public void selectCoordinates(Scanner input) {
     System.out.println("Enter X coordinate:");
     xCoord = input.nextInt();
@@ -68,6 +70,7 @@ public class Defender extends Player{
       yCoord = input.nextInt();
      }
   }
+
   public void placeSniper(String[][] grid,Scanner input) {
     selectCoordinates(input);
     while (containsPath(grid,xCoord,yCoord)) {
@@ -82,6 +85,7 @@ public class Defender extends Player{
         }
       }
   }
+
   public void placeArcher(String[][] grid,Scanner input) {
     selectCoordinates(input);
     while (containsPath(grid,xCoord,yCoord)) {
@@ -96,6 +100,7 @@ public class Defender extends Player{
         }
       }
   }
+
   public boolean containsPath(String[][] grid,int xCoord, int yCoord) {
     boolean result = false;
     for (int r = 0; r < grid.length; r++) {
@@ -103,7 +108,7 @@ public class Defender extends Player{
         if (grid[xCoord][yCoord].equals("-") || grid[xCoord][yCoord].equals("|")) {
           result = true;
         }
-      } 
+      }
     }
     return result;
   }

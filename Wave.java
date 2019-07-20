@@ -1,17 +1,17 @@
 import java.util.Scanner;
 
 public class Wave{
-  
+
   public Wave() {
-    
+
   }
-  
+
 //////////////ENEMY WAVE METHODS //////////////////
-  
+
 
   public void enemyWave(Enemy anEnemy,Player aPlayer, Map aMap, String[][]grid,Scanner input,Defender aDefense) {
     while (anEnemy.getXCoord() != 6) {
-      anEnemy.moveEnemy(grid,anEnemy); 
+      anEnemy.moveEnemy(grid,anEnemy);
       anEnemy.attack(aMap, aPlayer, anEnemy);
       if (anEnemy.enemyHealth == 0) {
         System.out.println("Enemy has: " + anEnemy.getEnemyHealth() + "HP");
@@ -22,8 +22,9 @@ public class Wave{
       }
       aDefense.attack(aPlayer,anEnemy,grid);
 
+
       aMap.printGrid(grid);
-      
+
       aPlayer.checkIfPlayerKilled();
       if(aDefense.selection(input).equals("P")) {
         aDefense.generateTower(aPlayer,grid,input);
@@ -40,7 +41,7 @@ public class Wave{
   * @param grid
   * @param input
   * @param aDefense
-  * 
+  *
   */
   public void wave1(Player aPlayer, Map aMap, String[][]grid,Defender aDefense,Scanner input) {
     System.out.println("\n\nW A V E  1\n\n");
@@ -58,7 +59,7 @@ public class Wave{
   * @param grid
   * @param input
   * @param aDefense
-  * 
+  *
   */
   public void wave2(Player aPlayer, Map aMap, String[][]grid,Defender aDefense,Scanner input) {
     System.out.println("\n\nW A V E  2\n\n");
@@ -79,7 +80,7 @@ public class Wave{
   * @param grid
   * @param input
   * @param aDefense
-  * 
+  *
   */
   public void wave3(Player aPlayer, Map aMap, String[][]grid,Defender aDefense,Scanner input) {
     System.out.println("\n\nW A V E  3\n\n");

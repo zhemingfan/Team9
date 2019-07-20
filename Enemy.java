@@ -259,15 +259,8 @@ public class Enemy extends Player{
    * @param damage
    * 
    */
-  public void takeDamage(Player aPlayer, String[][] grid, int damage) {
+  public void takeDamage(int damage) {
     this.enemyHealth -= damage;
-    if (this.enemyHealth <= 0) {
-      System.out.println("Enemy has: " + this.getEnemyHealth() + "HP");
-      System.out.println("Enemy has been killed.");
-      this.killEnemy(grid);
-      aPlayer.gainMoney(moneyGained);
-    }
-
   }
   public void killEnemy(String[][] grid) {
     this.x = this.getXCoord();

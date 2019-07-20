@@ -54,7 +54,7 @@ public class Defender extends Player{
     String enter = input.nextLine();
     return enter;
   }
-  
+
   public void selectCoordinates(Scanner input) {
     System.out.println("Enter X coordinate:");
     xCoord = input.nextInt();
@@ -130,7 +130,7 @@ public class Defender extends Player{
 
   public void attack(Player aPlayer, Enemy anEnemy,String[][] grid) {
     if (enemyIsWithinRange(anEnemy)){
-      anEnemy.takeDamage(aPlayer,grid,damage);
+      anEnemy.takeDamage(damage);
     }
   }
 

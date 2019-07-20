@@ -8,8 +8,8 @@ public class Player{
     
   }
   public Player(int aHealth, int initCurrency){
-    this.setHealth(aHealth);
-    this.setMoney(initCurrency);
+    playerHealth = aHealth;
+    money = initCurrency;
     
     //this.setPosition(xPos, yPos);
   }
@@ -29,8 +29,7 @@ public class Player{
   }
 
   public int getMoney(){
-    int moneyCopy = money;
-    return moneyCopy;
+    return money;
   }
 
   public int getXCoord(){
@@ -44,7 +43,10 @@ public class Player{
   public void takeDamage(int dealtDamage){
     playerHealth -= dealtDamage;
   }
-
+  public void buyDefense(int moneyLost) {
+    money -= moneyLost;
+    System.out.println("\nCASH: $"+money);
+  }
   public void gainMoney(int moneyGained){
     money += moneyGained;
     System.out.println("You gained $"+moneyGained+"\nCASH: $"+money);

@@ -11,14 +11,16 @@ import java.util.ArrayList;
  * enemyList : ArrayList<Enemy>
  */
 public class Enemy extends Game{
-   int x = 0;
-   int y = 2;
+   int x = 0; // Starting enemy x coordinate
+   int y = 2; // Starting enemy y coordinate
    int startXIndex = 0;
    int startYIndex = 2;
    int endIndex = 4;
-   int dealtDamage;
+   int dealtDamage; // Enemy damage inflicted on Player
    private int enemyHealth;
 
+   
+////////////// CONSTRUCTORS //////////////////
   /**
    * Constructor
    * @param enemyHealth
@@ -48,6 +50,8 @@ public class Enemy extends Game{
    * getter method that returns the x coordinate of the specified enemy.
    * @return x: int
    */
+  
+////////////// GET METHODS //////////////////
   
   public int getXCoord() {
     return x;
@@ -79,14 +83,8 @@ public class Enemy extends Game{
     String eHealth = Integer.toString(anEnemy.getEnemyHealth());
     return eHealth;
   }
-  /**
-   * function takeDamage has enemy take damage from tower.
-   * @param damage
-   * 
-   */
-  public void takeDamage(int damage) {
-    this.enemyHealth -= damage;
-  }
+
+//////////////SET METHODS //////////////////
   /**
    * a method that generates a new enemy and places it on a grid
    * @param grid
@@ -96,15 +94,14 @@ public class Enemy extends Game{
     System.out.println("ENEMY HAS ARRIVED");
     for (int r = 0; r < grid.length; r++) {
       for (int c = 0; c < grid[r].length; c++) {
-        if (grid[startXIndex][2] == "-") {
+        if (grid[startXIndex][startYIndex] == "-") {
           grid[x][y] = healthToString(anEnemy);
         }
       }
     }
   }
-  public void moveAlgorithm(String[][] grid,Enemy anEnemy) {
-    
-  }
+  
+////////////// MOVE METHODS //////////////////
   /**
    * a single move method for the specified enemy.
    * @param grid
@@ -201,6 +198,8 @@ public class Enemy extends Game{
     }
     this.y += 1;
   }
+  
+////////////// ATTACK/TAKE DAMAGE METHODS //////////////////
   /**
    * method that returns a boolean if an enemy has crossed the map
    * @param aMap
@@ -223,6 +222,15 @@ public class Enemy extends Game{
       System.out.println(aPlayer.getHealth());
     }
   }
+  /**
+   * function takeDamage has enemy take damage from tower.
+   * @param damage
+   * 
+   */
+  public void takeDamage(int damage) {
+    this.enemyHealth -= damage;
+  }
+//////////////ENEMY WAVE METHODS //////////////////
   
   /**
    * using moveEnemy method, this function will take the enemy from

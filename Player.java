@@ -1,15 +1,17 @@
+
 public class Player{
   private int playerHealth;
   private int money;
-  private int xcoord;
-  private int ycoord;
-  //private Point checkpoint;
 
-  public Player(int aHealth, int initCurrency, int xPos, int yPos, String[][] grid){
+
+  public Player() {
+    
+  }
+  public Player(int aHealth, int initCurrency){
     this.setHealth(aHealth);
     this.setMoney(initCurrency);
-    this.setPosition(xPos, yPos);
-    grid[xPos][yPos] = "X";
+    
+    //this.setPosition(xPos, yPos);
   }
 
   public void setHealth(int initHealth){
@@ -20,11 +22,7 @@ public class Player{
     money = initMoney;
   }
 
-  public void setPosition(int xPos, int yPos){
-    xcoord = xPos;
-    ycoord = yPos;
-    //checkpoint = new Point(xPos, yPos);
-  }
+
   public int getHealth(){
     int healthCopy = playerHealth;
     return healthCopy;
@@ -35,16 +33,20 @@ public class Player{
     return moneyCopy;
   }
 
-  public Point getLocation(){
-    Point location = new Point(xcoord, ycoord);
-    return location;
+  public int getXCoord(){
+    return 0;
   }
-
+  public void checkIfPlayerKilled() {
+    if (playerHealth == 0) {
+      System.out.println("YOU'RE DEAD. GAME OVER!");
+    }
+  }
   public void takeDamage(int dealtDamage){
     playerHealth -= dealtDamage;
   }
 
   public void gainMoney(int moneyGained){
     money += moneyGained;
+    System.out.println("You gained $"+moneyGained+"\nCASH: $"+money);
   }
 }

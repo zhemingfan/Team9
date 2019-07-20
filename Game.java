@@ -11,32 +11,50 @@ public class Game{
    */
 
   public static void main(String[] args) { 
-    // Open Title
+    
+    
+    ////////////Opening Title////////////
     System.out.println("T O W E R  D E F E N S E\n");
-    // Press Enter
+    
+    
+    //////////// Press Enter////////////
     Scanner input = new Scanner(System.in);
     System.out.println("Press Enter");
+    
+    
+    ////////////Generate Map////////////
     String enter = input.nextLine();
-    // Generate Map
-    Map m = new Map();
-    // Generate Enemy
-    Enemy e = new Enemy(5,1);
-    // Generate Player
-    Player p = new Player(10,10);
-    // Generate Defender Class
-    Defender d = new Defender(10,100,1);
-    // Generate 2D Array
-    String[][] grid = m.generateGrid();
-    m.printGrid(grid);
-    //d.generateTower(grid);
+    Map gameMap = new Map();
+    
+    
+    //////////// Generate Enemy Wave ////////////
+    Wave enemyWave = new Wave();
+    
+    //////////// Generate Player ////////////
+    Player player = new Player(10,10);
+    
+    ////////////Generate Defense////////////
+    Defender defense = new Defender(10,100,1);
+    
+    //////////// Generate Map ////////////
+    String[][] grid = gameMap.generateGrid();
+    gameMap.printGrid(grid);
+    
+    //////////// Select Tower ////////////
+    defense.generateTower(grid);
     //p.selectTower(grid,p);
-    e.generateEnemy(grid,e);
-    m.printGrid(grid);
-    //1st enemy wave
-    e.enemyWave1(e,p,m,grid,input,d);
+    
+    //////////// ENEMY WAVE 1 ////////////
+    enemyWave.wave1(player,gameMap,grid,defense,input);
+    
+    //////////// ENEMY WAVE 2 ////////////
+    //enemyHoard.wave2(player,gameMap,grid,defense,input);
+    
+    //////////// ENEMY WAVE 3 ////////////
+    //enemyHoard.wave3(player, gameMap, grid,defense, input);
+    
   
   }
     
   
-}
 }

@@ -12,7 +12,8 @@ public class Map extends Game{
   public Map() {
   }
   /**
-   * Generates a grid of nxn units.
+   * Generates a grid of (xlength)x(ywidth) units.
+   * @return String[][]
    */
   public String[][] generateGrid() {
     String[][] grid = new String[xlength][ywidth];
@@ -24,6 +25,12 @@ public class Map extends Game{
     }
     return grid;
   }
+  /**
+   * Creates path on map.
+   * @param grid
+   * @param column
+   * @param row
+   */
   public void createPath(String[][] grid,int column,int row) {
     grid[column][2] = "-";
   }

@@ -10,14 +10,15 @@ import java.util.ArrayList;
  * enemyHealth : private int
  * enemyList : ArrayList<Enemy>
  */
-public class Enemy extends Game{
+public class Enemy extends Player{
    int x = 0; // Starting enemy x coordinate
    int y = 2; // Starting enemy y coordinate
    int startXIndex = 0;
    int startYIndex = 2;
    int endIndex = 4;
    int dealtDamage; // Enemy damage inflicted on Player
-   private int enemyHealth;
+   int enemyHealth;
+   int moneyGained;
 
    
 ////////////// CONSTRUCTORS //////////////////
@@ -29,12 +30,13 @@ public class Enemy extends Game{
    * 
    */
   public Enemy() {
-    
   }
-  public Enemy(int enemyHealth, int dealtDamage) {
+  
+  public Enemy(int enemyHealth, int dealtDamage,int moneyGained) {
      this.enemyHealth = enemyHealth;
      this.x = 0;
      this.y = 2;
+     this.moneyGained = moneyGained;
      this.dealtDamage = dealtDamage;
   }
   /**
@@ -218,8 +220,8 @@ public class Enemy extends Game{
   public void attack(Map aMap, Player aPlayer,Enemy anEnemy) {
     if(checkEnemyCrossed(aMap, anEnemy)) {
       aPlayer.takeDamage(dealtDamage);
-      System.out.println("You have taken damage.");
-      System.out.println(aPlayer.getHealth());
+      System.out.println("Y O U  H A V E  T A K E N  D A M A G E!!!!\n");
+      System.out.println("Health: "+aPlayer.getHealth());
     }
   }
   /**
@@ -227,32 +229,31 @@ public class Enemy extends Game{
    * @param damage
    * 
    */
-  public void takeDamage(int damage) {
+  public void takeDamage(Player aPlayer, String[][] grid, int damage) {
     this.enemyHealth -= damage;
+    if (this.enemyHealth <= 0) {
+      System.out.println("Enemy has: " + this.getEnemyHealth() + "HP");
+      System.out.println("Enemy has been killed.");
+      this.killEnemy(grid);
+      aPlayer.gainMoney(moneyGained);
+    }
+
   }
-//////////////ENEMY WAVE METHODS //////////////////
-  
-  /**
-   * using moveEnemy method, this function will take the enemy from
-   * startIndex to endIndex
-   * @param anEnemy
-   * @param aMap
-   * @param grid
-   * @param input
-   * 
-   */
-  public static void enemyWave1(Enemy anEnemy,Player aPlayer, Map aMap, String[][]grid, Scanner input,Defender aDefense) {
-    String enter = input.nextLine();
-    System.out.println("W A V E  1");
-    while (enter != "no") {
+  public void killEnemy(String[][] grid) {
+    this.x = this.getXCoord();
+    this.y = this.getYCoord();
+    for (int r = 0; r < grid.length; r++) {
+      for (int c = 0; c < grid[r].length; c++) {
+        grid[this.x][this.y] = "-";
+          
+        }
+      }
       
-      anEnemy.moveRight(grid,anEnemy); 
-      anEnemy.attack(aMap, aPlayer, anEnemy);
-      //aDefense.attack(anEnemy,grid);
-      aMap.printGrid(grid);
-      System.out.println(anEnemy.getXCoord());
-      System.out.println("Press Enter");
-      enter = input.nextLine();
     }
   }
-}
+/*
+  public int getBounty(){
+    return this.bounty;
+  }
+  */
+

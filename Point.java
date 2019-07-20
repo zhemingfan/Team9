@@ -15,12 +15,12 @@ public class Point{
     return yCoord;
   }
 
-  public double getDistance(Point other) {
+  public int getDistance(Point other) {
     int otherX = other.getXCoord();
     int otherY = other.getYCoord();
     double deltaXsquared = Math.pow((double)(xCoord - otherX), 2.0);
     double deltaYsquared = Math.pow((double)(yCoord - otherY), 2.0);
-    return Math.sqrt(deltaXsquared + deltaYsquared);
+    return (int)(Math.sqrt(deltaXsquared + deltaYsquared));
   }
 
 }

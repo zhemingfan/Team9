@@ -27,9 +27,9 @@ public class Game{
     Map gameMap = new Map();
 
 
-    //////////// Generate Enemy Wave ////////////
+    //////////// Generate Enemy Wave(s) ////////////
     Wave enemyWave = new Wave();
-
+    Wave enemyWave2 = new Wave();
     //////////// Generate Player ////////////
     Player player = new Player(10,10);
 
@@ -46,7 +46,7 @@ public class Game{
 
     //////////// ENEMY WAVE 1 ////////////
     enemyWave.wave1(player,gameMap,grid,defense,input);
-
+    enemyWave.wave2(player, gameMap, grid, defense, input);
     //////////// ENEMY WAVE 2 ////////////
     //enemyHoard.wave2(player,gameMap,grid,defense,input);
 

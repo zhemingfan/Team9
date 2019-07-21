@@ -23,6 +23,7 @@ public class Wave{
       aDefense.attack(aPlayer,anEnemy,grid);
 
 
+      aMap.printGrid(grid);
 
       aPlayer.checkIfPlayerKilled();
       if(aDefense.selection(input).equals("P")) {

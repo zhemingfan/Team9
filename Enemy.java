@@ -110,21 +110,21 @@ public class Enemy extends Player{
    * @param anEnemy
    */
   public void moveEnemy(String[][] grid,Enemy anEnemy) {
-  boolean reached = false;
+    boolean reached = false;
     this.x = this.getXCoord();
     this.y = this.getYCoord();
     for (int r = 0; r < grid.length; r++) {
       for (int c = 0; c < grid[r].length; c++) {
-        if((this.x+1) < 10 && grid[this.x+1][this.y].equals("-")) {
-          grid[this.x+1][this.y] = healthToString(anEnemy);
+        if((this.x+1) < endXIndex+1 && grid[this.x+1][this.y].equals("-")) {
+          grid[this.x+1][this.y] = healthToString(anEnemy);//moves character right
           grid[this.x][this.y] = "-";
         }       
-        else if (grid[this.x+1][this.y].equals("0") && (this.y+1)< 10) {
-          grid[this.x][this.y+1] = healthToString(anEnemy);
+        else if ((this.x+1) < endXIndex+1 && grid[this.x+1][this.y].equals(".")) {
+          grid[this.x][this.y+1] = healthToString(anEnemy);//moves character down
           grid[this.x][this.y] = "-";
           reached = true;
         }
-        else if ((this.x+1) == grid[r].length) {
+        else if ((this.x) == endXIndex && grid[endXIndex][endYIndex].equals(healthToString(anEnemy))) {
           grid[this.x][this.y] = "-";
           break;
         }

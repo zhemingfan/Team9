@@ -211,14 +211,14 @@ public class Enemy extends Player{
         if((this.x+1) < 5) {
           grid[this.x+1][this.y] = healthToString(anEnemy);
           grid[this.x][this.y] = "-";
-          aMap.printGrid(grid);
+          //aMap.printGrid(grid);
         }
 
         else if (((this.x+1) == grid[r].length) && (grid[this.x][2] != "-")) {
           reached = true;
           grid[this.x][this.y] = "-";
           grid[this.x][this.y+1] = healthToString(anEnemy);
-          aMap.printGrid(grid);
+          //aMap.printGrid(grid);
         }
 
         else if (((this.x+1) == grid[r].length) && (grid[this.x][3] != "-") && reached == true) {

@@ -85,7 +85,7 @@ public class Defender{
     }
     for (int r = 0; r < grid.length; r++) {
       for(int c = 0; c < grid[r].length; c++) {
-        if (grid[xCoord][yCoord] == "0") {
+        if (grid[xCoord][yCoord] == "/") {
           grid[xCoord][yCoord] = "S";
         }
       }
@@ -105,7 +105,7 @@ public class Defender{
     }
     for (int r = 0; r < grid.length; r++) {
       for(int c = 0; c < grid[r].length; c++) {
-        if (grid[xCoord][yCoord] == "0") {
+        if (grid[xCoord][yCoord] == "/") {
           grid[xCoord][yCoord] = "A";
         }
       }

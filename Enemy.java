@@ -105,131 +105,36 @@ public class Enemy extends Player{
 
 ////////////// MOVE METHODS //////////////////
   /**
-   * a single move method for the specified enemy.
+   * a move method for the specified enemy.
    * @param grid
    * @param anEnemy
    */
-
-  public void moveRight(String[][] grid,Enemy anEnemy) {
-    this.x = this.getXCoord();
-    this.y = this.getYCoord();
-    for (int r = 0; r < grid.length; r++) {
-      for (int c = 0; c < grid[r].length; c++) {
-        if ((this.x + 1) < 5) {
-          if(grid[this.x+1][this.y].equals("-")) {
-            grid[this.x+1][this.y] = healthToString(anEnemy);
-            grid[this.x][this.y] = "-";
-          }
-        }
-        else if ((this.x+1) == grid[r].length) {
-          grid[this.x][2] = "-";
-          break;
-        }
-      }
-    }
-    this.x += 1;
-  }
-  /**
-   * a single move method for the specified enemy.
-   * @param grid
-   * @param anEnemy
-   */
-  public void moveLeft(String[][] grid,Enemy anEnemy) {
-    this.x = this.getXCoord();
-    this.y = this.getYCoord();
-    for (int r = 0; r < grid.length; r++) {
-      for (int c = 0; c < grid[r].length; c++) {
-        if ((this.x - 1) > 0) {
-          if(grid[this.x-1][this.y].equals("-")) {
-            grid[this.x-1][this.y] = healthToString(anEnemy);
-            grid[this.x][this.y] = "-";
-          }
-        }
-        else if ((this.x) == 0) {
-          grid[this.x][this.y] = "-";
-          break;
-        }
-      }
-    }
-    this.x -= 1;
-  }
-  /**
-   * a single move method for the specified enemy.
-   * @param grid
-   * @param anEnemy
-   */
-  public void moveUp(String[][] grid,Enemy anEnemy) {
-    this.x = this.getXCoord();
-    this.y = this.getYCoord();
-    for (int r = 0; r < grid.length; r++) {
-      for (int c = 0; c < grid[r].length; c++) {
-        if((this.y-1) > 0) {
-          if(grid[this.x][this.y-1].equals("|")) {
-            grid[this.x][this.y-1] = healthToString(anEnemy);
-            grid[this.x][this.y] = "|";
-          }
-        }
-        else if (this.y == 0) {
-          grid[this.x][this.y] = "|";
-          break;
-        }
-      }
-    }
-    this.y -= 1;
-  }
-  /**
-   * a single move method for the specified enemy.
-   * @param grid
-   * @param anEnemy
-   */
-  public void moveDown(String[][] grid,Enemy anEnemy) {
-    this.x = this.getXCoord();
-    this.y = this.getYCoord();
-    for (int r = 0; r < grid.length; r++) {
-      for (int c = 0; c < grid[r].length; c++) {
-        if((this.y+1) < grid.length) {
-          if(grid[this.x][this.y+1].equals("|"))
-          grid[this.x][this.y+1] = healthToString(anEnemy);
-          grid[this.x][this.y] = "|";
-        }
-        else if (this.y+1 == grid.length) {
-          grid[this.x][this.y] = "|";
-          break;
-        }
-      }
-    }
-    this.y += 1;
-  }
-
-
-  public void moveEnemy(Map aMap, String[][] grid,Enemy anEnemy) {
+  public void moveEnemy(String[][] grid,Enemy anEnemy) {
   boolean reached = false;
     this.x = this.getXCoord();
     this.y = this.getYCoord();
     for (int r = 0; r < grid.length; r++) {
       for (int c = 0; c < grid[r].length; c++) {
-        if((this.x+1) < 5) {
+        if((this.x+1) < 10 && grid[this.x+1][this.y].equals("-")) {
           grid[this.x+1][this.y] = healthToString(anEnemy);
           grid[this.x][this.y] = "-";
-
-        }
-
-        else if (((this.x+1) == grid[r].length) && (grid[this.x][2] != "-")) {
-          reached = true;
-          grid[this.x][this.y] = "-";
+        }       
+        else if (grid[this.x+1][this.y].equals("0") && (this.y+1)< 10) {
           grid[this.x][this.y+1] = healthToString(anEnemy);
-
+          grid[this.x][this.y] = "-";
+          reached = true;
         }
-
-        else if (((this.x+1) == grid[r].length) && (grid[this.x][3] != "-") && reached == true) {
-            grid[this.x][this.y+1] = "-";
-            grid[this.x][this.y+2] = healthToString(anEnemy);
-          }
-
+        else if ((this.x+1) == grid[r].length) {
+          grid[this.x][this.y] = "-";
+          break;
+        }
       }
     }
+    if (reached) {
+      this.y+=1;
+    } else {
     this.x += 1;
-
+    }
   }
 ////////////// ATTACK/TAKE DAMAGE METHODS //////////////////
   /**

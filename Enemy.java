@@ -119,7 +119,7 @@ public class Enemy extends Player{
           grid[this.x+1][this.y] = healthToString(anEnemy);//moves character right
           grid[this.x][this.y] = "-";
         }       
-        else if ((this.x+1) < endXIndex+1 && grid[this.x+1][this.y].equals(".")) {
+        else if ((this.x+1) < endXIndex+1 && grid[this.x+1][this.y].equals("0")) {
           grid[this.x][this.y+1] = healthToString(anEnemy);//moves character down
           grid[this.x][this.y] = "-";
           reached = true;

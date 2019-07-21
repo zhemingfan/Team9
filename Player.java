@@ -1,17 +1,15 @@
-
 public class Player{
   private int playerHealth;
   private int money;
 
 
   public Player() {
-    
+
   }
   public Player(int aHealth, int initCurrency){
     playerHealth = aHealth;
     money = initCurrency;
-    
-    //this.setPosition(xPos, yPos);
+
   }
 
   public void setHealth(int initHealth){
@@ -35,15 +33,19 @@ public class Player{
   public int getXCoord(){
     return 0;
   }
-  public void checkIfPlayerKilled() {
-    if (playerHealth == 0) {
-      System.out.println("YOU'RE DEAD. GAME OVER!");
-    }
+  public boolean isKilled() {
+    return playerHealth == 0;
   }
   public void takeDamage(int dealtDamage){
     playerHealth -= dealtDamage;
   }
+  public boolean enoughFunds(int moneyLost) {
+    return moneyLost < money;
+  }
   public void buyDefense(int moneyLost) {
+    if (money < moneyLost) {
+      System.out.println("You have insufficient funds.");
+    }
     money -= moneyLost;
     System.out.println("\nCASH: $"+money);
   }

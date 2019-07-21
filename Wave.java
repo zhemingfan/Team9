@@ -8,11 +8,10 @@ public class Wave{
 
 //////////////ENEMY WAVE METHODS //////////////////
 
-
   public void enemyWave(Enemy anEnemy,Player aPlayer, Map aMap, String[][]grid,Scanner input,Defender aDefense) {
-    while (anEnemy.getXCoord() != 6) {
-      anEnemy.moveEnemy(aMap, grid, anEnemy);
-      anEnemy.attack(aMap, aPlayer, anEnemy);
+    while (anEnemy.getXCoord() != anEnemy.endXIndex+1) {
+      anEnemy.moveEnemy(grid,anEnemy,aPlayer);
+      aDefense.attack(anEnemy);
       if (anEnemy.enemyHealth == 0) {
         System.out.println("Enemy has: " + anEnemy.getEnemyHealth() + "HP");
         System.out.println("Enemy has been killed.");
@@ -20,18 +19,19 @@ public class Wave{
         aPlayer.gainMoney(anEnemy.moneyGained);
         break;
       }
-      aDefense.attack(aPlayer,anEnemy,grid);
-
 
       aMap.printGrid(grid);
 
-      aPlayer.checkIfPlayerKilled();
+
+      if (aPlayer.isKilled()) {
+        System.out.println("YOU ARE DEAD. GAME OVER!");
+        break;
+      }
       if(aDefense.selection(input).equals("P")) {
-        aDefense.generateTower(aPlayer,grid);
+        aDefense.generateTower(aPlayer,grid,input);
       } else {
         continue;
       }
-      input.nextLine();
     }
   }
   /**
@@ -48,8 +48,11 @@ public class Wave{
     Enemy e1 = new Enemy(10,1,10);
     e1.generateEnemy(grid, e1);
     aMap.printGrid(grid);
-    String enter = input.nextLine();
+    input.nextLine();
     enemyWave(e1,aPlayer,aMap,grid,input,aDefense);
+    if (e1.hasCrossed()) {
+      e1.attack(aPlayer);
+    }
     System.out.println("\nE N D  O F  W A V E  1\n\n");
   }
   /**
@@ -66,11 +69,11 @@ public class Wave{
     Enemy e1 = new Enemy(10,1,10);
     e1.generateEnemy(grid,e1);
     aMap.printGrid(grid);
-    String enter = input.nextLine();
+    input.nextLine();
     enemyWave(e1,aPlayer,aMap,grid,input,aDefense);
     Enemy e2 = new Enemy(5,1,10);
     e2.generateEnemy(grid,e2);
-    enemyWave(e2,aPlayer,aMap,grid,input, aDefense);
+    enemyWave(e2,aPlayer,aMap,grid,input,aDefense);
     System.out.println("\nE N D  O F  W A V E  2\n\n");
   }
   /**
@@ -87,14 +90,14 @@ public class Wave{
     Enemy e1 = new Enemy(10,1,10);
     e1.generateEnemy(grid,e1);
     aMap.printGrid(grid);
-    String enter = input.nextLine();
-    enemyWave(e1, aPlayer, aMap, grid, input, aDefense);
+    input.nextLine();
+    enemyWave(e1,aPlayer,aMap,grid,input,aDefense);
     Enemy e2 = new Enemy(10,1,10);
-    e2.generateEnemy(grid, e2);
-    enemyWave(e2, aPlayer, aMap, grid, input, aDefense);
+    e2.generateEnemy(grid,e2);
+    enemyWave(e2,aPlayer,aMap,grid,input,aDefense);
     Enemy e3 = new Enemy(10,1,10);
     e3.generateEnemy(grid,e3);
-    enemyWave(e3, aPlayer, aMap, grid, input, aDefense);
+    enemyWave(e3,aPlayer,aMap,grid,input,aDefense);
     System.out.println("\nE N D  O F  W A V E  3\n\n");
   }
 }

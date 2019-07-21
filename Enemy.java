@@ -109,20 +109,20 @@ public class Enemy extends Player{
    * @param grid
    * @param anEnemy
    */
-  public void moveEnemy(String[][] grid,Enemy anEnemy) {
-  boolean reached = false;
+  public void moveEnemy(Map aMap, String[][] grid,Enemy anEnemy) {
+    //boolean reached = false;
     this.x = this.getXCoord();
     this.y = this.getYCoord();
     for (int r = 0; r < grid.length; r++) {
       for (int c = 0; c < grid[r].length; c++) {
         if((this.x+1) < 10 && grid[this.x+1][this.y].equals("-")) {
-          grid[this.x+1][this.y] = healthToString(anEnemy);
-          grid[this.x][this.y] = "-";
-        }       
+          grid[this.x+1][this.y] = healthToString(anEnemy);         //The enemy's destination becomes the enemy
+          grid[this.x][this.y] = "-";                               //The enemy's former position is replaced with the path
+        }
         else if (grid[this.x+1][this.y].equals("0") && (this.y+1)< 10) {
           grid[this.x][this.y+1] = healthToString(anEnemy);
           grid[this.x][this.y] = "-";
-          reached = true;
+          //reached = true;
         }
         else if ((this.x+1) == grid[r].length) {
           grid[this.x][this.y] = "-";
@@ -130,12 +130,17 @@ public class Enemy extends Player{
         }
       }
     }
+    aMap.printGrid(grid);
+    this.x += 1;
+    /*
     if (reached) {
       this.y+=1;
     } else {
     this.x += 1;
     }
+    */
   }
+
 ////////////// ATTACK/TAKE DAMAGE METHODS //////////////////
   /**
    * method that returns a boolean if an enemy has crossed the map

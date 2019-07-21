@@ -19,7 +19,7 @@ public class Game{
 
     //////////// Press Enter////////////
     Scanner input = new Scanner(System.in);
-    System.out.println("     Press Enter");
+    System.out.println("Press Enter");
 
 
     ////////////Generate Map////////////

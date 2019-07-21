@@ -34,13 +34,13 @@ public class Defender{
         placeSniper(grid,input);
       }
     }
+
   public void defenderSelection(Player aPlayer, Scanner input) {
     System.out.println("SELECT YOUR DEFENDER:"
                  + "\nCASH: $"+aPlayer.getMoney()
                  + "\n\nEnter (S) for Sniper ($10)"
                  + "\n\nEnter (A) for Archer ($5)"
                  + "\n\nor press enter.");
-
   }
   /**
    * method that asks player if they want to place tower or skip before the next
@@ -49,22 +49,25 @@ public class Defender{
    * @return String
    */
   public String selection(Scanner input) {
-    System.out.println("(P)lace Tower or (S)kip?");
+    System.out.println("P to place a tower, Enter to continue");
     String enter = input.nextLine();
+    if(input.nextLine() == "exit"){
+      System.exit(0); //Exits the game without having to close the console
+    }
     return enter;
   }
   public void selectCoordinates(Scanner input) {
     System.out.println("Enter X coordinate:");
     xCoord = input.nextInt();
     //While loop to ensure
-    while (xCoord < 0 || xCoord > 4) {
-      System.out.println("Your X coordinate is Out of Range.\nPlease Enter a Value Between 0 and 4");
+    while (xCoord < 0 || xCoord > 9) {
+      System.out.println("Your X coordinate is Out of Range.\nPlease Enter a Value Between 0 and 9");
       xCoord = input.nextInt();
     }
     System.out.println("Enter Y coordinate:");
     yCoord = input.nextInt();
-    while (yCoord < 0 || yCoord > 4) {
-      System.out.println("Your Y coordinate is Out of Range.\nPlease Enter a Value Between 0 and 4");
+    while (yCoord < 0 || yCoord > 9) {
+      System.out.println("Your Y coordinate is Out of Range.\nPlease Enter a Value Between 0 and 9");
       yCoord = input.nextInt();
      }
   }

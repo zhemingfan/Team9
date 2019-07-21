@@ -19,7 +19,7 @@ public class Map extends Game{
     String[][] grid = new String[xlength][ywidth];
     for(int r = 0; r < grid.length; r++) {
       for(int c = 0; c < grid[r].length; c++) {
-        grid[c][r] = ".";
+        grid[c][r] = "/";
         createPath(grid);
       }
     }

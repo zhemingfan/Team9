@@ -104,10 +104,10 @@ public class Enemy{
     for (int r = 0; r < grid.length; r++) {
       for (int c = 0; c < grid[r].length; c++) {
         if((this.x+1) < endXIndex+1 && grid[this.x+1][this.y].equals("-")) {
-          grid[this.x+1][this.y] = healthToString(anEnemy);//moves character right
-          grid[this.x][this.y] = "-";
+          grid[this.x+1][this.y] = healthToString(anEnemy); //moves character right
+          grid[this.x][this.y] = "-";                       //Replaces former position with path character
         }
-        else if ((this.x+1) < endXIndex+1 && grid[this.x+1][this.y].equals(".")) {
+        else if ((this.x+1) < endXIndex+1 && grid[this.x+1][this.y].equals("/")) {
           grid[this.x][this.y+1] = healthToString(anEnemy);//moves character down
           grid[this.x][this.y] = "-";
           reached = true;

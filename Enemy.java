@@ -1,5 +1,3 @@
-import java.util.Scanner;
-import java.util.ArrayList;
 /**
  * This class creates an Enemy object that has a starting health.
  * Instance variables:
@@ -10,12 +8,13 @@ import java.util.ArrayList;
  * enemyHealth : private int
  * enemyList : ArrayList<Enemy>
  */
-public class Enemy extends Player{
+public class Enemy{
    int x = 0; // Starting enemy x coordinate
    int y = 2; // Starting enemy y coordinate
    int startXIndex = 0;
    int startYIndex = 2;
-   int endIndex = 4;
+   int endXIndex = 9;
+   int endYIndex = 6;
    int dealtDamage; // Enemy damage inflicted on Player
    int enemyHealth;
    int moneyGained;
@@ -29,24 +28,12 @@ public class Enemy extends Player{
    * @param y
    *
    */
-  public Enemy() {
-  }
-
   public Enemy(int enemyHealth, int dealtDamage,int moneyGained) {
      this.enemyHealth = enemyHealth;
      this.x = 0;
      this.y = 2;
      this.moneyGained = moneyGained;
      this.dealtDamage = dealtDamage;
-  }
-  /**
-   * Copy Constructor
-   * @param toCopy
-   */
-  public Enemy(Enemy toCopy) {
-    enemyHealth = toCopy.enemyHealth;
-    x = toCopy.x;
-    y = toCopy.y;
   }
   /**
    * getter method that returns the x coordinate of the specified enemy.
@@ -104,12 +91,13 @@ public class Enemy extends Player{
   }
 
 ////////////// MOVE METHODS //////////////////
+
   /**
-   * a move method for the specified enemy.
+   *
    * @param grid
    * @param anEnemy
    */
-  public void moveEnemy(String[][] grid,Enemy anEnemy) {
+  public void moveEnemy(String[][] grid,Enemy anEnemy,Player aPlayer) {
     boolean reached = false;
     this.x = this.getXCoord();
     this.y = this.getYCoord();
@@ -119,10 +107,10 @@ public class Enemy extends Player{
           grid[this.x+1][this.y] = healthToString(anEnemy);//moves character right
           grid[this.x][this.y] = "-";
         }
-        else if ((this.x+1) < endXIndex+1 && grid[this.x+1][this.y].equals("0")) {
+        else if ((this.x+1) < endXIndex+1 && grid[this.x+1][this.y].equals(".")) {
           grid[this.x][this.y+1] = healthToString(anEnemy);//moves character down
           grid[this.x][this.y] = "-";
-          //reached = true;
+          reached = true;
         }
         else if ((this.x) == endXIndex && grid[endXIndex][endYIndex].equals(healthToString(anEnemy))) {
           grid[this.x][this.y] = "-";
@@ -130,15 +118,11 @@ public class Enemy extends Player{
         }
       }
     }
-    //aMap.printGrid(grid);
-    //this.x += 1;
-    /*
     if (reached) {
       this.y+=1;
     } else {
     this.x += 1;
     }
-    */
   }
 
 ////////////// ATTACK/TAKE DAMAGE METHODS //////////////////
@@ -148,8 +132,8 @@ public class Enemy extends Player{
    * @param anEnemy
    * @return boolean
    */
-  public boolean checkEnemyCrossed(Map aMap, Enemy anEnemy) {
-    return anEnemy.getXCoord() > aMap.xlength || anEnemy.getYCoord() > aMap.ywidth;
+  public boolean hasCrossed() {
+    return this.getXCoord() == endXIndex && this.getYCoord() == endYIndex;
   }
   /**
    * method that attacks Player if an Enemy has crossed
@@ -157,13 +141,11 @@ public class Enemy extends Player{
    * @param aPlayer
    * @param anEnemy
    */
-  public void attack(Map aMap, Player aPlayer,Enemy anEnemy) {
-    if(checkEnemyCrossed(aMap, anEnemy)) {
+  public void attack(Player aPlayer) {
       aPlayer.takeDamage(dealtDamage);
       System.out.println("Y O U  H A V E  T A K E N  D A M A G E!!!!\n");
       System.out.println("Health: "+aPlayer.getHealth());
     }
-  }
   /**
    * function takeDamage has enemy take damage from tower.
    * @param damage
@@ -184,8 +166,3 @@ public class Enemy extends Player{
 
     }
   }
-/*
-  public int getBounty(){
-    return this.bounty;
-  }
-  */

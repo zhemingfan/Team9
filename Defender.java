@@ -1,19 +1,23 @@
-import java.lang.Math;
 import java.util.Scanner;
+public class Defender{
+  int archerPrice;
+  int archerRange;
+  int archerDamage;
+  int sniperPrice;
+  int sniperRange;
+  int sniperDamage;
+  int xCoord;
+  int yCoord;
 
 
-public class Defender extends Player{
-  private int damage;
-  private int price;
-  private int xCoord;
-  private int yCoord;
-  private int range;
+  public Defender() {
+    archerPrice = 5;
+    archerRange = 1;
+    archerDamage = 2;
+    sniperPrice = 10;
+    sniperRange = 2;
+    sniperDamage = 4;
 
-  public Defender(int aDamage, int aPrice, int aRange) {
-      super();
-      damage = aDamage;
-      range = aRange;
-      price = aPrice;
   }
     /**
     *method that generates tower
@@ -21,27 +25,22 @@ public class Defender extends Player{
     *
     *
     */
-    public void generateTower(Player aPlayer,String[][] grid) {
-    Scanner input = new Scanner(System.in);
-    if (defenderSelection(input).equals("A")) {
-      System.out.println("You bought Archer!");
-      aPlayer.buyDefense(5);
-      placeArcher(grid,input);
+    public void generateTower(Player aPlayer,String[][] grid,Scanner input) {
+      defenderSelection(aPlayer, input);
+      if (input.nextLine().equals("A")) {
+        placeArcher(grid,input);
+      }
+      else if (input.nextLine().equals("S")) {
+        placeSniper(grid,input);
+      }
     }
+  public void defenderSelection(Player aPlayer, Scanner input) {
+    System.out.println("SELECT YOUR DEFENDER:"
+                 + "\nCASH: $"+aPlayer.getMoney()
+                 + "\n\nEnter (S) for Sniper ($10)"
+                 + "\n\nEnter (A) for Archer ($5)"
+                 + "\n\nor press enter.");
 
-    else if (defenderSelection(input).equals("S")) {
-      System.out.println("You bought Sniper!");
-      aPlayer.buyDefense(10);
-      placeSniper(grid,input);
-    }
-
-    }
-  public String defenderSelection(Scanner input) {
-    System.out.println("S E L E C T  Y O U R  D E F E N D E R:"
-                 + "\n\n     Enter (S) for Sniper ($10)"
-                 + "\n\n     Enter (A) for Archer ($5 )");
-    String defense = input.nextLine();
-    return defense;
   }
   /**
    * method that asks player if they want to place tower or skip before the next
@@ -54,7 +53,6 @@ public class Defender extends Player{
     String enter = input.nextLine();
     return enter;
   }
-
   public void selectCoordinates(Scanner input) {
     System.out.println("Enter X coordinate:");
     xCoord = input.nextInt();
@@ -70,50 +68,63 @@ public class Defender extends Player{
       yCoord = input.nextInt();
      }
   }
-
+  /**
+   * method that places sniper defender on grid.
+   * @param grid
+   * @param input
+   */
   public void placeSniper(String[][] grid,Scanner input) {
+    System.out.println("You bought Sniper!");
     selectCoordinates(input);
     while (containsPath(grid,xCoord,yCoord)) {
       System.out.println("Your coordinates contain a path\nPlease enter valid X and Y coordinates.\n");
       selectCoordinates(input);
     }
-      for (int r = 0; r < grid.length; r++) {
-        for(int c = 0; c < grid[r].length; c++) {
-          if (grid[xCoord][yCoord] == "0") {
-             grid[xCoord][yCoord] = "S";
-          }
+    for (int r = 0; r < grid.length; r++) {
+      for(int c = 0; c < grid[r].length; c++) {
+        if (grid[xCoord][yCoord] == "0") {
+          grid[xCoord][yCoord] = "S";
         }
       }
+    }
   }
-
+  /**
+   * method that places archer defender on grid.
+   * @param grid
+   * @param input
+   */
   public void placeArcher(String[][] grid,Scanner input) {
+    System.out.println("You bought Archer!");
     selectCoordinates(input);
     while (containsPath(grid,xCoord,yCoord)) {
       System.out.println("Your coordinates contain a path\nPlease enter valid X and Y coordinates.\n");
       selectCoordinates(input);
     }
-      for (int r = 0; r < grid.length; r++) {
-        for(int c = 0; c < grid[r].length; c++) {
-          if (grid[xCoord][yCoord] == "0") {
-             grid[xCoord][yCoord] = "A";
-          }
+    for (int r = 0; r < grid.length; r++) {
+      for(int c = 0; c < grid[r].length; c++) {
+        if (grid[xCoord][yCoord] == "0") {
+          grid[xCoord][yCoord] = "A";
         }
       }
+    }
   }
-
+  /**
+   * method that checks if x and y coordinates contain "-" path.
+   * @param grid
+   * @param xCoord
+   * @param yCoord
+   * @return boolean
+   */
   public boolean containsPath(String[][] grid,int xCoord, int yCoord) {
     boolean result = false;
     for (int r = 0; r < grid.length; r++) {
       for(int c = 0; c < grid[r].length; c++) {
-        if (grid[xCoord][yCoord].equals("-") || grid[xCoord][yCoord].equals("|")) {
+        if (grid[xCoord][yCoord].equals("-")) {
           result = true;
         }
       }
     }
     return result;
-  }
-  public int getPrice() {
-    return price;
   }
 
   public int getDistance(Enemy anEnemy) {
@@ -124,18 +135,19 @@ public class Defender extends Player{
     return (int)(Math.sqrt(deltaXsquared + deltaYsquared));
   }
 
-  public boolean enemyIsWithinRange(Enemy anEnemy) {
-    return this.getDistance(anEnemy) <= range;
+  public boolean enemyIsWithinRangeOfArcher(Enemy anEnemy) {
+    return this.getDistance(anEnemy) <= this.archerRange;
+  }
+  public boolean enemyIsWithinRangeOfSniper(Enemy anEnemy) {
+    return this.getDistance(anEnemy) <= this.sniperRange;
   }
 
-  public void attack(Player aPlayer, Enemy anEnemy,String[][] grid) {
-    if (enemyIsWithinRange(anEnemy)){
-      anEnemy.takeDamage(damage);
+  public void attack(Enemy anEnemy) {
+    if (enemyIsWithinRangeOfArcher(anEnemy)){
+      anEnemy.takeDamage(this.archerDamage);
+    }
+    else if (enemyIsWithinRangeOfSniper(anEnemy)) {
+      anEnemy.takeDamage(this.sniperDamage);
     }
   }
-
-  public String toString() {
-    return "Price: "+ price + "\nDamage: " + damage +"\nRange: " + range;
-  }
-
 }

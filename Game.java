@@ -19,36 +19,35 @@ public class Game{
 
     //////////// Press Enter////////////
     Scanner input = new Scanner(System.in);
-    System.out.println("Press Enter");
+    System.out.println("     Press Enter");
 
 
     ////////////Generate Map////////////
-    String enter = input.nextLine();
+    input.nextLine();
     Map gameMap = new Map();
 
 
-    //////////// Generate Enemy Wave(s) ////////////
+    //////////// Generate Enemy Wave ////////////
     Wave enemyWave = new Wave();
-    Wave enemyWave2 = new Wave();
+
     //////////// Generate Player ////////////
     Player player = new Player(10,10);
 
     ////////////Generate Defense////////////
-    Defender defense = new Defender(10,100,1);
+    Defender defense = new Defender();
 
     //////////// Generate Map ////////////
     String[][] grid = gameMap.generateGrid();
     gameMap.printGrid(grid);
 
     //////////// Select Tower ////////////
-    defense.generateTower(player, grid);
-    //p.selectTower(grid,p);
+    defense.generateTower(player,grid,input);
 
     //////////// ENEMY WAVE 1 ////////////
     enemyWave.wave1(player,gameMap,grid,defense,input);
-    enemyWave.wave2(player, gameMap, grid, defense, input);
+
     //////////// ENEMY WAVE 2 ////////////
-    //enemyHoard.wave2(player,gameMap,grid,defense,input);
+    enemyWave.wave2(player,gameMap,grid,defense,input);
 
     //////////// ENEMY WAVE 3 ////////////
     //enemyHoard.wave3(player, gameMap, grid,defense, input);

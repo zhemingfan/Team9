@@ -1,4 +1,11 @@
 # Team9
+Our demo(s) can be found in the branches "SimpleDemo-branch" and "Demo1-branch".
+Both demos work but have different problems and the one that is resolved best will be the demo we expand upon and eventually build the rest of the game off of.
+
+The Simple Demo is a 5x5 game screen where all features work except for the addition of more than 1 towers. Building more than 1 towers has an issue where building additional towers makes the older towers no longer damage the enemy.
+
+The Demo1 is a 10x10 game screen in which the enemy path has different turns. All features are implemented properly except for the player health. The tower glitch as described above also persists.
+
 For the first demo, only the .java files are needed. (The .class can be created by compiling.)
 All files ending in .java are needed for the demo except for Point.java. This class is currently only planned to be implemented in the future but is not essential for the demo.
 

@@ -4,6 +4,15 @@
  * with path.
  *
  */
+/*
+ * Screen Record Script
+ * WAVE 1. let enemy run through map
+ * WAVE 2. input ARCHER in (0,1)
+ *         input SNIPER in (5,1)
+ *         input SNIPER in (6,5)
+ * WAVE 3. input ARCHER in (3,3)
+ *         finish screen record.
+ */
 
 public class Map extends Game{
   int xlength = 10;
@@ -14,6 +23,7 @@ public class Map extends Game{
   public Map() {
   }
   /**
+   * 
    * Generates a grid of (xlength)x(ywidth) units.
    * @return String[][]
    */

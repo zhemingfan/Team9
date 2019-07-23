@@ -16,6 +16,7 @@ public class Defender extends Player{
     System.out.println("\n("+this.getXCoord()+","+this.getYCoord()+")\n");
 
   }
+//////////////////////////////////VARIABLE METHODS//////////////////////////////////
   public int getRange() {
     return range;
   }
@@ -28,22 +29,19 @@ public class Defender extends Player{
   public int getYCoord() {
     return yCoord;
   }
+////////////////////////////////////////////////////////////////////////////////////
   
+//////////////////////////////X AND Y COORDINATE SETTER////////////////////////////
   public void setXYCoord(String[][] grid,int damage,int range) {
     // Set x coordinate
     System.out.println("Enter X coordinate:");
     xCoord = coordInput.nextInt();
-  //while (xCoord < 0 || xCoord > 4) { // for 5x5
-    //System.out.println("Your X coordinate is Out of Range.\nPlease Enter a Value Between 0 and 4"); // for 5x5
     while (xCoord < 0 || xCoord > 9) {
       System.out.println("Your X coordinate is Out of Range.\nPlease Enter a Value Between 0 and 9");
       xCoord = coordInput.nextInt();
      }
-    // Set y coordinate
     System.out.println("Enter Y coordinate:");
     yCoord = coordInput.nextInt();
-  //while (yCoord < 0 || yCoord > 4) { // for 5x5
-    //System.out.println("Your Y coordinate is Out of Range.\nPlease Enter a Value Between 0 and 4"); // for 5x5
     while (yCoord < 0 || yCoord > 9) { // for 10x10
       System.out.println("Your Y coordinate is Out of Range.\nPlease Enter a Value Between 0 and 9"); // for 10x10
       yCoord = coordInput.nextInt();
@@ -52,15 +50,13 @@ public class Defender extends Player{
     while (containsPath(grid,xCoord,yCoord)) {
       System.out.println("Your coordinates contain a path\nPlease enter valid X and Y coordinates.\n");
       setXYCoord(grid,damage,range); // recursion
-    }
-    
+    }  
   }
   /**
    * method that places defender on grid.
    * @param grid
    * @param input
    */
-  
   public void placeDefense(String[][] grid,String name) {
     for (int r = 0; r < grid.length; r++) {
       for(int c = 0; c < grid[r].length; c++) {
@@ -69,7 +65,6 @@ public class Defender extends Player{
         }
       }
     }
-
   }
  
   /**
@@ -90,6 +85,5 @@ public class Defender extends Player{
     }
     return result;
   }
-
-
+///////////////////////////////////////////////////////////////////////////////////////////
 }

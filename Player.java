@@ -10,8 +10,8 @@ public class Player extends Wave{
   
 
   public Player() {
-    
   }
+  
   public Player(int aHealth, int initCurrency, String[][] grid){
     playerHealth = aHealth;
     money = initCurrency;
@@ -19,6 +19,11 @@ public class Player extends Wave{
     displayHealth();
   }
   
+/////////////////////////////VARIABLE METHODS///////////////////////////////////
+  /**
+   * Displays Player health as a string and as a health bar
+   * |------------|
+   */
   public void displayHealth() {
     StringBuilder r = new StringBuilder();
     for (int i = 0; i < playerHealth/10; i++) {
@@ -30,20 +35,15 @@ public class Player extends Wave{
   public int getHealth(){
     return playerHealth;
   }
-  /*
-  public void killEnemy(String[][] grid,Enemy anEnemy) {
-    if (anEnemy.getEnemyHealth() <= 0) {
-        System.out.println(anEnemy.getName()+" has been killed.");
-        removeEnemy(grid,anEnemy);
-    }
-  }
-  */
+
   public int getMoney(){
     return money;
   }
+
   public boolean isKilled() {
     return playerHealth == 0;
   }
+  
   public void takeDamage(int dealtDamage){
     this.playerHealth -= dealtDamage;
   }
@@ -71,9 +71,20 @@ public class Player extends Wave{
     money += moneyGained;
     System.out.println("You gained $"+moneyGained+"\nCASH: $"+money);
   }
+/////////////////////////////////////////////////////////////////////////////////////
 
-
-  //////////// MAIN ATTACK METHOD //////////
+///////////////////////////DEFENSE ATTACK METHOD////////////////////////////////////
+  /**
+   * 
+   * @param grid
+   * @param anEnemy
+   * @param damage
+   * @param xD
+   * @param yD
+   * @param eX
+   * @param eY
+   * @param range
+   */
   public void attack(String[][] grid,Enemy anEnemy,int damage,int xD, int yD,int eX, int eY,int range) {
     if (enemyIsWithinRange(xD,yD,eX,eY,range)){
       anEnemy.takeDamage(damage);
@@ -82,16 +93,34 @@ public class Player extends Wave{
       System.out.println("You have no defenders in range to attack "+anEnemy.getName());
     }
   }
+  /**
+   * 
+   * @param otherX
+   * @param otherY
+   * @param defenderX
+   * @param defenderY
+   * @return
+   */
   public int getDistance(int otherX, int otherY,int defenderX, int defenderY) {
     double deltaXsquared = Math.pow((double)(defenderX - otherX), 2.0);
     double deltaYsquared = Math.pow((double)(defenderY - otherY), 2.0);
     return (int)(Math.sqrt(deltaXsquared + deltaYsquared));
   }
-
+  /**
+   * 
+   * @param defenderX
+   * @param defenderY
+   * @param eX
+   * @param eY
+   * @param range
+   * @return
+   */
   public boolean enemyIsWithinRange(int defenderX, int defenderY,int eX, int eY,int range) {
     return this.getDistance(eX,eY,defenderX,defenderY) <= range;
   }
-
+///////////////////////////////////////////////////////////////////////////////////
+  
+////////////////////////MAIN TOWER GENERATION METHOD///////////////////////////////
   /**
   *method that generates tower
   *@param grid
@@ -120,8 +149,5 @@ public class Player extends Wave{
       input.nextLine();
     }
   }
-
-
-
-
+/////////////////////////////////////////////////////////////////////////////////
 }

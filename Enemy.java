@@ -13,13 +13,8 @@ public class Enemy extends Wave{
    int y; // Starting enemy y coordinate
    int startXIndex = 0;
    int startYIndex = 2;
-   ////// FOR 5X5 MAP 
-   //int endXIndex = 4; 
-   //int endYIndex = 2;
-   ///// FOR 10X10 MAP 
    int endXIndex = 9; 
    int endYIndex = 6;
-   /////////////////////////
    int dealtDamage; // Enemy damage inflicted on Player
    int enemyHealth;
    int moneyGained;
@@ -45,12 +40,11 @@ public class Enemy extends Wave{
      dealtDamage = damageDealt;
      
   }
+  //////////////GET METHODS //////////////////
   /**
    * getter method that returns the x coordinate of the specified enemy.
    * @return x: int
    */
-  
-////////////// GET METHODS //////////////////
   public String getName() {
     return name;
   }
@@ -160,11 +154,20 @@ public class Enemy extends Wave{
   public void takeDamage(int damage) {
     this.enemyHealth -= damage;
   }
+  /**
+   * displays Enemy health as a string
+   * 
+   */
   public void displayHealth() {
     if (this.getEnemyHealth() > 0) {
       System.out.println(this.getName()+" HEALTH: "+this.getEnemyHealth()+"HP");
     }
   }
+  /**
+   * checks if the first enemy of the multiple enemy wave is dead.
+   * @param grid
+   * @param aPlayer
+   */
   public void checkIfDead(String[][] grid,Player aPlayer) {
     if (this.isOnMap(grid)) {
       if(this.isDead()) {
@@ -174,6 +177,11 @@ public class Enemy extends Wave{
       }
     }
   }
+  /**
+   * checks if player is on map
+   * @param grid
+   * @return boolean
+   */
   public boolean isOnMap(String[][] grid) {
     boolean onMap = false;
     for(int r = 0; r < grid.length; r++) {
@@ -185,6 +193,10 @@ public class Enemy extends Wave{
     }
     return onMap;
   }
+  /**
+   * prompts to remove the enemy form the grid when enemy is dead.
+   * @param grid
+   */
   public void removeEnemy(String[][] grid) {
     for(int r = 0; r < grid.length; r++) {
       for(int c = 0; c < grid[r].length; c++) {
@@ -195,7 +207,7 @@ public class Enemy extends Wave{
     }
   }
   /**
-   * Checks if enemy is dead
+   * Checks if the LAST enemy of the wave is dead.
    * @return boolean
    */
   public boolean isDead() {

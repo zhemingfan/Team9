@@ -7,10 +7,10 @@ public class Player extends Wave{
   int archerPrice = 5;
   int sniperPrice = 10;
   Scanner input = new Scanner(System.in);
-  
+
 
   public Player() {
-    
+
   }
   public Player(int aHealth, int initCurrency, String[][] grid){
     playerHealth = aHealth;
@@ -18,7 +18,7 @@ public class Player extends Wave{
     defenderSelection(grid);
     displayHealth();
   }
-  
+
   public void displayHealth() {
     StringBuilder r = new StringBuilder();
     for (int i = 0; i < playerHealth/10; i++) {
@@ -26,7 +26,7 @@ public class Player extends Wave{
     }
     System.out.println("HEALTH: "+playerHealth+"HP |"+r+"|");
   }
-  
+
   public int getHealth(){
     return playerHealth;
   }
@@ -47,7 +47,7 @@ public class Player extends Wave{
   public void takeDamage(int dealtDamage){
     this.playerHealth -= dealtDamage;
   }
-  
+
   public boolean hasEnoughFunds(int price) {
     boolean sufficient = false;
     if (money >= price) {
@@ -74,6 +74,16 @@ public class Player extends Wave{
 
 
   //////////// MAIN ATTACK METHOD //////////
+  /** Controls the towers attacks
+  *   @param grid - The Map/playscreen
+  *   @param anEnemy - Targeted enemy
+  *   @param damage - the damage a tower can do
+  *   @param xD, yD - The x and y coordinates of the towers
+  *   @param eX, eY - the x and y coordinates of the target enemy
+  *   @param range - the attack range of the tower
+  *
+  *
+  */
   public void attack(String[][] grid,Enemy anEnemy,int damage,int xD, int yD,int eX, int eY,int range) {
     if (enemyIsWithinRange(xD,yD,eX,eY,range)){
       anEnemy.takeDamage(damage);
@@ -82,6 +92,11 @@ public class Player extends Wave{
       System.out.println("You have no defenders in range to attack "+anEnemy.getName());
     }
   }
+
+  /** Gets the distance from tower to enemy
+  *   @param otherX, otherY - the target coordinates
+  *   @param defenderX, defenderY - the reference tower's coordinates
+  */
   public int getDistance(int otherX, int otherY,int defenderX, int defenderY) {
     double deltaXsquared = Math.pow((double)(defenderX - otherX), 2.0);
     double deltaYsquared = Math.pow((double)(defenderY - otherY), 2.0);

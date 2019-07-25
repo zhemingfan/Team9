@@ -1,5 +1,5 @@
 # Team9
-The version for the first demo is found in the DEMO1-FINAL branch.
+The version for the first demo can be found in the DEMO1-FINAL branch.
 
 For the first demo, only the .java files are needed. (The .class can be created by compiling.)
 All files ending in .java are needed for the demo except for Point.java. This class is currently only planned to be implemented in the future but is not essential for the demo.

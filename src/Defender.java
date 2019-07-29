@@ -1,7 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
-//tower class
-//target it then attack it 
+
 public class Defender extends Point{
   
   private double range;
@@ -21,6 +20,14 @@ public class Defender extends Point{
   private boolean enemyIsWithinRange(Enemy anEnemy) {
     return this.getDistance(anEnemy) <= range;
   }
+  
+  /**
+   * Return the first enemy that is within range among all current enemies.
+   * !!!NEEDS IMPROVEMENT SO THAT THE DEFENDER DOESN"T CHANGE TARGET EVERY FRAME.
+   * 
+   * @param currentEnemies
+   * @return target: Enemy
+   */
   
   public Enemy findTarget(ArrayList<Enemy> currentEnemies) {
     Enemy target = null;

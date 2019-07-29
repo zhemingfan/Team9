@@ -30,6 +30,10 @@ public class Point{
   public void setYCoord(double yCoord) {
 	   this.yCoord = yCoord;
   }
+  /**
+   * Attaches the point object to its manifestation on the UI
+   * @param aUIobject
+   */
   
   public void setNode(Node aUIobject) {
 	  UIobject = aUIobject;
@@ -65,7 +69,11 @@ public class Point{
     double deltaYsquared = Math.pow((double)(yCoord - other.getYCoord()), 2.0);
     return Math.sqrt(deltaXsquared + deltaYsquared);
   }
-  
+  /**
+   * Check if one Point or its subclass has reached another Point.
+   * @param other: Point
+   * @return boolean
+   */
   public boolean hasReached(Point other) {
     return (this.getDistance(other) <= 0.0000001);
   }

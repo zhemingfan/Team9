@@ -60,8 +60,8 @@ public class GameInterface extends Application{
 		transition.play(); //Play the transition
 	}
 
-	
-	
+
+
 //The code inside this function is using the "Frogger" example made by AlmasB
 //Repo at: https://github.com/AlmasB/FXTutorials/blob/master/src/com/almasb/frogger/FroggerApp.java
 //Took the Win condition of his game and modified it to be a Lose condition
@@ -240,11 +240,11 @@ public class GameInterface extends Application{
 
 
 		 /////////////////////////// Making the button to do something ///////////////////////
-		  
+
 		 addTower1.setOnAction(new PlaceTowerHandler(addTower1, mainboard, foreground, map, playerObject));
-		 
-	
-		
+
+
+
 
 
 		/////////////////////////// Making the animation of enemy movement ///////////////////////
@@ -281,11 +281,11 @@ public class GameInterface extends Application{
 
 		//Making a bunch of test enemies
 		//This uses a new (potentially temporary) Enemy constructor. See Enemy class for more details
-		Enemy fastEnemyTest1 = new Enemy(5, 3, 1); //Construct enemy
+		Enemy fastEnemyTest1 = new Enemy(5, 8, 1); //Construct enemy
 		fastEnemyTest1.getRect().setFill(new ImagePattern(enemySpirit)); //Set image
 		foreground.getChildren().add(fastEnemyTest1.getRect()); //Makes image visible. Without this you wouldn't see it
 
-		Enemy fastEnemyTest2 = new Enemy(5, 5, 1);
+		Enemy fastEnemyTest2 = new Enemy(5, 9, 1);
 		fastEnemyTest2.getRect().setFill(new ImagePattern(enemySpirit));
 		foreground.getChildren().add(fastEnemyTest2.getRect());
 
@@ -307,7 +307,7 @@ public class GameInterface extends Application{
 
 
 		//A bunch of test Path runs
-		/*
+
 		runPath(testEnemy, path, playerObject);
 		runPath(fastEnemyTest1, path, playerObject);
 		runPath(slowEnemyTest1, path, playerObject);
@@ -315,7 +315,7 @@ public class GameInterface extends Application{
 		runPath(slowEnemyTest2, path, playerObject);
 		runPath(fastEnemyTest3, path, playerObject);
 		runPath(slowEnemyTest3, path, playerObject);
-		*/
+
 
 
         primaryStage.show();

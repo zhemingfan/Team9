@@ -1,7 +1,7 @@
 import javafx.scene.control.Label;
 
 public class Player extends Point{
-  private int playerHealth = 50;
+  private int playerHealth = 70;
   private int money = 50;
   Label healthLabel;
   Label moneyLabel;
@@ -72,7 +72,7 @@ public void setMoneyLabel(){
     money += moneyGained;
     System.out.println("You gained $"+moneyGained+"\nCASH: $"+money);
   }
-  
+
   public void attack(String[][] grid,Enemy anEnemy,int damage,int xD, int yD,int eX, int eY,int range) {
 	    if (enemyIsWithinRange(xD,yD,eX,eY,range)){
 	      anEnemy.takeDamage(damage);
@@ -81,7 +81,7 @@ public void setMoneyLabel(){
 	      System.out.println("You have no defenders in range to attack "+anEnemy.getName());
 	    }
 	  }
-  
+
   public int getDistance(int otherX, int otherY,int defenderX, int defenderY) {
 	    double deltaXsquared = Math.pow((double)(defenderX - otherX), 2.0);
 	    double deltaYsquared = Math.pow((double)(defenderY - otherY), 2.0);
@@ -99,7 +99,7 @@ public void setMoneyLabel(){
 	  public boolean enemyIsWithinRange(int defenderX, int defenderY,int eX, int eY,int range) {
 	    return this.getDistance(eX,eY,defenderX,defenderY) <= range;
 	  }
-	  
+
   public String toStringMoney() {
 	  return  " " + getMoney();
   }

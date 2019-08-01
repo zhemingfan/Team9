@@ -25,7 +25,7 @@ public class Enemy extends Point{
   public Enemy(double x, double y) {
      super(x, y);
      damage = 10;
-     health = 10;
+     health = 40;
      bounty = 10;
      speed = 10;
   }
@@ -67,6 +67,15 @@ public class Enemy extends Point{
   public boolean isKilled() {
     return health <= 0;
   }
+  
+  public void setBounty(int preferredBounty) {
+	  bounty = preferredBounty;
+  }
+  
+  public Point[] getPath() {
+	 return path;
+  }
+  
   /**
    * method that attacks Player if an Enemy has crossed
    * @param aMap
@@ -129,7 +138,7 @@ public class Enemy extends Point{
     return eHealth;
   }
 
-  /*
+/*
   public static void main(String[] args) {
 	  ArrayList<Enemy> list = new ArrayList<Enemy>(0);
 	  long start = new Date().getTime();
@@ -158,6 +167,6 @@ public class Enemy extends Point{
 		  }
 
 	  }
+	  */
   }
-  */
-}
+

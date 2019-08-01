@@ -1,15 +1,17 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class Defender extends Point{
+public class Tower extends Point{
   
-  private double range;
-  private int damage;
-  private int price;
+  protected double range;
+  protected int damage;
+  protected int price;
 
 
-  public Defender(double x, double y) {
+  public Tower(double x, double y) {
     super(x,y);
+    damage = 5;
+    range = 100;
     
   }
   
@@ -37,7 +39,7 @@ public class Defender extends Point{
         break;
       }
     };
-    return target;
+    return target; //returning an Enemy which uses Attack 
   }
   
   public void attack(Enemy anEnemy) {

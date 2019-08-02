@@ -86,6 +86,7 @@ public class MainGameTextBased {
    */
   public void checkConditions(Player aPlayer) {
     if (aPlayer.isKilled()) {
+      System.out.println("YOU ARE DEAD. GAME OVER!");
       waveActive = false;
     }
     if (aliveList.size() == 0) {
@@ -134,7 +135,7 @@ public class MainGameTextBased {
       towerSelection(aPlayer,grid);
     }
     else if (choice.equals("M")) {
-      menu();
+      menu(aPlayer);
     }
   }
   /** Remove enemies from enemyList and aliveList at the end of a wave.
@@ -160,11 +161,12 @@ public class MainGameTextBased {
   
   /** Is called in promptNextMove method when (M)enu option is chosen.
    */
-  public void menu() {
+  public void menu(Player aPlayer) {
     if (waveActive) {
       System.out.println("\n\nMain Menu\n\nSelect:\nResume (R)");
       String choice = input.nextLine().toUpperCase();
       if (choice.equals("R")){
+        aPlayer.takeDamage(aPlayer);
         waveActive = true;
       }
     }
@@ -242,8 +244,8 @@ public class MainGameTextBased {
       counter++;
     }
     removeFromList();
-    System.out.println("\nE N D  O F  W A V E  "+wave+"\n\n");
     if(!aPlayer.isKilled()) {
+          System.out.println("\nE N D  O F  W A V E  "+wave+"\n\n");
       System.out.println("Proceed to Wave "+(wave+1));          
     }
     else {

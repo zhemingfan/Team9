@@ -34,7 +34,6 @@ public class Game{
       game.enemyWave(player,grid,coords,gameMap,gameon,i);
       i++;
       if (player.isKilled()) {
-        System.out.println("YOU ARE DEAD. GAME OVER!");
         System.out.println("Want to play again?\n(Y) or (N)");
         if (input.nextLine().toUpperCase().equals("N")) {
           gameon = false;

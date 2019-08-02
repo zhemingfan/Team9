@@ -29,6 +29,9 @@ public class MainGameTextBased {
   public void createEnemyList(int wave) {
     int enemyCount = wave*10;
     int i = 0;
+    /*
+     * In a while loop, enemies will be randomly selected and added to the list of enemies generated.
+     */
     while (i < enemyCount) {
       int n = rand.nextInt(3);
       if (n == 0) {
@@ -50,7 +53,13 @@ public class MainGameTextBased {
   public void spawnEnemies(String[][] grid, int counter) {
     int interval = rand.nextInt(6)+2;     
     for (Enemy anEnemy : enemyList) {
+      /*
+       * If the modulus of counter divided by the random number (between 2-6(exclusive)) is zero.
+       */
       if (counter % interval == 0) {
+        /*
+         * Spawn enemy every random interval.
+         */
         anEnemy.spawnEnemyTextBased(grid);
         enemyList.remove(anEnemy);
         aliveList.add(anEnemy);
@@ -64,6 +73,9 @@ public class MainGameTextBased {
    * @param coords the list of checkpoints for the enemies.
    */
   public void moveEnemies(String[][]grid, Point[] coords) {
+    /*
+     * for every enemy in the list of enemies that are alive, enemy will move.
+     */
     for (Enemy anEnemy : aliveList) {
       anEnemy.attachPathTextBased(coords);
       anEnemy.advanceTextBased();
@@ -75,6 +87,9 @@ public class MainGameTextBased {
    * and attacks the enemies that are on the map.
    */
   public void attackEnemies() {
+    /*
+     * for every tower in the list of towers, attack the first enemy that is within range.
+     */
     for (Tower aTower : towerList) {
       aTower.attack(aTower.findTarget(aliveList));        
     }
@@ -85,10 +100,18 @@ public class MainGameTextBased {
    * @param aPlayer Player Class object
    */
   public void checkConditions(Player aPlayer) {
+    /*
+     * If player is killed, round will end. Since health is 0, thus the game will end.
+     */
     if (aPlayer.isKilled()) {
       System.out.println("YOU ARE DEAD. GAME OVER!");
       waveActive = false;
     }
+    /*
+     * If the both lists of enemies that are still waiting to be spawned and the list of enemies
+     * that are alive are zero. This means either all enemies have crossed and/or have been killed.
+     * Thus ending the round.
+     */
     if (aliveList.size() == 0) {
       if (enemyList.size() == 0) {
         waveActive = false;
@@ -101,6 +124,17 @@ public class MainGameTextBased {
    * @param lastCheckIndex last checkpoint of the map.
    */
   public void enemyAttackPlayer(Player aPlayer, String[][] grid, Point lastCheckIndex) {
+    /*
+     * For every enemy that is alive,
+     * 
+     * If they have reached the end point of the map,
+     * that enemy will attack the player. Therefore enemy will exit the map, thus be removed
+     * from the list of enemies that are alive. 
+     * 
+     * Else if the enemy is killed, the player
+     * will gain money. The enemy will be removed from the map, thus be removed from the
+     * list of enemies that are alive.
+     */
     for (Enemy anEnemy : aliveList) {
       if (anEnemy.hasReached(lastCheckIndex)) {
         anEnemy.attackTextBased(aPlayer);
@@ -124,6 +158,9 @@ public class MainGameTextBased {
    * @param grid gridMap from Map Class
    */
   public void promptNextMove(Player aPlayer, String[][] grid) {
+    /*
+     * If wave is active, select from the choices.
+     */
     if (waveActive) {
       System.out.println("\n(P)lace Tower\n(M)enu\n(Press Enter) Skip");        
     }
@@ -141,6 +178,9 @@ public class MainGameTextBased {
   /** Remove enemies from enemyList and aliveList at the end of a wave.
    */
   public void removeFromList() {
+    /*
+     * For every enemy in both lists, remove the enemies.
+     */
     for (int i = 0; i < enemyList.size(); i++) {
       enemyList.remove(i);
     }
@@ -163,11 +203,14 @@ public class MainGameTextBased {
    */
   public void menu(Player aPlayer) {
     if (waveActive) {
-      System.out.println("\n\nMain Menu\n\nSelect:\nResume (R)");
+      System.out.println("\n\nMain Menu\n\nSelect:\nResume (R)\nQuit (Q)");
       String choice = input.nextLine().toUpperCase();
       if (choice.equals("R")){
-        aPlayer.takeDamage(aPlayer);
         waveActive = true;
+      }
+      if (choice.equals("Q")) {
+        aPlayer.takeDamage(aPlayer.getHealth());
+        waveActive = false;
       }
     }
   }
@@ -178,9 +221,9 @@ public class MainGameTextBased {
    * @param aMap Map Class Object
    */
   public void showHUD(String[][] grid, Player aPlayer, Map aMap) {
-    aMap.display();
     displayEnemyHealth(grid);
     aPlayer.displayHealth();
+    aMap.display();
   }
   
   /** Is called by promptNextMove method when (P)lace Tower is selected.
@@ -225,27 +268,54 @@ public class MainGameTextBased {
    */
   public void enemyWave(Player aPlayer, String[][]grid,Point[] coords,Map aMap,boolean gameon, int wave) {
     int counter = 0;
-    createEnemyList(wave);
-    System.out.println("\n\nW A V E  "+wave+"\n\n");
+    createEnemyList(wave);                            // Line 29
+    System.out.println("\n\n         W A V E  "+wave+"\n\n");
+    System.out.println("        Press Enter");
+    input.nextLine();
+    showHUD(grid,aPlayer,aMap);                       // Line 183
     System.out.println("Press Enter");
     input.nextLine();
-    showHUD(grid,aPlayer,aMap);  
     System.out.println("\n\nWAVE COMMENCING\n\n");
     waveActive = true;
-    Point lastCheckIndex = coords[coords.length-1]; 
-    while (waveActive) {    
-      spawnEnemies(grid,counter);
-      moveEnemies(grid,coords);
-      attackEnemies();
-      showHUD(grid,aPlayer,aMap);
-      checkConditions(aPlayer);
-      enemyAttackPlayer(aPlayer,grid,lastCheckIndex);
-      promptNextMove(aPlayer,grid);
+    Point lastCheckIndex = coords[coords.length-1];
+    
+    while (waveActive) {
+      /*
+       * Spawn Enemy
+       */
+      spawnEnemies(grid,counter);                     // Line 50
+      /*
+       * Move Enemy
+       */
+      moveEnemies(grid,coords);                       // Line 60
+      /*
+       * Tower will attack Enemies
+       */
+      attackEnemies();                                // Line 77
+      /*
+       * Heads Up Display
+       */
+      showHUD(grid,aPlayer,aMap);                     // Line 183
+      /*
+       * Check conditions on Map
+       */
+      checkConditions(aPlayer);                       // Line 87
+      /*
+       * Enemy will attack player if reached end point
+       */
+      enemyAttackPlayer(aPlayer,grid,lastCheckIndex); // Line 103
+      /*
+       * Prompt Player for next move
+       */
+      promptNextMove(aPlayer,grid);                   // Line 126
       counter++;
     }
-    removeFromList();
+    /*
+     * Remove enemies from enemyList and aliveList
+     */
+    removeFromList();                                 // Line 143
     if(!aPlayer.isKilled()) {
-          System.out.println("\nE N D  O F  W A V E  "+wave+"\n\n");
+      System.out.println("\nE N D  O F  W A V E  "+wave+"\n\n");
       System.out.println("Proceed to Wave "+(wave+1));          
     }
     else {

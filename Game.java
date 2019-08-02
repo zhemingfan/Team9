@@ -44,7 +44,7 @@ public class Game{
     
     
     ////// Generate Enemy Wave ///////
-    MainGameTextBased game = new MainGameTextBased();   
+    WaveTextBased game = new WaveTextBased();   
     int i = 1; // Wave Count
     boolean gameon = true; // set game to true
 

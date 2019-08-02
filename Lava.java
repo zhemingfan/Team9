@@ -11,7 +11,7 @@ public class Lava extends Enemy{
     super(1,0);
     health = 10;
     damage = 10;
-    speed = 1;
+    speed = 1;    // Do not change this value
     bounty = 10;
     name = "L"+(i+1);
   }
@@ -21,7 +21,7 @@ public class Lava extends Enemy{
    */
   @Override
   public void spawnEnemyTextBased(String[][] grid) {
-    System.out.println("LAVA enemy "+getName()+" has appeared");
+    System.out.println("LAVA enemy "+getName()+" has appeared\n");
     super.spawnEnemyTextBased(grid);
   }
   

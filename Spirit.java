@@ -11,7 +11,7 @@ public class Spirit extends Enemy{
     super(1,0);
     health = 10;
     damage = 10;
-    speed = 1;
+    speed = 1;   // Do not change
     bounty = 10;
     name = "S"+(i+1);
   }
@@ -21,7 +21,7 @@ public class Spirit extends Enemy{
    */
   @Override
   public void spawnEnemyTextBased(String[][] grid) {
-    System.out.println("SPIRIT enemy "+getName()+" has appeared");
+    System.out.println("SPIRIT enemy "+getName()+" has appeared\n");
     super.spawnEnemyTextBased(grid);
   }
   

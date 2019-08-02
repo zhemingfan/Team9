@@ -8,7 +8,7 @@ import java.util.Random;
  * @author Team 9
  *
  */
-public class MainGameTextBased {
+public class WaveTextBased {
   boolean waveActive = true; //boolean operator that determines if waveActive is on.
   Scanner input = new Scanner(System.in); //scanner instance
   private ArrayList<Enemy> enemyList = new ArrayList<Enemy>(); //list of enemies generated
@@ -19,7 +19,7 @@ public class MainGameTextBased {
   /** Initiates main game.
    * 
    */
-  public MainGameTextBased() { 
+  public WaveTextBased() { 
     
   }
   

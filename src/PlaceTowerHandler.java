@@ -1,117 +1,169 @@
-import java.nio.file.Paths;
-
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
-
 public class PlaceTowerHandler extends GameInterface implements EventHandler<ActionEvent>{
+	private static ArrayList<Button> buttonInstances = new  ArrayList<Button>();
+	private static ArrayList<PlaceTowerHandler> handlers = new ArrayList<PlaceTowerHandler>();
+	
 	private Button button = new Button();
 	private StackPane GUIactionArea = new StackPane();
 	private Pane GUIforeground = new Pane();
-	private Image image;
-	private Player player;
+	private Tower toBeMade = new Tower();
+	private GridPane inputGrid = new GridPane();
 	
-	Image defenderWaterCannnon = new Image("/img/Defender_WaterCannon.PNG");
-  	Image defenderWaterSprite = new Image("/img/Defender_WaterSprite.PNG");
-  	Image defenderWind = new Image("/img/Defender_Wind.PNG");
-	Image grassTile = new Image("/img/GrassTile.PNG");
-  	
-  	
-	public PlaceTowerHandler(Button aB, StackPane aG, Pane aSP, Image image, Player player1) {
+	private boolean playerIsPlacing = false;
+	
+	public PlaceTowerHandler(Button aB, StackPane aG, Pane aSP, Tower toBeMade) {
 		button = aB;
 		GUIactionArea = aG;
 		GUIforeground = aSP;
-		this.image = image;
-		this.player = player1;
+		this.toBeMade = toBeMade;
+		
+		buttonInstances.add(button);
+		handlers.add(this);
 	}
+	
+	public PlaceTowerHandler() {}
 	
 	@Override
 	public void handle(ActionEvent event) {
-		GridPane sudo = new GridPane();
-		sudo.setPrefSize(GameInterface.BoardWIDTH, GameInterface.BoardHEIGHT);
-		//sudo.setOpacity(0);
+		playerIsPlacing = true;
+		toggleAllButtons(true);
+		    
+		//Set Cursor Image to the Desired Defender
+		if (playerIsPlacing) {
+			Image cursorImg = defenderWaterSprite;
+			if (toBeMade instanceof TowerIce) {
+				cursorImg = defenderIce;
+			}
+			if (toBeMade instanceof TowerWater) {
+				cursorImg = defenderWaterSprite;
+			}
+			if (toBeMade instanceof TowerWind) {
+				cursorImg = defenderWind;
+			}
+			inputGrid.setCursor( new ImageCursor(cursorImg, 
+					cursorImg.getWidth()/2, cursorImg.getHeight()/2) );
+			
+			makeInputGrid();
+			addEventListenerToInputGrid();
+			GUIactionArea.getChildren().addAll(inputGrid);
+		} else {
+			this.removeInputGrid();
+		}
 		
-		GUIactionArea.getChildren().addAll(sudo);
+	}
+	
+	public void makeInputGrid() {
+		inputGrid.setPrefSize(GameInterface.BoardWIDTH, GameInterface.BoardHEIGHT);
+		
 		
 		Map map = GameInterface.GAME.getMap();
 		String[][] grid = map.generateGrid();
-		
 		
 		for(int r = 0; r < 10; r++) {
 			for(int c = 0; c < 10; c++) {
 				Rectangle rect = new Rectangle(50,50);
 				if (grid[r][c].equals("-") ) {
 					rect.setFill(Color.BLACK);
-					rect.setOpacity(0.5);
+					rect.setOpacity(0.25);
 				} else {
 					rect.setOpacity(0);
 				};
-				sudo.add(rect, c, r);
+				inputGrid.add(rect, c, r);
 		      }
-		    }; 
-		
-		for(Node each: sudo.getChildren()) {
-			each.addEventFilter(MouseEvent.MOUSE_CLICKED, 
-					new EventHandler<MouseEvent>() {
-						public void handle(final MouseEvent me) {
-							int row = sudo.getRowIndex(each);
-							int column = sudo.getColumnIndex(each);
-							
-							/*
-							Media extinguish = new Media(new File("extinguisher.mp3").toUri().toString());
-					        MediaPlayer mediaPlayer = new MediaPlayer(extinguish);
-					        
-					        
-							mediaPlayer.setVolume(0.5);
-							*/
-							if (GAME.getMap().canPlaceDefense(row, column)) {
-								
-								GAME.getMap().updateDefender(row, column);
-								Tower aTower = new Tower(column*GameInterface.OFFSETX, row*GameInterface.OFFSETY);
-								GAME.addDefender(aTower);
-								
-								Rectangle rect = new Rectangle(GameInterface.OFFSETX, GameInterface.OFFSETY);
-								rect.setFill(new ImagePattern(image) );
-								aTower.setNode(rect);
-								GUIforeground.getChildren().add(aTower.getNode());
-								aTower.getNode().relocate(aTower.getXCoord(), aTower.getYCoord());
-								player.buyDefense(10);
-								player.setMoneyLabel();
-								//mediaPlayer.play(); //music for later
-
-								GUIactionArea.getChildren().remove(sudo);
-								
-								if (player.enoughFunds(10) == false) {
-									button.setDisable(true);
-									rect.setFill(new ImagePattern(grassTile));
-									player.setMoney(0);
-									//System.out.println("" + player.getMoney()); does set it to 0
-									player.setMoneyLabel();
-
-								}
-								
-							}
-							
-						}
-
-						
-					}
-				);
+		 };
+	}
+	
+	public void addEventListenerToInputGrid() {
+		for(Node each: inputGrid.getChildren()) {
 			
-		};
-		
+			each.addEventFilter(MouseEvent.MOUSE_CLICKED, 
+				
+				new EventHandler<MouseEvent>() {
+					
+				public void handle(final MouseEvent me) {
+					int row = inputGrid.getRowIndex(each);
+					int column = inputGrid.getColumnIndex(each);
+					
+					if (GAME.canPurchaseandPlaceTower(toBeMade, row, column) ) {
+						// Add and update Player GUI
+						GAME.getMap().updateDefender(row, column);
+						Tower aDefender = new Tower();
+							
+						if (toBeMade instanceof TowerIce) {
+							aDefender = new TowerIce(column*GameInterface.OFFSETX, row*GameInterface.OFFSETY);
+						}
+						if (toBeMade instanceof TowerWater) {
+							aDefender = new TowerWater(column*GameInterface.OFFSETX, row*GameInterface.OFFSETY);
+						}
+						if (toBeMade instanceof TowerWind) {
+							aDefender = new TowerWind(column*GameInterface.OFFSETX, row*GameInterface.OFFSETY);
+						}
+							
+						GAME.addDefender(aDefender);
+
+						// Add and update Player GUI
+						playerObject.buyDefense(aDefender.getPrice());
+						paintTowerOnGUI(aDefender, GUIforeground); //from GameInterface
+						playerObject.moneyLabel.setText(playerObject.toStringMoney()); 
+						
+						// Clean up
+						GUIactionArea.getChildren().remove(inputGrid);
+						toggleAllButtons(false);
+					}
+				}
+			}
+			);
+			
+		};	
 	}
 
+	public boolean playerIsPlacingTower() {
+		return this.playerIsPlacing;
+	}
+	
+	public void setPlayerNotPlacing() {
+		this.playerIsPlacing = false;
+	}
+	
+	public void removeInputGrid() {
+		if (this.GUIactionArea.getChildren().contains(inputGrid)) {
+			this.GUIactionArea.getChildren().remove(inputGrid);
+		}
+	}
+	
+	public ArrayList<PlaceTowerHandler> getAllHandlers() {
+		return this.handlers;
+	}
+	
+	public boolean AllButtonsDisabled() {
+		boolean state = true;
+		for (Button aButton: buttonInstances) {
+			if (!aButton.isDisabled() ) {
+				state = false;
+			}
+		}
+		return state;
+	}
+	
+	public void toggleAllButtons(boolean bool) {
+		for (Button aButton: buttonInstances) {
+			aButton.setDisable(bool);
+
+		}
+	}
+	
 }

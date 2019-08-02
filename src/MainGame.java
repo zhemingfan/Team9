@@ -1,23 +1,33 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 import javafx.scene.Node;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
-public class MainGame extends GameInterface {
+public class MainGame {
 	private static final double OFFSETX = 50, OFFSETY = 50;
 	
 	private Map map = new Map();
-	private Player player = new Player(); // has to be new player
+	private Player player = new Player();
 	private ArrayList<Tower> towerList = new ArrayList<Tower>();
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 	private Point[] checkPoints = map.getCheckPoints(OFFSETX, OFFSETY);
 	
+	private int waveCounter = 1;
+	private ArrayList<Enemy> waveList = new ArrayList<Enemy>();
+	
+	public Player getPlayer() {
+		return player;
+	}
 	
 	public Map getMap() {
 		return map;
 	}
 	
+	public int getWaveNumber() {
+		return waveCounter;
+	}
 	public ArrayList<Tower> getTowerList(){
 		return towerList;}
 	
@@ -25,18 +35,46 @@ public class MainGame extends GameInterface {
 		return enemyList;
 	}
 	
-	/**
+	public boolean canPurchaseandPlaceTower(Tower aTower, int row, int column){
+		return player.enoughFunds(aTower.getPrice()) && map.canPlaceDefense(row, column);
+	}
+	
+	/** Updates enemyList of randomly chosen enemies from Fire Class, Lava Class, or Spirit.
+	   * @param wave Wave Number
+	   */
+	public void createEnemyList() {
+	    int enemyCount = waveCounter*10;
+	    int i = 0;
+	    Point start = map.getStartPoint(OFFSETX, OFFSETY);
+		Enemy anEnemy = new Enemy(start.getXCoord(), start.getYCoord());
+	    while (i < enemyCount) {
+	      int n = new Random().nextInt(3);
+	      if (n == 0) {
+	    	  anEnemy = new Fire(start.getXCoord(), start.getYCoord());
+	      }
+	      else if (n == 1) {
+	    	  anEnemy = new Lava(start.getXCoord(), start.getYCoord());
+	      }
+	      else {
+	    	  anEnemy = new Spirit(start.getXCoord(), start.getYCoord());
+	      }
+	      i++;
+	      waveList.add(anEnemy);
+	    }
+  	}
+	/*
 	 * Generate a generic enemy and add it to the enemyList
 	 */
 	public Enemy spawnEnemies() {
-		Point start = map.getStartPoint(OFFSETX, OFFSETY);
-		Enemy anEnemy = new Enemy(start.getXCoord(), start.getYCoord());
-		try {
-			anEnemy.attachPath(map.getCheckPoints(OFFSETX, OFFSETY));
-			enemyList.add(anEnemy);
-		} catch (NullPointerException npr) {
-			System.out.println(anEnemy.toString());
+		if (waveList.size() == 0) {
+			waveCounter += 1;
+			this.createEnemyList();
+			System.out.println(waveCounter);
 		}
+		Enemy anEnemy = this.waveList.get(waveList.size() - 1);
+		anEnemy.attachPath(map.getCheckPoints(OFFSETX, OFFSETY));
+		enemyList.add(anEnemy);
+		waveList.remove(anEnemy);
 		return anEnemy;
 	}
 	/**
@@ -53,17 +91,13 @@ public class MainGame extends GameInterface {
 	/**
 	 * Remove all enemies that have been killed
 	 */
-	public ArrayList<Enemy> removeEnemies() {
+	public ArrayList<Enemy> removeKilledEnemies() {
 		ArrayList<Enemy> toBeRemoved = new ArrayList<Enemy>() ;
 		for (int i = 0; i < enemyList.size(); i++) {
 			Enemy anEnemy = enemyList.get(i);
 			if (anEnemy.isKilled() ) {
 				toBeRemoved.add(anEnemy);
-			
-			}
-			if (anEnemy.hasReached(map.getEndPoint(OFFSETX, OFFSETY)) ) {
-				anEnemy.attack(player);
-				toBeRemoved.add(anEnemy);
+				this.getPlayer().gainMoney(anEnemy.getBounty());
 			}
 			
 		};
@@ -75,8 +109,8 @@ public class MainGame extends GameInterface {
 	/**
 	 * Check if any enemies has reached the end. Have the enemies deal damage to the Player. Remove these enemies.
 	 */
-	/*
-	public void EnemiesReachedEnd() {
+	
+	public ArrayList<Enemy> removeEnemiesReachedEnd() {
 		ArrayList<Enemy> toBeRemoved = new ArrayList<Enemy>() ;
 		for (int i = 0; i < enemyList.size(); i++) {
 			if (enemyList.get(i).hasReached(map.getEndPoint(OFFSETX, OFFSETY)) ) {
@@ -85,8 +119,9 @@ public class MainGame extends GameInterface {
 			}
 		};
 		enemyList.removeAll(toBeRemoved);
+		return toBeRemoved;
 	}
-	*/
+	
 	public void addDefender(Tower aDefense) {
 		towerList.add(aDefense);
 	}

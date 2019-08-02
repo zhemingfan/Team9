@@ -1,11 +1,12 @@
 import javafx.scene.Node;
 import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 
 public class Point{
   private double xCoord;
   private double yCoord;
   private Image sprite;
-  private Node UIobject;
+  private VBox UIobject;
   public Point() {
 	  
   }
@@ -35,11 +36,11 @@ public class Point{
    * @param aUIobject
    */
   
-  public void setNode(Node aUIobject) {
+  public void setNode(VBox aUIobject) {
 	  UIobject = aUIobject;
   }
   
-  public Node getNode() {
+  public VBox getNode() {
 	  return UIobject;
   }
   

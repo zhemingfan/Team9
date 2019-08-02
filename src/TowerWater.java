@@ -7,4 +7,10 @@ public class TowerWater extends Tower{
 		this.damage = 10;
 		this.price = 10;
 	}
+
+	public TowerWater() {
+		this.range = 50;
+		this.damage = 10;
+		this.price = 10;
+	}
 }

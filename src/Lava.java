@@ -1,8 +1,9 @@
 
 public class Lava extends Enemy{
-  
+	
   public Lava(double x, double y) {
     super(x,y);
+    maxHealth = 10;
     health = 10;
     damage = 10;
     speed = 5.0;

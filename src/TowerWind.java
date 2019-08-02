@@ -7,4 +7,8 @@ public class TowerWind extends Tower{
 		this.price = 15;
 	}
 
+	public TowerWind() {
+		this.range = 75;
+		this.price = 15;
+	}
 }

@@ -7,10 +7,13 @@ public class Tower extends Point{
   protected int damage;
   protected int price;
 
-
+  public Tower() {
+	  
+  }
+  
   public Tower(double x, double y) {
     super(x,y);
-    damage = 5;
+    damage = 0;
     range = 100;
     
   }
@@ -39,7 +42,7 @@ public class Tower extends Point{
         break;
       }
     };
-    return target; //returning an Enemy which uses Attack 
+    return target;
   }
   
   public void attack(Enemy anEnemy) {

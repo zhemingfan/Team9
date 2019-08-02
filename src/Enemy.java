@@ -12,6 +12,7 @@ public class Enemy extends Point{
   private int checkPointIndex = 0;
   private Rectangle enemyRect = new Rectangle(50, 50);
   private String name;
+  protected int maxHealth;
 
   /**
    * Constructor
@@ -24,6 +25,7 @@ public class Enemy extends Point{
 //This constructor is currently unused
   public Enemy(double x, double y) {
      super(x, y);
+     this.maxHealth = 10;
      damage = 10;
      health = 40;
      bounty = 10;
@@ -67,15 +69,6 @@ public class Enemy extends Point{
   public boolean isKilled() {
     return health <= 0;
   }
-  
-  public void setBounty(int preferredBounty) {
-	  bounty = preferredBounty;
-  }
-  
-  public Point[] getPath() {
-	 return path;
-  }
-  
   /**
    * method that attacks Player if an Enemy has crossed
    * @param aMap
@@ -133,10 +126,20 @@ public class Enemy extends Point{
 	  }
   }
 
+  public double getMaxHealth() {
+	  return maxHealth;
+  }
+  
+  public void setMaxHealth(int value) {
+	  this.maxHealth = value;
+  }
+  
   public String healthToString(Enemy anEnemy) {
     String eHealth = Integer.toString(anEnemy.getEnemyHealth());
     return eHealth;
   }
+  
+  
 
 /*
   public static void main(String[] args) {

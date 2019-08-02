@@ -8,4 +8,8 @@ public class TowerIce extends Tower{
 		this.price = 20;
 	}
 
+	public TowerIce() {
+		// TODO Auto-generated constructor stub
+	}
+
 }

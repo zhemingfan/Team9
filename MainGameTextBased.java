@@ -196,12 +196,12 @@ public class MainGameTextBased {
                      + "\n\nEnter (I) for Ice Tower ($10)"
                      + "\n\nor press enter.");
     String choice = input.nextLine().toUpperCase();
-    if(choice.equals("W") && aPlayer.hasEnoughFunds(10)) {
+    if(choice.equals("W") && aPlayer.hasEnoughFunds(5)) {
       System.out.println("You bought a Water Tower!\n$"+aPlayer.getMoney()+" - $"+5);
-      aPlayer.buyTower(10);
+      aPlayer.buyTower(5);
       towerList.add(new TowerWater(grid));
     }
-    else if (choice.equals("I") && aPlayer.hasEnoughFunds(5)) {
+    else if (choice.equals("I") && aPlayer.hasEnoughFunds(10)) {
       System.out.println("You bought an Ice Tower!\n$"+aPlayer.getMoney()+" - $"+10);
       aPlayer.buyTower(10);
       towerList.add(new TowerIce(grid));

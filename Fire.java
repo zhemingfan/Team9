@@ -21,7 +21,7 @@ public class Fire extends Enemy{
    */
   @Override
   public void spawnEnemyTextBased(String[][] grid) {
-    System.out.println("FIRE enemy has appeared");
+    System.out.println("FIRE enemy "+getName()+" has appeared");
     super.spawnEnemyTextBased(grid);
   }
   

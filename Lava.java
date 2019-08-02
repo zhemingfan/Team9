@@ -21,7 +21,7 @@ public class Lava extends Enemy{
    */
   @Override
   public void spawnEnemyTextBased(String[][] grid) {
-    System.out.println("LAVA enemy has appeared");
+    System.out.println("LAVA enemy "+getName()+" has appeared");
     super.spawnEnemyTextBased(grid);
   }
   

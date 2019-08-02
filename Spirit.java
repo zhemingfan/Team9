@@ -21,7 +21,7 @@ public class Spirit extends Enemy{
    */
   @Override
   public void spawnEnemyTextBased(String[][] grid) {
-    System.out.println("SPIRIT enemy has appeared");
+    System.out.println("SPIRIT enemy "+getName()+" has appeared");
     super.spawnEnemyTextBased(grid);
   }
   

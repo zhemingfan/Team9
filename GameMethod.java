@@ -1,10 +1,14 @@
 import java.util.Scanner;
 /** TEXT BASED VERSION
- * MAIN GAME METHOD
+ * GAME METHOD
  * @author Team 9
  */
-public class Game{
-  public static void main(String[] args) {
+public class GameMethod {
+  /**
+   * This class incorporates WaveTextBased class that implements all the logic classes
+   * and is called in this method.
+   */
+  public void fireForceNo9() {
     Scanner input = new Scanner(System.in); 
     ////////////Opening Title/////////
     System.out.println("\n\n\n"+
@@ -19,7 +23,7 @@ public class Game{
         "     | .` | (_) |  \\_, /    \n" + 
         "     |_|\\_|\\___(_)  /_/    \n\n"+
         "     text based edition\n\n"); 
-    //////////// Press Enter//////////
+    //////////// Press Enter //////////
     System.out.println("        Press Enter");
     input.nextLine();
     System.out.println("        HOW TO PLAY:\n\n"
@@ -47,7 +51,7 @@ public class Game{
     WaveTextBased game = new WaveTextBased();   
     int i = 1; // Wave Count
     boolean gameon = true; // set game to true
-
+  
     
     ////////////Generate Map//////////
     Map gameMap = new Map();
@@ -70,7 +74,7 @@ public class Game{
         }
         else {
           gameon = true;
-          main(args); //call main method recursively
+          fireForceNo9(); //call main game method recursively
         }
       }
     }

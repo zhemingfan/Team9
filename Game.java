@@ -7,10 +7,40 @@ public class Game{
   public static void main(String[] args) {
     Scanner input = new Scanner(System.in); 
     ////////////Opening Title/////////
-    System.out.println("\n\n\nF I R E  F O R C E  NO. 9\n\n\n"); 
+    System.out.println("\n\n\n"+
+        "       ___ ___ ___ ___       \n" + 
+        "      | __|_ _| _ \\ __|     \n" + 
+        "      | _| | ||   / _|       \n" + 
+        "    __|_|_|___|_|_\\___|__   \n" + 
+        "   | __/ _ \\| _ \\/ __| __| \n" + 
+        "   | _| (_) |   / (__| _|    \n" + 
+        "   |_|_\\___/|_|_\\\\___|___|\n" + 
+        "     | \\| |/ _ \\   / _ \\  \n" + 
+        "     | .` | (_) |  \\_, /    \n" + 
+        "     |_|\\_|\\___(_)  /_/    \n\n"+
+        "     text based edition\n\n"); 
     //////////// Press Enter//////////
-    System.out.println("     Press Enter"); 
+    System.out.println("        Press Enter");
     input.nextLine();
+    System.out.println("        HOW TO PLAY:\n\n"
+        + "  You are Fire Force No. 9,\n"
+        + " the heroic firefighting unit\n"
+        + " of Foo-Ville responsible of\n"
+        + "   extinguishing the nasty\n"
+        + "fire, lava and spirit enemies\n "
+        + "sent from the malicious fire\n"
+        + "       demon, Snarol.\n\n"
+        + "       (Press Enter)\n");
+    input.nextLine();
+    System.out.println(""
+        + " You must protect the town from\n"
+        + "  a scortching frenzy by using\n "
+        + "  everything at your defense:\n "
+        + "     water and ice towers.\n\n "
+        + "  Foo-Ville Depends on you.\n\n"
+        + "       (Press Enter)\n\n");
+    input.nextLine();
+    
     
     
     ////// Generate Enemy Wave ///////

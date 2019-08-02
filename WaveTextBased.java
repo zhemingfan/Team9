@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class WaveTextBased {
   boolean waveActive = true; //boolean operator that determines if waveActive is on.
-  Scanner input = new Scanner(System.in); //scanner instance
+  private static Scanner input = new Scanner(System.in); //scanner instance
   private ArrayList<Enemy> enemyList = new ArrayList<Enemy>(); //list of enemies generated
   private ArrayList<Enemy> aliveList = new ArrayList<Enemy>(); //list of enemies alive/on map
   private ArrayList<Tower> towerList = new ArrayList<Tower>(); //list of towers

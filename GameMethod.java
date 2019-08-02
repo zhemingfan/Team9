@@ -4,12 +4,12 @@ import java.util.Scanner;
  * @author Team 9
  */
 public class GameMethod {
+    private static Scanner input = new Scanner(System.in); 
   /**
    * This class incorporates WaveTextBased class that implements all the logic classes
    * and is called in this method.
    */
   public void fireForceNo9() {
-    Scanner input = new Scanner(System.in); 
     ////////////Opening Title/////////
     System.out.println("\n\n\n"+
         "       ___ ___ ___ ___       \n" + 
@@ -78,6 +78,5 @@ public class GameMethod {
         }
       }
     }
-    input.close();
   }
 }

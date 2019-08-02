@@ -3,7 +3,7 @@
  * @author Team 9
  */
 public class Player{
-  int playerHealth;
+  private int playerHealth;
   private int money;
 
   /** Player object that takes in health and currency.
@@ -11,8 +11,8 @@ public class Player{
    * @param initCurrency money
    */
   public Player(int aHealth, int initCurrency){
-    playerHealth = aHealth;
-    money = initCurrency;
+    setHealth(aHealth);
+    setMoney(initCurrency);
   }
 
   /** Displays Player health as a string and as a health bar
@@ -30,7 +30,8 @@ public class Player{
    * @return int playerHealth
    */
   public int getHealth(){
-    return playerHealth;
+	int healthCopy = playerHealth;
+    return healthCopy;
   }
   
   /**
@@ -40,6 +41,15 @@ public class Player{
     return money;
   }
 
+  void setHealth(int someHealth) {
+	  if (someHealth >= 20) playerHealth = someHealth;
+	  else playerHealth = 20;
+  }
+  
+  public void setMoney(int someMoney) {
+	  if (someMoney >= 20) money = someMoney;
+	  else money = 20;
+  }
   /**
    * @return boolean if player health is zero
    */
@@ -51,7 +61,7 @@ public class Player{
    * @param dealtDamage damage dealt from enemy
    */
   public void takeDamage(int dealtDamage){
-    this.playerHealth -= dealtDamage;
+    if(dealtDamage >= 0) playerHealth -= dealtDamage;
   }
 
   /** If the player has enough money to buy a tower.
@@ -70,7 +80,7 @@ public class Player{
    * @param price Tower price
    */
   public void buyTower(int price) {
-    money -= price;
+    if(price > 0 && hasEnoughFunds(price)) money -= price;
     System.out.println("\nCASH: $"+money);
   }
   
@@ -78,7 +88,7 @@ public class Player{
    * @param moneyGained Bounty from Enemy Class
    */
   public void gainMoney(int moneyGained){
-    money += moneyGained;
+    if(moneyGained >= 0) money += moneyGained;
     System.out.println("You gained $"+moneyGained+"\nCASH: $"+money);
   }
 

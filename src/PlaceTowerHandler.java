@@ -14,6 +14,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public class PlaceTowerHandler extends GameInterface implements EventHandler<ActionEvent>{
+	
 	private static ArrayList<Button> buttonInstances = new  ArrayList<Button>();
 	private static ArrayList<PlaceTowerHandler> handlers = new ArrayList<PlaceTowerHandler>();
 	
@@ -22,8 +23,7 @@ public class PlaceTowerHandler extends GameInterface implements EventHandler<Act
 	private Pane GUIforeground = new Pane();
 	private Tower toBeMade = new Tower();
 	private GridPane inputGrid = new GridPane();
-	
-	private boolean playerIsPlacing = false;
+
 	
 	public PlaceTowerHandler(Button aB, StackPane aG, Pane aSP, Tower toBeMade) {
 		button = aB;
@@ -39,37 +39,32 @@ public class PlaceTowerHandler extends GameInterface implements EventHandler<Act
 	
 	@Override
 	public void handle(ActionEvent event) {
-		playerIsPlacing = true;
 		toggleAllButtons(true);
-		    
-		//Set Cursor Image to the Desired Defender
-		if (playerIsPlacing) {
-			Image cursorImg = defenderWaterSprite;
-			if (toBeMade instanceof TowerIce) {
-				cursorImg = defenderIce;
-			}
-			if (toBeMade instanceof TowerWater) {
-				cursorImg = defenderWaterSprite;
-			}
-			if (toBeMade instanceof TowerWind) {
-				cursorImg = defenderWind;
-			}
-			inputGrid.setCursor( new ImageCursor(cursorImg, 
-					cursorImg.getWidth()/2, cursorImg.getHeight()/2) );
-			
-			makeInputGrid();
-			addEventListenerToInputGrid();
-			GUIactionArea.getChildren().addAll(inputGrid);
-		} else {
-			this.removeInputGrid();
-		}
 		
+		//Set Cursor Image to the Desired Defender
+		Image cursorImg = defenderWaterSprite;
+		if (toBeMade instanceof TowerIce) {
+			cursorImg = defenderIce;
+		}
+		if (toBeMade instanceof TowerWater) {
+			cursorImg = defenderWaterSprite;
+		}
+		if (toBeMade instanceof TowerWind) {
+			cursorImg = defenderWind;
+		}
+		inputGrid.setCursor( new ImageCursor(cursorImg, 
+				cursorImg.getWidth()/2, cursorImg.getHeight()/2) );
+		
+		makeInputGrid();
+		addEventListenerToInputGrid();
+		GUIactionArea.getChildren().addAll(inputGrid);
+
 	}
 	
 	public void makeInputGrid() {
-		inputGrid.setPrefSize(GameInterface.BoardWIDTH, GameInterface.BoardHEIGHT);
-		
-		
+		GridPane updatedGrid = new GridPane();
+		updatedGrid.setPrefSize(GameInterface.BoardWIDTH, GameInterface.BoardHEIGHT);
+
 		Map map = GameInterface.GAME.getMap();
 		String[][] grid = map.generateGrid();
 		
@@ -82,9 +77,10 @@ public class PlaceTowerHandler extends GameInterface implements EventHandler<Act
 				} else {
 					rect.setOpacity(0);
 				};
-				inputGrid.add(rect, c, r);
+				updatedGrid.add(rect, c, r);
 		      }
 		 };
+		 inputGrid = updatedGrid;
 	}
 	
 	public void addEventListenerToInputGrid() {
@@ -134,24 +130,6 @@ public class PlaceTowerHandler extends GameInterface implements EventHandler<Act
 			);
 			
 		};	
-	}
-
-	public boolean playerIsPlacingTower() {
-		return this.playerIsPlacing;
-	}
-	
-	public void setPlayerNotPlacing() {
-		this.playerIsPlacing = false;
-	}
-	
-	public void removeInputGrid() {
-		if (this.GUIactionArea.getChildren().contains(inputGrid)) {
-			this.GUIactionArea.getChildren().remove(inputGrid);
-		}
-	}
-	
-	public ArrayList<PlaceTowerHandler> getAllHandlers() {
-		return this.handlers;
 	}
 	
 	public boolean AllButtonsDisabled() {

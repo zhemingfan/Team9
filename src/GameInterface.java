@@ -21,7 +21,19 @@ import javafx.scene.shape.*;
 import javafx.stage.Stage;
 
 public class GameInterface extends Application {
-	
+	enum Mode {
+		SURVIVAL,
+		STORY
+	}
+
+	enum MapLayout {
+		ZIGZAG,
+		LOOPY
+	}
+
+	public Mode chosenMode = Mode.SURVIVAL;
+	public MapLayout chosenMap = MapLayout.ZIGZAG;
+
 	public static final int WINDOWWIDTH = 700, WINDOWHEIGHT = 500 ;
 	public static final int BoardWIDTH = 500, BoardHEIGHT = 500 ;
 	public static final int COLUMN = 10, ROW = 10;
@@ -29,7 +41,7 @@ public class GameInterface extends Application {
 	public static final int TILESIZE = 50;
 	public static final MainGame GAME = new MainGame();
 	public Player playerObject = GAME.getPlayer();
-	
+
 	public Image enemyFire = new Image("/img/Enemy_Fire.PNG");
 	public Image enemySpirit = new Image("/img/Enemy_Spirit.PNG");
 	public Image enemyLava = new Image("/img/Enemy_Lava.PNG");
@@ -40,7 +52,7 @@ public class GameInterface extends Application {
   	public Image defenderWaterSprite = new Image("/img/Defender_WaterSprite.PNG");
   	public Image defenderWind = new Image("/img/Defender_Wind.PNG");
   	public Image woodBlock = new Image("/img/woodBlock.jpeg");
-  	
+
   	public AudioClip fireAlarm = new AudioClip(this.getClass().getResource("/sound/fireAlarm.mp3").toString());
   	public AudioClip extinguisher = new AudioClip(this.getClass().getResource("/sound/extinguisher.mp3").toString());
   	public AudioClip waterSplash = new AudioClip(this.getClass().getResource("/sound/waterSplash.mp3").toString());
@@ -52,45 +64,42 @@ public class GameInterface extends Application {
 	public static void main(String[] args) {
 		Application.launch();
 	}
+
 	public void start(Stage primaryStage) {
-		
 		// The basic Layout of the Screen
-		StackPane root = new StackPane(); 
+		StackPane root = new StackPane();
 		Scene scene = new Scene(root, WINDOWWIDTH, WINDOWHEIGHT);
 	    primaryStage.setTitle("Demo");
 	    primaryStage.setScene(scene);
-		
-	    //setting up startup Menu    
+
+	    //setting up startup Menu
 		Pane startUpMenu = new Pane();
 		HBox gamePlayLayer = new HBox();
 		root.getChildren().addAll(gamePlayLayer, startUpMenu);
-		
+
 		gamePlayLayer.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
-		startUpMenu.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);	
-		
-		Rectangle startButtonLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);	
+		startUpMenu.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
+
+		Rectangle startButtonLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
 		Button startButton = new Button("Start");
 		startUpMenu.getChildren().addAll(startButtonLayer,startButton);
-		
-	    
+
+
 	    StackPane mainboard = new StackPane();
 	    VBox utilityPane = new VBox();
 		gamePlayLayer.getChildren().addAll(mainboard, utilityPane);
-		
+
 		//Setting up the mainboard with grid background and foreground where enemies move
 		GridPane background = new GridPane();
 		Pane foreground = new Pane();
 		mainboard.getChildren().addAll(background, foreground);
-		
+
 		background.setPrefSize(BoardWIDTH, BoardHEIGHT);
 		foreground.setPrefSize(BoardWIDTH, BoardHEIGHT);
-		
+
 		// Get the Grid from MainGame to Draw Background
 		Map map = GAME.getMap();
 		String[][] grid = map.generateGrid();
-		// Setting up the background by reading in the Grid
-		
-	  	
 		for(int r = 0; r < 10; r++) {
 			for(int c = 0; c < 10; c++) {
 				Rectangle rect = new Rectangle(TILESIZE,TILESIZE);
@@ -101,131 +110,94 @@ public class GameInterface extends Application {
 				background.add(rect, c, r);
 		      }
 		    };
-		
-	 // Setting up the place tower button in the utilityPane
-		// PLACEHOLDER: add the Player stats area
+
+		// Setting up the place tower button in the utilityPane
 	    Player playerObject = GAME.getPlayer();
 
 		// Health
 		HBox health = new HBox(); //make the Hbox so that you can set a left and right thing
 		utilityPane.getChildren().add(health);
-		
-		/* @param BELOW IS FOR TESTING
-		 * TODO make sure to make this pretty later
-		 *For the health bars
-		Rectangle rectangleHealth = new Rectangle(200.0, 20.0, Color.RED);
-	    rectangleHealth.setX(50);
-	    rectangleHealth.setY(50);
-	    */
-		//playerObject.setHealth(100);  works great
 
-		//final Label playerObject.getHealthLabel() = new Label(playerObject.toStringHealth());
-		
-		//Rectangle rectangleCurrentHealth = new Rectangle(45.0, 20.0, Color.GREEN);
-		
-		
-		//Rectangle rectangleLostHealth = new Rectangle(20.0, 20.0, Color.RED);
-
-		
-		
 		playerObject.setHealthLabel(); //New method in player. Easier to change now
-
-		//Stats For Health 
-		//health.setStyle("-fx-background-color: #336699;");
-		
-		
-
-		
 		Label stats_health = new Label("Player's Health   ");
 		stats_health.setAlignment(Pos.BASELINE_RIGHT);
-		
+
 		health.getChildren().addAll(stats_health, playerObject.getHealthLabel());
 
 		//Gold
+		HBox gold = new HBox();
+		utilityPane.getChildren().add(gold);
+
 		Label stats_gold = new Label("Player's Gold");
 		playerObject.setMoneyLabel();
-		//Label playerObject.getMoneyLabel() = new Label(playerObject.toStringMoney());
-
 		playerObject.getMoneyLabel().setMaxWidth(Double.MAX_VALUE);
 		AnchorPane.setLeftAnchor(playerObject.getMoneyLabel(), 0.0);
 		AnchorPane.setRightAnchor(playerObject.getMoneyLabel(), 0.0);
 		playerObject.getMoneyLabel().setAlignment(Pos.CENTER);
-
-		HBox gold = new HBox(); //make the Hbox so that you can set a left and right thing
-		utilityPane.getChildren().add(gold);
-
 		gold.setSpacing(23);
-		//gold.setStyle("-fx-background-color: #336699;");
+		gold.getChildren().addAll(stats_gold, playerObject.getMoneyLabel());
 
-		gold.getChildren().add(stats_gold);
-		gold.getChildren().add(playerObject.getMoneyLabel());
-		
 		// add the Button Handler after you guys have worked things out on that
-	
-		
+
+
 		Button placeWaterButton = new Button("", new ImageView(defenderWaterSprite));
 	    placeWaterButton.setPrefSize(TILESIZE*2, TILESIZE*2);
-	    placeWaterButton.setOnAction(new PlaceTowerHandler(placeWaterButton, mainboard, foreground, 
+	    placeWaterButton.setOnAction(new PlaceTowerHandler(placeWaterButton, mainboard, foreground,
 	    		new TowerWater() ) );
-		
+
 	    Button placeWindButton = new Button("", new ImageView(defenderWind));
 		placeWindButton.setPrefSize(TILESIZE*2, TILESIZE*2);
-		placeWindButton.setOnAction(new PlaceTowerHandler(placeWindButton, mainboard, foreground, 
+		placeWindButton.setOnAction(new PlaceTowerHandler(placeWindButton, mainboard, foreground,
 				new TowerWind() ) );
-		
+
 		Button placeIceButton = new Button("", new ImageView(defenderIce));
 		placeIceButton.setPrefSize(TILESIZE*2, TILESIZE*2);
-		placeIceButton.setOnAction(new PlaceTowerHandler(placeIceButton, mainboard, foreground, 
+		placeIceButton.setOnAction(new PlaceTowerHandler(placeIceButton, mainboard, foreground,
 				new TowerIce() ) );
-	    	    
+
 		Button trashButton = new Button("TRASH");
-		trashButton.setOnAction(new TrashTowerHandler() );
+		trashButton.setOnAction(new TrashTowerHandler(mainboard) );
 		utilityPane.getChildren().addAll(placeWaterButton, placeWindButton, placeIceButton, trashButton);
-	    
-		
-		
-	    // Main Game loop, currently has placeholder code as proof of concept
-		// Please update with proper logic code
-		// Might want to make a method in GameInterface to read in ArrayLists and relocate them
+
 		GAME.createEnemyList();
-			
+
 	    AnimationTimer animator = new AnimationTimer(){
 	    	int frameCounter = 0;
 	    	double elapsedTime =  0.5;
-	    	
+
             public void handle(long arg0) {
-            	
+
             	if ( frameCounter == 0 || frameCounter % 50 == 0) {
             		Enemy spawned = GAME.spawnEnemies();
             		paintNewEnemy(spawned, foreground);
             	}
-            	
+
 	           GAME.EnemiesAdvance(elapsedTime);
-	           
+
 	           if (frameCounter % 10 == 0) {
 	        	   GAME.DefendersAttackEnemies();
-	        	   
+
 	           }
 	           ArrayList<Enemy> KilledEnemies = GAME.removeKilledEnemies();
 	           ArrayList<Enemy> EnemiesReachedEnd = GAME.removeEnemiesReachedEnd();
-	          
+
 	           moveEnemiesOnGUI(foreground);
 	           cleanRemovedEnemiesfromGUI(KilledEnemies, foreground);
 	           cleanRemovedEnemiesfromGUI(EnemiesReachedEnd, foreground);
-	           
+
 	           playerObject.moneyLabel.setText(playerObject.toStringMoney());
 	           playerObject.getHealthLabel().setText(playerObject.toStringHealth());
 	           frameCounter += 1;
             }
-            
+
         };
-        
+
         // starting animation and showing the screen
 		startButton.setOnAction(new GameStartButtonHandler(animator, root, startUpMenu, fireAlarm));
         primaryStage.show();
-        
+
 	    }
-		
+
 	public void paintNewEnemy(Enemy anEnemy, Pane foreground) {
 		VBox container = new VBox();
 		anEnemy.setNode(container);
@@ -235,13 +207,13 @@ public class GameInterface extends Application {
 		if (anEnemy instanceof Fire) rect.setFill(new ImagePattern(enemyFire));
 		if (anEnemy instanceof Lava) rect.setFill(new ImagePattern(enemyLava));
 		if (anEnemy instanceof Spirit) rect.setFill(new ImagePattern(enemySpirit));
-		
+
 		container.getChildren().addAll(enemyHealthbar, rect);
-		
+
 		foreground.getChildren().add(anEnemy.getNode());
 	}
-	
-	
+
+
 	public void moveEnemiesOnGUI(Pane foreground) {
 		for (int i = 0; i < GAME.getEnemyList().size(); i++) {
         	Enemy anEnemy = GAME.getEnemyList().get(i);
@@ -250,17 +222,17 @@ public class GameInterface extends Application {
         	enemyUI.getParent();
     		Rectangle enemyHealthbar = updateHealthBars(anEnemy);
     		enemyUI.getChildren().set(0, enemyHealthbar);
-        	
-        	
+
+
         }
 	}
-	
+
 	public Rectangle updateHealthBars(Enemy anEnemy) {
 		double enemyPercentageHealth = (anEnemy.getEnemyHealth()/anEnemy.getMaxHealth()) * 1;
 		Rectangle enemyHealthbar = new Rectangle(TILESIZE*enemyPercentageHealth,3, Color.RED);
 		return enemyHealthbar;
 	}
-	
+
 	public void cleanRemovedEnemiesfromGUI(ArrayList<Enemy> removeable, Pane foreground) {
 		for (int i = 0; i < removeable.size(); i++) {
         	Enemy anEnemy = removeable.get(i);
@@ -268,9 +240,8 @@ public class GameInterface extends Application {
         	foreground.getChildren().remove(enemyUI);
         	extinguisher.play();
         }
-
 	}
-	
+
 	public void paintTowerOnGUI(Tower aDefender, Pane foreground) {
 		Rectangle rect = new Rectangle(TILESIZE,TILESIZE);
 		VBox container = new VBox();

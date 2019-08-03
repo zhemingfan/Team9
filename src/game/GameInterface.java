@@ -39,7 +39,7 @@ public class GameInterface extends Application {
 	public static final int COLUMN = 10, ROW = 10;
 	public static final int OFFSETX = 50, OFFSETY = 50;
 	public static final int TILESIZE = 50;
-	public static final MainGame GAME = new MainGame();
+	public MainGame GAME = new MainGame();
 	public Player playerObject = GAME.getPlayer();
 	
 	public Image enemyFire = new Image("/img/Enemy_Fire.PNG");
@@ -114,7 +114,7 @@ public class GameInterface extends Application {
 		      }
 		    };
 		
-	 // Setting up the place tower button in the utilityPane
+	// Setting up the place tower button in the utilityPane
 		// PLACEHOLDER: add the Player stats area
 	    Player playerObject = GAME.getPlayer();
 
@@ -144,8 +144,6 @@ public class GameInterface extends Application {
 
 		//Stats For Health 
 		//health.setStyle("-fx-background-color: #336699;");
-		
-		
 
 		
 		Label stats_health = new Label("Player's Health   ");
@@ -178,20 +176,20 @@ public class GameInterface extends Application {
 		Button placeWaterButton = new Button("", new ImageView(defenderWaterSprite));
 	    placeWaterButton.setPrefSize(TILESIZE*2, TILESIZE*2);
 	    placeWaterButton.setOnAction(new PlaceTowerHandler(placeWaterButton, mainboard, foreground, 
-	    		new TowerWater() ) );
+	    		new TowerWater(), GAME) );
 		
 	    Button placeWindButton = new Button("", new ImageView(defenderWind));
 		placeWindButton.setPrefSize(TILESIZE*2, TILESIZE*2);
 		placeWindButton.setOnAction(new PlaceTowerHandler(placeWindButton, mainboard, foreground, 
-				new TowerWind() ) );
+				new TowerWind(), GAME ) );
 		
 		Button placeIceButton = new Button("", new ImageView(defenderIce));
 		placeIceButton.setPrefSize(TILESIZE*2, TILESIZE*2);
 		placeIceButton.setOnAction(new PlaceTowerHandler(placeIceButton, mainboard, foreground, 
-				new TowerIce() ) );
+				new TowerIce(), GAME) );
 	    	    
 		Button trashButton = new Button("TRASH");
-		trashButton.setOnAction(new TrashTowerHandler() );
+		trashButton.setOnAction(new TrashTowerHandler(mainboard) );
 		utilityPane.getChildren().addAll(placeWaterButton, placeWindButton, placeIceButton, trashButton);
 	    
 		

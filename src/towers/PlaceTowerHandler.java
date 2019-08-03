@@ -2,6 +2,7 @@ package towers;
 import java.util.ArrayList;
 import game.Player;
 import game.GameInterface;
+import game.MainGame;
 import game.Map;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,13 +13,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import parents.Tower;
 
-public class PlaceTowerHandler extends GameInterface implements EventHandler<ActionEvent>{
+public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 	private static ArrayList<Button> buttonInstances = new  ArrayList<Button>();
 	private static ArrayList<PlaceTowerHandler> handlers = new ArrayList<PlaceTowerHandler>();
 	
@@ -27,55 +29,56 @@ public class PlaceTowerHandler extends GameInterface implements EventHandler<Act
 	private Pane GUIforeground = new Pane();
 	private Tower toBeMade = new Tower();
 	private GridPane inputGrid = new GridPane();
+	private MainGame currentGame = new MainGame();
 	
-	private boolean playerIsPlacing = false;
-	
-	public PlaceTowerHandler(Button aB, StackPane aG, Pane aSP, Tower toBeMade) {
+  	public Image defenderIce = new Image("/img/Defender_Ice.PNG");
+  	public Image defenderWaterSprite = new Image("/img/Defender_WaterSprite.PNG");
+  	public Image defenderWind = new Image("/img/Defender_Wind.PNG");
+  	public Image woodBlock = new Image("/img/woodBlock.jpeg");
+  	
+  	public AudioClip waterSplash = new AudioClip(this.getClass().getResource("/sound/waterSplash.mp3").toString());
+  	public AudioClip thunderStorm = new AudioClip(this.getClass().getResource("/sound/thunderStorm.mp3").toString());
+  	public AudioClip iceCrack = new AudioClip(this.getClass().getResource("/sound/iceCrack.mp3").toString());
+  	
+	public PlaceTowerHandler(Button aB, StackPane aG, Pane aSP, Tower toBeMade, MainGame currentGame) {
 		button = aB;
 		GUIactionArea = aG;
 		GUIforeground = aSP;
 		this.toBeMade = toBeMade;
-		
+		this.currentGame = currentGame;
 		buttonInstances.add(button);
-		handlers.add(this);
 	}
 	
 	public PlaceTowerHandler() {}
 	
 	@Override
 	public void handle(ActionEvent event) {
-		playerIsPlacing = true;
 		toggleAllButtons(true);
-		    
-		//Set Cursor Image to the Desired Defender
-		if (playerIsPlacing) {
-			Image cursorImg = defenderWaterSprite;
-			if (toBeMade instanceof TowerIce) {
-				cursorImg = defenderIce;
-			}
-			if (toBeMade instanceof TowerWater) {
-				cursorImg = defenderWaterSprite;
-			}
-			if (toBeMade instanceof TowerWind) {
-				cursorImg = defenderWind;
-			}
-			inputGrid.setCursor( new ImageCursor(cursorImg, 
-					cursorImg.getWidth()/2, cursorImg.getHeight()/2) );
-			
-			makeInputGrid();
-			addEventListenerToInputGrid();
-			GUIactionArea.getChildren().addAll(inputGrid);
-		} else {
-			this.removeInputGrid();
+		   
+		Image cursorImg = defenderWaterSprite;
+		if (toBeMade instanceof TowerIce) {
+			cursorImg = defenderIce;
 		}
+		if (toBeMade instanceof TowerWater) {
+			cursorImg = defenderWaterSprite;
+		}
+		if (toBeMade instanceof TowerWind) {
+			cursorImg = defenderWind;
+		}
+		inputGrid.setCursor( new ImageCursor(cursorImg, 
+				cursorImg.getWidth()/2, cursorImg.getHeight()/2) );
 		
+		makeInputGrid();
+		addEventListenerToInputGrid();
+		GUIactionArea.getChildren().addAll(inputGrid);
+
 	}
 	
 	public void makeInputGrid() {
+		inputGrid = new GridPane();
 		inputGrid.setPrefSize(GameInterface.BoardWIDTH, GameInterface.BoardHEIGHT);
-		
-		
-		Map map = GameInterface.GAME.getMap();
+
+		Map map = this.currentGame.getMap();
 		String[][] grid = map.generateGrid();
 		
 		for(int r = 0; r < 10; r++) {
@@ -103,9 +106,9 @@ public class PlaceTowerHandler extends GameInterface implements EventHandler<Act
 					int row = inputGrid.getRowIndex(each);
 					int column = inputGrid.getColumnIndex(each);
 					
-					if (GAME.canPurchaseandPlaceTower(toBeMade, row, column) ) {
+					if (currentGame.canPurchaseandPlaceTower(toBeMade, row, column) ) {
 						// Add and update Player GUI
-						GAME.getMap().updateDefender(row, column);
+						currentGame.getMap().updateDefender(row, column);
 						Tower aDefender = new Tower();
 							
 						if (toBeMade instanceof TowerIce) {
@@ -123,11 +126,11 @@ public class PlaceTowerHandler extends GameInterface implements EventHandler<Act
 							thunderStorm.play();
 						}
 							
-						GAME.addDefender(aDefender);
-
+						currentGame.addDefender(aDefender);
+						Player playerObject = currentGame.getPlayer();
 						// Add and update Player GUI
 						playerObject.buyDefense(aDefender.getPrice());
-						paintTowerOnGUI(aDefender, GUIforeground); //from GameInterface
+						new GameInterface().paintTowerOnGUI(aDefender, GUIforeground); //from GameInterface
 						playerObject.moneyLabel.setText(playerObject.toStringMoney()); 
 						
 						// Clean up
@@ -141,23 +144,7 @@ public class PlaceTowerHandler extends GameInterface implements EventHandler<Act
 		};	
 	}
 
-	public boolean playerIsPlacingTower() {
-		return this.playerIsPlacing;
-	}
-	
-	public void setPlayerNotPlacing() {
-		this.playerIsPlacing = false;
-	}
-	
-	public void removeInputGrid() {
-		if (this.GUIactionArea.getChildren().contains(inputGrid)) {
-			this.GUIactionArea.getChildren().remove(inputGrid);
-		}
-	}
-	
-	public ArrayList<PlaceTowerHandler> getAllHandlers() {
-		return this.handlers;
-	}
+
 	
 	public boolean AllButtonsDisabled() {
 		boolean state = true;

@@ -13,8 +13,12 @@ import parents.Point;
 import parents.Tower;
 
 public class MainGame {
-	private static final double OFFSETX = 50, OFFSETY = 50;
 	
+	public enum GameMode{ SURVIVAL, STORY};
+	private static final double OFFSETX = 50, OFFSETY = 50;
+	private static final int MAX_WAVES_STORYMODE =  5;
+	
+	private GameMode currentMode = GameMode.SURVIVAL;
 	private Map map = new Map();
 	private Player player = new Player();
 	private ArrayList<Tower> towerList = new ArrayList<Tower>();
@@ -32,6 +36,60 @@ public class MainGame {
 		return map;
 	}
 	
+	public void customizeGrid(String chosenMapLayout) {
+	  if (chosenMapLayout.equals("ZIGZAG") ) {
+			map.makeZigZagGrid();
+		} else if (chosenMapLayout.equals("LOOPY") ){
+			map.makeLoopyGrid();
+		}
+	}
+	
+	public void setGameMode(String chosenMode) {
+		if (chosenMode.equals("STORY") ) {
+			this.currentMode = GameMode.STORY;
+		}
+		if (chosenMode.equals("SURVIVAL") ){
+			this.currentMode = GameMode.SURVIVAL;
+		}
+	}
+	
+	
+	
+	public boolean isOver() {
+		boolean isOver = false;
+		if (player.isKilled()) {
+			isOver = true;
+		}
+		if ( this.currentMode.equals(GameMode.STORY) ) {
+			if (waveCounter == MainGame.MAX_WAVES_STORYMODE) {
+				isOver = true;
+			}
+		}
+		
+		return isOver;
+	}
+	
+	public boolean wonStoryMode() {
+		return ( !player.isKilled() ) && this.waveCounter == MainGame.MAX_WAVES_STORYMODE;
+	}
+	
+	public String getEndingCard() {
+		String endCard = new String();
+		if ( this.currentMode.equals(GameMode.STORY) ) {
+			if (this.wonStoryMode()) {
+				endCard = "YOU WON!";
+			} else {
+				endCard = "YOU FAILED TO SURVIVE " + (MainGame.MAX_WAVES_STORYMODE - 1)+ " WAVES! ";
+			}
+		}
+		
+		if ( this.currentMode.equals(GameMode.SURVIVAL) ) {
+			endCard = "YOU LASTED " + this.waveCounter + " WAVES! ";
+		}
+		
+		return endCard;
+	}
+
 	public int getWaveNumber() {
 		return waveCounter;
 	}

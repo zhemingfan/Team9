@@ -25,27 +25,28 @@ public class Player{
     }
     System.out.println("HEALTH: "+playerHealth+"HP |"+r+"|");
   }
-  
-  /** 
+
+  /**
    * @return int playerHealth
    */
   public int getHealth(){
-	int healthCopy = playerHealth;
+	  int healthCopy = playerHealth;
     return healthCopy;
   }
-  
+
   /**
    * @return int money
    */
   public int getMoney(){
-    return money;
+    int moneyCopy = money;
+    return moneyCopy;
   }
 
-  void setHealth(int someHealth) {
+  public void setHealth(int someHealth) {
 	  if (someHealth >= 20) playerHealth = someHealth;
 	  else playerHealth = 20;
   }
-  
+
   public void setMoney(int someMoney) {
 	  if (someMoney >= 20) money = someMoney;
 	  else money = 20;
@@ -83,7 +84,7 @@ public class Player{
     if(price > 0 && hasEnoughFunds(price)) money -= price;
     System.out.println("\nCASH: $"+money);
   }
-  
+
   /** Updates the Players money after Tower has killed an enemy.
    * @param moneyGained Bounty from Enemy Class
    */

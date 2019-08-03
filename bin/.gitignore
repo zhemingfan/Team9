@@ -1,14 +1,2 @@
-/GameStartButtonHandler.class
-/Map.class
 /GameInterface$1.class
-/GameInterface$MapLayout.class
-/GameInterface$Mode.class
-/chooseMapHandler.class
-/ChooseMapHandler.class
-/GameInterface$2.class
-/GameInterface$3.class
-/MainGame$GameMode.class
-/GameInterface$4.class
-/RestartGameHandler.class
-/ChooseModeHandler.class
-/img/
+/sound/

@@ -3,16 +3,19 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.AudioClip;
 
 public class GameStartButtonHandler implements EventHandler<ActionEvent> {
 	AnimationTimer aTimer;
 	StackPane root;
 	Pane startUpMenu;
+	AudioClip fireAlarm;
 	
-	public GameStartButtonHandler(AnimationTimer aTimer, StackPane root, Pane startUpMenu) {
+	public GameStartButtonHandler(AnimationTimer aTimer, StackPane root, Pane startUpMenu, AudioClip fireAlarm) {
 		this.aTimer = aTimer;
 		this.root = root;
 		this.startUpMenu = startUpMenu;
+		this.fireAlarm = fireAlarm;
 		
 	}
 
@@ -20,7 +23,9 @@ public class GameStartButtonHandler implements EventHandler<ActionEvent> {
 	public void handle(ActionEvent event) {
 		// TODO Auto-generated method stub
 		aTimer.start();
+		fireAlarm.play();
 		root.getChildren().remove(startUpMenu);
+		
 		
 	}
 	

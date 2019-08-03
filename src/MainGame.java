@@ -1,18 +1,18 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-import javafx.scene.Node;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
-
 public class MainGame {
 	private static final double OFFSETX = 50, OFFSETY = 50;
+	private static final int MAX_WAVES_STORYMODE = 5;
+	
+	public enum GameMode{ SURVIVAL, STORY};
+	
+	private GameMode currentMode = GameMode.SURVIVAL;
 	
 	private Map map = new Map();
 	private Player player = new Player();
 	private ArrayList<Tower> towerList = new ArrayList<Tower>();
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
-	private Point[] checkPoints = map.getCheckPoints(OFFSETX, OFFSETY);
 	
 	private int waveCounter = 1;
 	private ArrayList<Enemy> waveList = new ArrayList<Enemy>();
@@ -23,6 +23,60 @@ public class MainGame {
 	
 	public Map getMap() {
 		return map;
+	}
+	
+	public void generateGrid(String chosenMapLayout) {
+	  if (chosenMapLayout.equals("ZIGZAG") ) {
+			map.makeZigZagGrid();
+		} else if (chosenMapLayout.equals("LOOPY") ){
+			map.makeLoopyGrid();
+		}
+	}
+	
+	public void setGameMode(String chosenMode) {
+		if (chosenMode.equals("STORY") ) {
+			this.currentMode = GameMode.STORY;
+		}
+		if (chosenMode.equals("SURVIVAL") ){
+			this.currentMode = GameMode.SURVIVAL;
+		}
+	}
+	
+	
+	
+	public boolean isOver() {
+		boolean isOver = false;
+		if (player.isKilled()) {
+			isOver = true;
+		}
+		if ( this.currentMode.equals(GameMode.STORY) ) {
+			if (waveCounter == MainGame.MAX_WAVES_STORYMODE) {
+				isOver = true;
+			}
+		}
+		
+		return isOver;
+	}
+	
+	public boolean wonStoryMode() {
+		return ( !player.isKilled() ) && this.waveCounter == MainGame.MAX_WAVES_STORYMODE;
+	}
+	
+	public String getEndingCard() {
+		String endCard = new String();
+		if ( this.currentMode.equals(GameMode.STORY) ) {
+			if (this.wonStoryMode()) {
+				endCard = "YOU WON!";
+			} else {
+				endCard = "YOU FAILED TO SURVIVE " + (MainGame.MAX_WAVES_STORYMODE - 1)+ " WAVES! ";
+			}
+		}
+		
+		if ( this.currentMode.equals(GameMode.SURVIVAL) ) {
+			endCard = "YOU LASTED " + this.waveCounter + " WAVES! ";
+		}
+		
+		return endCard;
 	}
 	
 	public int getWaveNumber() {

@@ -79,13 +79,14 @@ public class Map{
    * c : check point
    * - : tile where defense can be placed
    * D : defender
+ * @param chosenMapLayout 
    * 
    * @return String[][]
    */
    
-  public String[][] generateGrid() {
-    
-    return gridMap;
+  
+  public String[][] getGrid() {
+		return gridMap;
   }
   
   public int getColumn() {
@@ -200,6 +201,8 @@ public class Map{
   System.out.println(view);
   return view;
   }
+
+
   
   /*
   public static void main(String[] args) {

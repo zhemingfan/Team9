@@ -46,14 +46,33 @@ public class GameInterface extends Application {
 	public void start(Stage primaryStage) {
 		
 		// The basic Layout of the Screen
-		HBox root = new HBox();
+		StackPane root = new StackPane(); 
 		Scene scene = new Scene(root, WINDOWWIDTH, WINDOWHEIGHT);
 	    primaryStage.setTitle("Demo");
 	    primaryStage.setScene(scene);
+		
+	    //setting up startup Menu
+	    
+		Pane startUpMenu = new Pane();
+		HBox gamePlayLayer = new HBox();
+		root.getChildren().addAll(gamePlayLayer, startUpMenu);
+		
+		gamePlayLayer.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
+		startUpMenu.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
+		
+		
+		
+		Rectangle startButtonLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
+		
+		Button startButton = new Button("Start");
+		startUpMenu.getChildren().addAll(startButtonLayer,startButton);
+		
+		
+
 	    
 	    StackPane mainboard = new StackPane();
 	    VBox utilityPane = new VBox();
-		root.getChildren().addAll(mainboard, utilityPane);
+		gamePlayLayer.getChildren().addAll(mainboard, utilityPane);
 		
 		//Setting up the mainboard with grid background and foreground where enemies move
 		GridPane background = new GridPane();
@@ -199,7 +218,8 @@ public class GameInterface extends Application {
         };
         
         // starting animation and showing the screen
-        animator.start();
+		startButton.setOnAction(new GameStartButtonHandler(animator, root, startUpMenu));
+
         primaryStage.show();
 	    }
 		

@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.*;
@@ -39,6 +40,14 @@ public class GameInterface extends Application {
   	public Image defenderWaterSprite = new Image("/img/Defender_WaterSprite.PNG");
   	public Image defenderWind = new Image("/img/Defender_Wind.PNG");
   	public Image woodBlock = new Image("/img/woodBlock.jpeg");
+  	
+  	public AudioClip fireAlarm = new AudioClip(this.getClass().getResource("/sound/fireAlarm.mp3").toString());
+  	public AudioClip extinguisher = new AudioClip(this.getClass().getResource("/sound/extinguisher.mp3").toString());
+  	public AudioClip waterSplash = new AudioClip(this.getClass().getResource("/sound/waterSplash.mp3").toString());
+  	public AudioClip thunderStorm = new AudioClip(this.getClass().getResource("/sound/thunderStorm.mp3").toString());
+  	public AudioClip iceCrack = new AudioClip(this.getClass().getResource("/sound/iceCrack.mp3").toString());
+
+
 
 	public static void main(String[] args) {
 		Application.launch();
@@ -51,24 +60,18 @@ public class GameInterface extends Application {
 	    primaryStage.setTitle("Demo");
 	    primaryStage.setScene(scene);
 		
-	    //setting up startup Menu
-	    
+	    //setting up startup Menu    
 		Pane startUpMenu = new Pane();
 		HBox gamePlayLayer = new HBox();
 		root.getChildren().addAll(gamePlayLayer, startUpMenu);
 		
 		gamePlayLayer.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
-		startUpMenu.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
+		startUpMenu.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);	
 		
-		
-		
-		Rectangle startButtonLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
-		
+		Rectangle startButtonLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);	
 		Button startButton = new Button("Start");
 		startUpMenu.getChildren().addAll(startButtonLayer,startButton);
 		
-		
-
 	    
 	    StackPane mainboard = new StackPane();
 	    VBox utilityPane = new VBox();
@@ -218,9 +221,9 @@ public class GameInterface extends Application {
         };
         
         // starting animation and showing the screen
-		startButton.setOnAction(new GameStartButtonHandler(animator, root, startUpMenu));
-
+		startButton.setOnAction(new GameStartButtonHandler(animator, root, startUpMenu, fireAlarm));
         primaryStage.show();
+        
 	    }
 		
 	public void paintNewEnemy(Enemy anEnemy, Pane foreground) {
@@ -263,6 +266,7 @@ public class GameInterface extends Application {
         	Enemy anEnemy = removeable.get(i);
         	Node enemyUI = anEnemy.getNode();
         	foreground.getChildren().remove(enemyUI);
+        	extinguisher.play();
         }
 
 	}

@@ -105,12 +105,17 @@ public class PlaceTowerHandler extends GameInterface implements EventHandler<Act
 							
 						if (toBeMade instanceof TowerIce) {
 							aDefender = new TowerIce(column*GameInterface.OFFSETX, row*GameInterface.OFFSETY);
+							waterSplash.play();
+
 						}
 						if (toBeMade instanceof TowerWater) {
 							aDefender = new TowerWater(column*GameInterface.OFFSETX, row*GameInterface.OFFSETY);
+							iceCrack.play();
+
 						}
 						if (toBeMade instanceof TowerWind) {
 							aDefender = new TowerWind(column*GameInterface.OFFSETX, row*GameInterface.OFFSETY);
+							thunderStorm.play();
 						}
 							
 						GAME.addDefender(aDefender);

@@ -52,7 +52,7 @@ public class Player extends Point{
   }
 
   public boolean isKilled() {
-    return playerHealth == 0;
+    return playerHealth <= 0;
   }
 
   public void takeDamage(int dealtDamage){

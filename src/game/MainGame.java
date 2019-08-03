@@ -25,7 +25,7 @@ public class MainGame {
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 	private Point[] checkPoints = map.getCheckPoints(OFFSETX, OFFSETY);
 	
-	private int waveCounter = 1;
+	private int waveCounter = 0;
 	private ArrayList<Enemy> waveList = new ArrayList<Enemy>();
 	
 	public Player getPlayer() {
@@ -39,9 +39,10 @@ public class MainGame {
 	public void customizeGrid(String chosenMapLayout) {
 	  if (chosenMapLayout.equals("ZIGZAG") ) {
 			map.makeZigZagGrid();
-		} else if (chosenMapLayout.equals("LOOPY") ){
-			map.makeLoopyGrid();
 		}
+	  if (chosenMapLayout.equals("LOOPY") ){
+			map.makeLoopyGrid();
+	}
 	}
 	
 	public void setGameMode(String chosenMode) {
@@ -53,13 +54,12 @@ public class MainGame {
 		}
 	}
 	
-	
-	
 	public boolean isOver() {
 		boolean isOver = false;
 		if (player.isKilled()) {
 			isOver = true;
 		}
+		
 		if ( this.currentMode.equals(GameMode.STORY) ) {
 			if (waveCounter == MainGame.MAX_WAVES_STORYMODE) {
 				isOver = true;

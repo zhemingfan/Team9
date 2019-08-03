@@ -20,6 +20,18 @@ import javafx.scene.shape.*;
 import javafx.stage.Stage;
 
 public class GameInterface extends Application {
+	enum Mode {
+		SURVIVAL,
+		STORY
+	}
+	
+	enum MapLayout {
+		ZIGZAG,
+		LOOPY
+	}
+	
+	public Mode chosenMode = Mode.SURVIVAL;
+	public MapLayout chosenMap = MapLayout.ZIGZAG;
 	
 	public static final int WINDOWWIDTH = 700, WINDOWHEIGHT = 500 ;
 	public static final int BoardWIDTH = 500, BoardHEIGHT = 500 ;
@@ -43,15 +55,13 @@ public class GameInterface extends Application {
 	public static void main(String[] args) {
 		Application.launch();
 	}
+	
 	public void start(Stage primaryStage) {
-		
 		// The basic Layout of the Screen
 		StackPane root = new StackPane(); 
 		Scene scene = new Scene(root, WINDOWWIDTH, WINDOWHEIGHT);
 	    primaryStage.setTitle("Demo");
 	    primaryStage.setScene(scene);
-		
-	    //setting up startup Menu
 	    
 		Pane startUpMenu = new Pane();
 		HBox gamePlayLayer = new HBox();
@@ -60,16 +70,12 @@ public class GameInterface extends Application {
 		gamePlayLayer.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
 		startUpMenu.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
 		
-		
+		//setting up startup Menu
 		
 		Rectangle startButtonLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
-		
 		Button startButton = new Button("Start");
 		startUpMenu.getChildren().addAll(startButtonLayer,startButton);
 		
-		
-
-	    
 	    StackPane mainboard = new StackPane();
 	    VBox utilityPane = new VBox();
 		gamePlayLayer.getChildren().addAll(mainboard, utilityPane);
@@ -85,9 +91,6 @@ public class GameInterface extends Application {
 		// Get the Grid from MainGame to Draw Background
 		Map map = GAME.getMap();
 		String[][] grid = map.generateGrid();
-		// Setting up the background by reading in the Grid
-		
-	  	
 		for(int r = 0; r < 10; r++) {
 			for(int c = 0; c < 10; c++) {
 				Rectangle rect = new Rectangle(TILESIZE,TILESIZE);
@@ -99,63 +102,31 @@ public class GameInterface extends Application {
 		      }
 		    };
 		
-	 // Setting up the place tower button in the utilityPane
-		// PLACEHOLDER: add the Player stats area
+		// Setting up the place tower button in the utilityPane
 	    Player playerObject = GAME.getPlayer();
 
 		// Health
 		HBox health = new HBox(); //make the Hbox so that you can set a left and right thing
 		utilityPane.getChildren().add(health);
 		
-		/* @param BELOW IS FOR TESTING
-		 * TODO make sure to make this pretty later
-		 *For the health bars
-		Rectangle rectangleHealth = new Rectangle(200.0, 20.0, Color.RED);
-	    rectangleHealth.setX(50);
-	    rectangleHealth.setY(50);
-	    */
-		//playerObject.setHealth(100);  works great
-
-		//final Label playerObject.getHealthLabel() = new Label(playerObject.toStringHealth());
-		
-		//Rectangle rectangleCurrentHealth = new Rectangle(45.0, 20.0, Color.GREEN);
-		
-		
-		//Rectangle rectangleLostHealth = new Rectangle(20.0, 20.0, Color.RED);
-
-		
-		
 		playerObject.setHealthLabel(); //New method in player. Easier to change now
-
-		//Stats For Health 
-		//health.setStyle("-fx-background-color: #336699;");
-		
-		
-
-		
 		Label stats_health = new Label("Player's Health   ");
 		stats_health.setAlignment(Pos.BASELINE_RIGHT);
 		
 		health.getChildren().addAll(stats_health, playerObject.getHealthLabel());
 
 		//Gold
+		HBox gold = new HBox();
+		utilityPane.getChildren().add(gold);
+		
 		Label stats_gold = new Label("Player's Gold");
 		playerObject.setMoneyLabel();
-		//Label playerObject.getMoneyLabel() = new Label(playerObject.toStringMoney());
-
 		playerObject.getMoneyLabel().setMaxWidth(Double.MAX_VALUE);
 		AnchorPane.setLeftAnchor(playerObject.getMoneyLabel(), 0.0);
 		AnchorPane.setRightAnchor(playerObject.getMoneyLabel(), 0.0);
 		playerObject.getMoneyLabel().setAlignment(Pos.CENTER);
-
-		HBox gold = new HBox(); //make the Hbox so that you can set a left and right thing
-		utilityPane.getChildren().add(gold);
-
 		gold.setSpacing(23);
-		//gold.setStyle("-fx-background-color: #336699;");
-
-		gold.getChildren().add(stats_gold);
-		gold.getChildren().add(playerObject.getMoneyLabel());
+		gold.getChildren().addAll(stats_gold, playerObject.getMoneyLabel());
 		
 		// add the Button Handler after you guys have worked things out on that
 	
@@ -176,14 +147,9 @@ public class GameInterface extends Application {
 				new TowerIce() ) );
 	    	    
 		Button trashButton = new Button("TRASH");
-		trashButton.setOnAction(new TrashTowerHandler() );
+		trashButton.setOnAction(new TrashTowerHandler(mainboard) );
 		utilityPane.getChildren().addAll(placeWaterButton, placeWindButton, placeIceButton, trashButton);
 	    
-		
-		
-	    // Main Game loop, currently has placeholder code as proof of concept
-		// Please update with proper logic code
-		// Might want to make a method in GameInterface to read in ArrayLists and relocate them
 		GAME.createEnemyList();
 			
 	    AnimationTimer animator = new AnimationTimer(){
@@ -264,7 +230,6 @@ public class GameInterface extends Application {
         	Node enemyUI = anEnemy.getNode();
         	foreground.getChildren().remove(enemyUI);
         }
-
 	}
 	
 	public void paintTowerOnGUI(Tower aDefender, Pane foreground) {

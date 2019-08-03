@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
@@ -20,19 +19,7 @@ import javafx.scene.shape.*;
 import javafx.stage.Stage;
 
 public class GameInterface extends Application {
-	enum Mode {
-		SURVIVAL,
-		STORY
-	}
-	
-	enum MapLayout {
-		ZIGZAG,
-		LOOPY
-	}
-	
-	public Mode chosenMode = Mode.SURVIVAL;
-	public MapLayout chosenMap = MapLayout.ZIGZAG;
-	
+
 	public static final int WINDOWWIDTH = 700, WINDOWHEIGHT = 500 ;
 	public static final int BoardWIDTH = 500, BoardHEIGHT = 500 ;
 	public static final int COLUMN = 10, ROW = 10;
@@ -90,7 +77,7 @@ public class GameInterface extends Application {
 		
 		// Get the Grid from MainGame to Draw Background
 		Map map = GAME.getMap();
-		String[][] grid = map.generateGrid();
+		String[][] grid = map.getGrid();
 		for(int r = 0; r < 10; r++) {
 			for(int c = 0; c < 10; c++) {
 				Rectangle rect = new Rectangle(TILESIZE,TILESIZE);

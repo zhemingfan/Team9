@@ -13,29 +13,31 @@ import parents.Point;
 import parents.Tower;
 
 public class MainGame {
-	
+
 	public enum GameMode{ SURVIVAL, STORY};
 	private static final double OFFSETX = 50, OFFSETY = 50;
 	private static final int MAX_WAVES_STORYMODE =  5;
-	
+
 	private GameMode currentMode = GameMode.SURVIVAL;
 	private Map map = new Map();
 	private Player player = new Player();
 	private ArrayList<Tower> towerList = new ArrayList<Tower>();
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 	private Point[] checkPoints = map.getCheckPoints(OFFSETX, OFFSETY);
-	
+
+	public AudioClip extinguisher = new AudioClip(this.getClass().getResource("/sound/extinguisher.mp3").toString());
+
 	private int waveCounter = 0;
 	private ArrayList<Enemy> waveList = new ArrayList<Enemy>();
-	
+
 	public Player getPlayer() {
 		return player;
 	}
-	
+
 	public Map getMap() {
 		return map;
 	}
-	
+
 	public void customizeGrid(String chosenMapLayout) {
 	  if (chosenMapLayout.equals("ZIGZAG") ) {
 			map.makeZigZagGrid();
@@ -44,7 +46,7 @@ public class MainGame {
 			map.makeLoopyGrid();
 	}
 	}
-	
+
 	public void setGameMode(String chosenMode) {
 		if (chosenMode.equals("STORY") ) {
 			this.currentMode = GameMode.STORY;
@@ -53,26 +55,26 @@ public class MainGame {
 			this.currentMode = GameMode.SURVIVAL;
 		}
 	}
-	
+
 	public boolean isOver() {
 		boolean isOver = false;
 		if (player.isKilled()) {
 			isOver = true;
 		}
-		
+
 		if ( this.currentMode.equals(GameMode.STORY) ) {
 			if (waveCounter == MainGame.MAX_WAVES_STORYMODE) {
 				isOver = true;
 			}
 		}
-		
+
 		return isOver;
 	}
-	
+
 	public boolean wonStoryMode() {
 		return ( !player.isKilled() ) && this.waveCounter == MainGame.MAX_WAVES_STORYMODE;
 	}
-	
+
 	public String getEndingCard() {
 		String endCard = new String();
 		if ( this.currentMode.equals(GameMode.STORY) ) {
@@ -82,11 +84,11 @@ public class MainGame {
 				endCard = "YOU FAILED TO SURVIVE " + (MainGame.MAX_WAVES_STORYMODE - 1)+ " WAVES! ";
 			}
 		}
-		
+
 		if ( this.currentMode.equals(GameMode.SURVIVAL) ) {
 			endCard = "YOU LASTED " + this.waveCounter + " WAVES! ";
 		}
-		
+
 		return endCard;
 	}
 
@@ -95,15 +97,15 @@ public class MainGame {
 	}
 	public ArrayList<Tower> getTowerList(){
 		return towerList;}
-	
+
 	public ArrayList<Enemy> getEnemyList() {
 		return enemyList;
 	}
-	
+
 	public boolean canPurchaseandPlaceTower(Tower aTower, int row, int column){
 		return player.enoughFunds(aTower.getPrice()) && map.canPlaceDefense(row, column);
 	}
-	
+
 	/** Updates enemyList of randomly chosen enemies from Fire Class, Lava Class, or Spirit.
 	   * @param wave Wave Number
 	   */
@@ -152,7 +154,7 @@ public class MainGame {
 			anEnemy.advance(elapsedTime);
 		}
 	}
-	
+
 	/**
 	 * Remove all enemies that have been killed
 	 */
@@ -163,18 +165,19 @@ public class MainGame {
 			if (anEnemy.isKilled() ) {
 				toBeRemoved.add(anEnemy);
 				this.getPlayer().gainMoney(anEnemy.getBounty());
+				extinguisher.play();
 			}
-			
+
 		};
 		enemyList.removeAll(toBeRemoved);
-		
+
 		return toBeRemoved;
 	}
-	
+
 	/**
 	 * Check if any enemies has reached the end. Have the enemies deal damage to the Player. Remove these enemies.
 	 */
-	
+
 	public ArrayList<Enemy> removeEnemiesReachedEnd() {
 		ArrayList<Enemy> toBeRemoved = new ArrayList<Enemy>() ;
 		for (int i = 0; i < enemyList.size(); i++) {
@@ -186,13 +189,13 @@ public class MainGame {
 		enemyList.removeAll(toBeRemoved);
 		return toBeRemoved;
 	}
-	
+
 	public void addDefender(Tower aDefense) {
 		towerList.add(aDefense);
 	}
-	
+
 	/**
-	 * Have each defender find their target enemy and deal damage to the target 
+	 * Have each defender find their target enemy and deal damage to the target
 	 */
 	public ArrayList<Point[] > DefendersAttackEnemies() {
 		ArrayList<Point[]> pairList = new ArrayList<Point[]>();
@@ -217,9 +220,9 @@ public class MainGame {
 	    	if ( counter == 0 || counter % 300 == 0) {
 	    		Enemy spawned = GAME.spawnEnemies();
 	    		System.out.println(spawned.toString());
-				
+
 	    	}
-	        
+
 	    	if ( counter % 60 == 0) {
 	    		for (int i = 0; i < GAME.enemyList.size(); i++) {
 	    			Enemy anEnemy = GAME.enemyList.get(i);

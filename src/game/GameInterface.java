@@ -32,20 +32,20 @@ import towers.TowerWind;
 import towers.TrashTowerHandler;
 
 public class GameInterface extends Application {
-	
+
 	public static final int WINDOWWIDTH = 700, WINDOWHEIGHT = 500 ;
 	public static final int BoardWIDTH = 500, BoardHEIGHT = 500 ;
 	public static final int COLUMN = 10, ROW = 10;
 	public static final int OFFSETX = 50, OFFSETY = 50;
 	public static final int TILESIZE = 50;
-	
+
 	public static double ENEMYSPEEDSCALAR = 1.0;
 	public static int TOWERATTACKRATE = 10; //one per 10 frames
 	public static int ENEMYSPAWNRATE = 50; //one per 50 frames
-	
+
 	public MainGame GAME = new MainGame();
 	public Player playerObject = GAME.getPlayer();
-	
+
 	public Image enemyFire = new Image("/img/Enemy_Fire.PNG");
 	public Image enemySpirit = new Image("/img/Enemy_Spirit.PNG");
 	public Image enemyLava = new Image("/img/Enemy_Lava.PNG");
@@ -58,9 +58,8 @@ public class GameInterface extends Application {
   	public Image woodBlock = new Image("/img/woodBlock.jpeg");
   	public Image loopMap = new Image("/img/LoopyMap.png");
   	public Image zigzagMap = new Image("/img/ZigZagMap.png");
-  	
+
   	public AudioClip fireAlarm = new AudioClip(this.getClass().getResource("/sound/fireAlarm.mp3").toString());
-  	public AudioClip extinguisher = new AudioClip(this.getClass().getResource("/sound/extinguisher.mp3").toString());
   	public AudioClip waterSplash = new AudioClip(this.getClass().getResource("/sound/waterSplash.mp3").toString());
   	public AudioClip thunderStorm = new AudioClip(this.getClass().getResource("/sound/thunderStorm.mp3").toString());
   	public AudioClip iceCrack = new AudioClip(this.getClass().getResource("/sound/iceCrack.mp3").toString());
@@ -71,31 +70,31 @@ public class GameInterface extends Application {
 		Application.launch();
 	}
 	public void start(Stage primaryStage) {
-		
+
 		// The basic Layout of the Screen
-		StackPane root = new StackPane(); 
+		StackPane root = new StackPane();
 		Scene scene = new Scene(root, WINDOWWIDTH, WINDOWHEIGHT);
 	    primaryStage.setTitle("Demo");
 	    primaryStage.setScene(scene);
-		
-	    //setting up startup Menu    
+
+	    //setting up startup Menu
 		Pane startUpMenu = new Pane();
 		HBox gamePlayLayer = new HBox();
 		root.getChildren().addAll(gamePlayLayer, startUpMenu);
-		
+
 		gamePlayLayer.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
-		startUpMenu.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);	
-		
-	    
+		startUpMenu.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
+
+
 	    StackPane mainboard = new StackPane();
 	    VBox utilityPane = new VBox();
 		gamePlayLayer.getChildren().addAll(mainboard, utilityPane);
-		
+
 		//Setting up the mainboard with grid background and foreground where enemies move
 		GridPane background = new GridPane();
 		Pane foreground = new Pane();
 		mainboard.getChildren().addAll(background, foreground);
-		
+
 		background.setPrefSize(BoardWIDTH, BoardHEIGHT);
 		foreground.setPrefSize(BoardWIDTH, BoardHEIGHT);
 		/*
@@ -103,8 +102,8 @@ public class GameInterface extends Application {
 		Map map = GAME.getMap();
 		String[][] grid = map.generateGrid();
 		// Setting up the background by reading in the Grid
-		
-	  	
+
+
 		for(int r = 0; r < 10; r++) {
 			for(int c = 0; c < 10; c++) {
 				Rectangle rect = new Rectangle(TILESIZE,TILESIZE);
@@ -116,7 +115,7 @@ public class GameInterface extends Application {
 		      }
 		    };
 		*/
-		
+
 		// Setting up the place tower button in the utilityPane
 		// PLACEHOLDER: add the Player stats area
 	    Player playerObject = GAME.getPlayer();
@@ -124,11 +123,11 @@ public class GameInterface extends Application {
 		// Health
 		HBox health = new HBox(); //make the Hbox so that you can set a left and right thing
 		utilityPane.getChildren().add(health);
-		
+
 		playerObject.setHealthLabel();
 		Label stats_health = new Label("Player's Health   ");
 		stats_health.setAlignment(Pos.BASELINE_RIGHT);
-		
+
 		health.getChildren().addAll(stats_health, playerObject.getHealthLabel());
 
 		//Gold
@@ -149,106 +148,106 @@ public class GameInterface extends Application {
 
 		gold.getChildren().add(stats_gold);
 		gold.getChildren().add(playerObject.getMoneyLabel());
-		
+
 		// add the Button Handler after you guys have worked things out on that
-	
+
 		Button placeWaterButton = new Button("", new ImageView(defenderWaterSprite));
 	    placeWaterButton.setPrefSize(TILESIZE*2, TILESIZE*2);
-	    placeWaterButton.setOnAction(new PlaceTowerHandler(placeWaterButton, mainboard, foreground, 
+	    placeWaterButton.setOnAction(new PlaceTowerHandler(placeWaterButton, mainboard, foreground,
 	    		new TowerWater(), GAME) );
-		
+
 	    Button placeWindButton = new Button("", new ImageView(defenderWind));
 		placeWindButton.setPrefSize(TILESIZE*2, TILESIZE*2);
-		placeWindButton.setOnAction(new PlaceTowerHandler(placeWindButton, mainboard, foreground, 
+		placeWindButton.setOnAction(new PlaceTowerHandler(placeWindButton, mainboard, foreground,
 				new TowerWind(), GAME ) );
-		
+
 		Button placeIceButton = new Button("", new ImageView(defenderIce));
 		placeIceButton.setPrefSize(TILESIZE*2, TILESIZE*2);
-		placeIceButton.setOnAction(new PlaceTowerHandler(placeIceButton, mainboard, foreground, 
+		placeIceButton.setOnAction(new PlaceTowerHandler(placeIceButton, mainboard, foreground,
 				new TowerIce(), GAME) );
-	    	    
+
 		Button trashButton = new Button("TRASH");
 		trashButton.setOnAction(new TrashTowerHandler(mainboard) );
 		utilityPane.getChildren().addAll(placeWaterButton, placeWindButton, placeIceButton, trashButton);
-	    
+
 	    AnimationTimer animator = new AnimationTimer(){
 	    	int frameCounter = 0;
 	    	double elapsedTime =  ENEMYSPEEDSCALAR;
-	    	
-            public void handle(long arg0) {	
+
+            public void handle(long arg0) {
             	if ( frameCounter == 0 || frameCounter % ENEMYSPAWNRATE == 0) {
             		Enemy spawned = GAME.spawnEnemies();
             		paintNewEnemy(spawned, foreground);
             	}
-            	
+
 	           GAME.EnemiesAdvance(elapsedTime);
-	           
+
 	           if (frameCounter % TOWERATTACKRATE == 0) {
 	        	   GAME.DefendersAttackEnemies();
-	        	   
+
 	           }
 	           ArrayList<Enemy> KilledEnemies = GAME.removeKilledEnemies();
 	           ArrayList<Enemy> EnemiesReachedEnd = GAME.removeEnemiesReachedEnd();
-	          
+
 	           moveEnemiesOnGUI(foreground);
 	           cleanRemovedEnemiesfromGUI(KilledEnemies, foreground);
 	           cleanRemovedEnemiesfromGUI(EnemiesReachedEnd, foreground);
-	           
+
 	           playerObject.moneyLabel.setText(playerObject.toStringMoney());
 	           playerObject.getHealthLabel().setText(playerObject.toStringHealth());
 	           frameCounter += 1;
-	           
+
 	           if (GAME.isOver()) {
 	        	   this.stop();
 	        	   Pane endTitle = createEndScreen();
 	        	   root.getChildren().add(endTitle);
-	           }  
-            } 
+	           }
+            }
         };
-        
-        Rectangle startButtonLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);	
+
+        Rectangle startButtonLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
         startButtonLayer.setFill(Color.WHITE);
 		Button startButton = new Button("Start");
 		startButton.setOnAction(new GameStartButtonHandler(animator, root, startUpMenu, fireAlarm));
-		
+
 		VBox initGameButtons = new VBox();
-		
+
 		HBox chooseModeButtons = new HBox();
 		Button storyButton = new Button("STORY MODE");
 		storyButton.setOnAction(new ChooseModeHandler(GAME , "STORY"));
 		Button survivalButton = new Button("SURVIVAL MODE");
 		survivalButton.setOnAction(new ChooseModeHandler(GAME, "SURVIVAL"));
 		chooseModeButtons.getChildren().addAll(storyButton, survivalButton);
-		
+
 		HBox chooseMapButtons = new HBox();
 		Button loopMapButton = new Button("", new ImageView(loopMap));
 		loopMapButton.setOnAction(new ChooseMapHandler(background, "LOOPY", GAME ));
 		Button zigzagMapButton = new Button("", new ImageView(zigzagMap));
 		zigzagMapButton.setOnAction(new ChooseMapHandler(background, "ZIGZAG", GAME ));
 		chooseMapButtons.getChildren().addAll(zigzagMapButton, loopMapButton);
-		
+
 		initGameButtons.getChildren().addAll(chooseModeButtons, chooseMapButtons, startButton);
 		startUpMenu.getChildren().addAll(startButtonLayer, initGameButtons);
-		
+
         primaryStage.show();
-        
+
 	}
-	
+
 	public Pane createEndScreen() {
 		Pane endScreen = new Pane();
 		endScreen.setPrefSize(BoardWIDTH, BoardHEIGHT);
-		Rectangle endBGLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);	
+		Rectangle endBGLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
         endBGLayer.setFill(Color.WHITE);
         endBGLayer.setOpacity(0.75);
 		endScreen.setPrefSize(BoardWIDTH, BoardHEIGHT);
 		Label endTitleCard = new Label( GAME.getEndingCard());
-		
+
 		endScreen.getChildren().addAll(endBGLayer, endTitleCard);
 		endTitleCard.relocate( WINDOWWIDTH/2 - endTitleCard.getWidth(),
 				WINDOWHEIGHT/2 + endTitleCard.getHeight());
 		return endScreen;
 	}
-	
+
 	public void paintNewEnemy(Enemy anEnemy, Pane foreground) {
 		VBox container = new VBox();
 		anEnemy.setNode(container);
@@ -258,13 +257,13 @@ public class GameInterface extends Application {
 		if (anEnemy instanceof Fire) rect.setFill(new ImagePattern(enemyFire));
 		if (anEnemy instanceof Lava) rect.setFill(new ImagePattern(enemyLava));
 		if (anEnemy instanceof Spirit) rect.setFill(new ImagePattern(enemySpirit));
-		
+
 		container.getChildren().addAll(enemyHealthbar, rect);
-		
+
 		foreground.getChildren().add(anEnemy.getNode());
 	}
-	
-	
+
+
 	public void moveEnemiesOnGUI(Pane foreground) {
 		for (int i = 0; i < GAME.getEnemyList().size(); i++) {
         	Enemy anEnemy = GAME.getEnemyList().get(i);
@@ -275,23 +274,22 @@ public class GameInterface extends Application {
     		enemyUI.getChildren().set(0, enemyHealthbar);
         }
 	}
-	
+
 	public Rectangle updateHealthBars(Enemy anEnemy) {
 		double enemyPercentageHealth = (anEnemy.getEnemyHealth()/anEnemy.getMaxHealth()) * 1;
 		Rectangle enemyHealthbar = new Rectangle(TILESIZE*enemyPercentageHealth,3, Color.RED);
 		return enemyHealthbar;
 	}
-	
+
 	public void cleanRemovedEnemiesfromGUI(ArrayList<Enemy> removeable, Pane foreground) {
 		for (int i = 0; i < removeable.size(); i++) {
         	Enemy anEnemy = removeable.get(i);
         	Node enemyUI = anEnemy.getNode();
         	foreground.getChildren().remove(enemyUI);
-        	extinguisher.play();
         }
 
 	}
-	
+
 	public void paintTowerOnGUI(Tower aDefender, Pane foreground) {
 		Rectangle rect = new Rectangle(TILESIZE,TILESIZE);
 		VBox container = new VBox();

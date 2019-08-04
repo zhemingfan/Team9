@@ -8,6 +8,7 @@ import enemies.Spirit;
 import javafx.scene.Node;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.media.AudioClip;
 import parents.Enemy;
 import parents.Point;
 import parents.Tower;

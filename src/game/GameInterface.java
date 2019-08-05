@@ -163,7 +163,9 @@ public class GameInterface extends Application {
             public void handle(long arg0) {
             	if ( frameCounter == 0 || frameCounter % ENEMYSPAWNRATE == 0) {
             		Enemy spawned = GAME.spawnEnemies();
-            		paintNewEnemy(spawned, foreground);
+            		if (spawned != null) {
+            			paintNewEnemy(spawned, foreground);
+            		}
             	}
 
 	           GAME.EnemiesAdvance(elapsedTime);

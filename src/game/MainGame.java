@@ -14,7 +14,7 @@ public class MainGame {
 
 	public enum GameMode{ SURVIVAL, STORY};
 	private static final double OFFSETX = 50, OFFSETY = 50;
-	private static final int MAX_WAVES_STORYMODE =  5;
+	private static final int MAX_WAVES_STORYMODE =  2;
 
 	private GameMode currentMode = GameMode.SURVIVAL;
 	private Map map = new Map();
@@ -60,7 +60,7 @@ public class MainGame {
 		}
 
 		if ( this.currentMode.equals(GameMode.STORY) ) {
-			if (waveCounter == MainGame.MAX_WAVES_STORYMODE) {
+			if (this.wonStoryMode()) {
 				isOver = true;
 			}
 		}
@@ -69,7 +69,8 @@ public class MainGame {
 	}
 
 	public boolean wonStoryMode() {
-		return ( !player.isKilled() ) && this.waveCounter == MainGame.MAX_WAVES_STORYMODE;
+		return ( !player.isKilled() ) && this.waveCounter == MainGame.MAX_WAVES_STORYMODE 
+				&& this.enemyList.size() == 0 && this.waveList.size() == 0;
 	}
 
 	public String getEndingCard() {
@@ -131,13 +132,21 @@ public class MainGame {
 	 */
 	public Enemy spawnEnemies() {
 		if (waveList.size() == 0) {
-			waveCounter += 1;
-			this.createEnemyList();
+			if (!(this.currentMode.equals(GameMode.STORY) && this.waveCounter == MainGame.MAX_WAVES_STORYMODE)) {
+				waveCounter += 1;
+				this.createEnemyList();
+				System.out.println(waveCounter);
+			}
 		}
-		Enemy anEnemy = this.waveList.get(waveList.size() - 1);
-		anEnemy.attachPath(map.getCheckPoints(OFFSETX, OFFSETY));
-		enemyList.add(anEnemy);
-		waveList.remove(anEnemy);
+		Enemy anEnemy = null;
+		if (waveList.size() != 0) {
+			anEnemy = this.waveList.get(waveList.size() - 1);
+			anEnemy.attachPath(map.getCheckPoints(OFFSETX, OFFSETY));
+			enemyList.add(anEnemy);
+			waveList.remove(anEnemy);
+		}
+		
+		System.out.println("Enemies remaining: " + waveList.size());
 		return anEnemy;
 	}
 	/**
@@ -166,7 +175,6 @@ public class MainGame {
 
 		};
 		enemyList.removeAll(toBeRemoved);
-
 		return toBeRemoved;
 	}
 

@@ -2,8 +2,14 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.PathElement;
 
 public class MainGame {
 	private static final double OFFSETX = 50, OFFSETY = 50;
@@ -129,17 +135,26 @@ public class MainGame {
 	/**
 	 * Have each defender find their target enemy and deal damage to the target 
 	 */
-	public ArrayList<Point[] > DefendersAttackEnemies() {
+	public ArrayList<Point[] > DefendersAttackEnemies(Pane foreground) {
 		ArrayList<Point[]> pairList = new ArrayList<Point[]>();
 		for (int i = 0; i < towerList.size(); i++) {
 			Tower aTower = towerList.get(i);
 			Enemy target = aTower.findTarget(enemyList);
+			
 			if (target != null) {
 				aTower.attack(target);
 				Point[] pair = new Point[] {aTower, target};
 				pairList.add(pair);
+				Line line = new Line(aTower.getXCoord() + 25, aTower.getYCoord() + 25, target.getXCoord(), target.getYCoord() + 25);
+	            line.setStroke(Color.BLUE);
+	            foreground.getChildren().add(line);	
+	            //System.out.println(foreground.getChildren());
 			}
+			//foreground.getChildren().remove(line);
+		
+			
 		}
+		System.out.println(pairList);
 		return pairList;
 	}
 	/*

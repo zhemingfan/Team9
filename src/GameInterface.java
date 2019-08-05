@@ -181,9 +181,20 @@ public class GameInterface extends Application {
 	           GAME.EnemiesAdvance(elapsedTime);
 	           
 	           if (frameCounter % 10 == 0) {
-	        	   GAME.DefendersAttackEnemies();
+	        	   GAME.DefendersAttackEnemies(foreground); 
 	        	   
-	           }
+
+	        		   }
+	        		   
+
+	        		 
+	        	  
+	        	   //get the coordinates
+	        	   //use a function to draw the line
+	    
+	           
+	         
+	           
 	           ArrayList<Enemy> KilledEnemies = GAME.removeKilledEnemies();
 	           ArrayList<Enemy> EnemiesReachedEnd = GAME.removeEnemiesReachedEnd();
 	          
@@ -226,9 +237,7 @@ public class GameInterface extends Application {
         	enemyUI.relocate(anEnemy.getXCoord(), anEnemy.getYCoord());
         	enemyUI.getParent();
     		Rectangle enemyHealthbar = updateHealthBars(anEnemy);
-    		enemyUI.getChildren().set(0, enemyHealthbar);
-        	
-        	
+    		enemyUI.getChildren().set(0, enemyHealthbar); //enemy is an array list.... so it's updating the 
         }
 	}
 	

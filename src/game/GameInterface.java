@@ -225,10 +225,10 @@ public class GameInterface extends Application {
             }
         };
         
-        //GameStartButtonHandler storyButtonHandler = new GameStartButtonHandler(survivalAnimator, root, startUpMenu, fireAlarm);
-        //GameStartButtonHandler survivalButtonHandler = new GameStartButtonHandler(survivalAnimator, root, startUpMenu, fireAlarm);
+        GameStartButtonHandler storyButtonHandler = new GameStartButtonHandler(storyAnimator, root, startUpMenu, fireAlarm);
+        GameStartButtonHandler survivalButtonHandler = new GameStartButtonHandler(survivalAnimator, root, startUpMenu, fireAlarm);
         
-        GameStartButtonHandler selectedButtonHandler = new GameStartButtonHandler(survivalAnimator, root, startUpMenu, fireAlarm);
+        //GameStartButtonHandler selectedButtonHandler = new GameStartButtonHandler(survivalAnimator, root, startUpMenu, fireAlarm);
         
         	
 		
@@ -248,8 +248,10 @@ public class GameInterface extends Application {
 		
 		Rectangle startButtonLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
         startButtonLayer.setFill(Color.WHITE);
-		Button startButton = new Button("Start");
-		startButton.setOnAction(selectedButtonHandler);	
+		Button startButton = new Button("Start Survival");
+		startButton.setOnAction(survivalButtonHandler);	
+		Button startButtonStory = new Button("Start Story");
+		startButtonStory.setOnAction(storyButtonHandler);
 		
 		chooseModeButton.getItems().addAll(storyButton, survivalButton);
 
@@ -264,7 +266,7 @@ public class GameInterface extends Application {
 		
 		chooseMapButtons.getChildren().addAll(zigzagMapButton, loopMapButton);
 		
-		initGameButtons.getChildren().addAll(chooseModeButton, chooseMapButtons, startButton);
+		initGameButtons.getChildren().addAll(chooseModeButton, chooseMapButtons, startButton, startButtonStory);
 		
 		
 		startUpMenu.getChildren().addAll(startButtonLayer, initGameButtons);

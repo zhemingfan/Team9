@@ -234,7 +234,7 @@ public class GameInterface extends Application {
 		
 		VBox initGameButtons = new VBox();
 		
-		
+		/*
 		MenuButton chooseModeButton = new MenuButton("Choose Play Mode:");
 		
 		ChooseModeHandler storyMode = new ChooseModeHandler(GAME , "STORY", chooseModeButton);
@@ -245,7 +245,7 @@ public class GameInterface extends Application {
 		storyButton.setOnAction(storyMode);
 		MenuItem survivalButton = new MenuItem("SURVIVAL MODE");
 		survivalButton.setOnAction(survivalMode);
-		
+		*/
 		Rectangle startButtonLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
         startButtonLayer.setFill(Color.WHITE);
 		Button startButton = new Button("Start Survival");
@@ -253,7 +253,7 @@ public class GameInterface extends Application {
 		Button startButtonStory = new Button("Start Story");
 		startButtonStory.setOnAction(storyButtonHandler);
 		
-		chooseModeButton.getItems().addAll(storyButton, survivalButton);
+		//chooseModeButton.getItems().addAll(storyButton, survivalButton);
 
 		HBox chooseMapButtons = new HBox();
 		ToggleGroup mapGroup = new ToggleGroup();
@@ -264,9 +264,11 @@ public class GameInterface extends Application {
 		loopMapButton.setToggleGroup(mapGroup);
 		zigzagMapButton.setToggleGroup(mapGroup);
 		
+		Label mapLabel = new Label("Select a Map");
+		
 		chooseMapButtons.getChildren().addAll(zigzagMapButton, loopMapButton);
 		
-		initGameButtons.getChildren().addAll(chooseModeButton, chooseMapButtons, startButton, startButtonStory);
+		initGameButtons.getChildren().addAll(/*chooseModeButton, */mapLabel, chooseMapButtons, startButtonStory, startButton);
 		
 		
 		startUpMenu.getChildren().addAll(startButtonLayer, initGameButtons);

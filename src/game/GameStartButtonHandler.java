@@ -23,9 +23,9 @@ public class GameStartButtonHandler implements EventHandler<ActionEvent> {
 	@Override
 	public void handle(ActionEvent event) {
 		if (ChooseMapHandler.mapWasChosen && ChooseModeHandler.modeWasChosen) {
-		aTimer.start();
-		fireAlarm.play();
-		root.getChildren().remove(startUpMenu);
+			aTimer.start();
+			fireAlarm.play();
+			root.getChildren().remove(startUpMenu);
 		}
 	}
 	

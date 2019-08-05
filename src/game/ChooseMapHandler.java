@@ -36,8 +36,8 @@ public class ChooseMapHandler implements EventHandler<ActionEvent> {
 				else if (grid[r][c].equals("r") ) rect.setFill(new ImagePattern(rockTile));
 				else rect.setFill(new ImagePattern(pathTile));
 				background.add(rect, c, r);
-		      }
-		    };	
+			}
+		};	
 	} 
 
 }

@@ -1,16 +1,12 @@
 package game;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
 
 import enemies.Fire;
 import enemies.Lava;
 import enemies.Spirit;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -29,10 +25,10 @@ import towers.PlaceTowerHandler;
 import towers.TowerIce;
 import towers.TowerWater;
 import towers.TowerWind;
-import towers.TrashTowerHandler;
 
 public class GameInterface extends Application {
 
+	
 	public static final int WINDOWWIDTH = 700, WINDOWHEIGHT = 500 ;
 	public static final int BoardWIDTH = 500, BoardHEIGHT = 500 ;
 	public static final int COLUMN = 10, ROW = 10;
@@ -97,27 +93,10 @@ public class GameInterface extends Application {
 
 		background.setPrefSize(BoardWIDTH, BoardHEIGHT);
 		foreground.setPrefSize(BoardWIDTH, BoardHEIGHT);
-		/*
-		// Get the Grid from MainGame to Draw Background
-		Map map = GAME.getMap();
-		String[][] grid = map.generateGrid();
-		// Setting up the background by reading in the Grid
-
-
-		for(int r = 0; r < 10; r++) {
-			for(int c = 0; c < 10; c++) {
-				Rectangle rect = new Rectangle(TILESIZE,TILESIZE);
-				if (grid[r][c].equals("-") ) rect.setFill(new ImagePattern(grassTile));
-				else if (grid[r][c].equals("p") ) rect.setFill(new ImagePattern(pathTile));
-				else if (grid[r][c].equals("r") ) rect.setFill(new ImagePattern(rockTile));
-				else rect.setFill(new ImagePattern(pathTile));
-				background.add(rect, c, r);
-		      }
-		    };
-		*/
-
+		
 		// Setting up the place tower button in the utilityPane
 		// PLACEHOLDER: add the Player stats area
+		
 	    Player playerObject = GAME.getPlayer();
 
 		// Health
@@ -150,7 +129,6 @@ public class GameInterface extends Application {
 		gold.getChildren().add(playerObject.getMoneyLabel());
 
 		// add the Button Handler after you guys have worked things out on that
-
 		Button placeWaterButton = new Button("", new ImageView(defenderWaterSprite));
 	    placeWaterButton.setPrefSize(TILESIZE*2, TILESIZE*2);
 	    placeWaterButton.setOnAction(new PlaceTowerHandler(placeWaterButton, mainboard, foreground,
@@ -165,10 +143,8 @@ public class GameInterface extends Application {
 		placeIceButton.setPrefSize(TILESIZE*2, TILESIZE*2);
 		placeIceButton.setOnAction(new PlaceTowerHandler(placeIceButton, mainboard, foreground,
 				new TowerIce(), GAME) );
-
-		Button trashButton = new Button("TRASH");
-		trashButton.setOnAction(new TrashTowerHandler(mainboard) );
-		utilityPane.getChildren().addAll(placeWaterButton, placeWindButton, placeIceButton, trashButton);
+		
+		utilityPane.getChildren().addAll(placeWaterButton, placeWindButton, placeIceButton);
 
 	    AnimationTimer animator = new AnimationTimer(){
 	    	int frameCounter = 0;
@@ -211,22 +187,29 @@ public class GameInterface extends Application {
 		startButton.setOnAction(new GameStartButtonHandler(animator, root, startUpMenu, fireAlarm));
 
 		VBox initGameButtons = new VBox();
-
-		HBox chooseModeButtons = new HBox();
-		Button storyButton = new Button("STORY MODE");
-		storyButton.setOnAction(new ChooseModeHandler(GAME , "STORY"));
-		Button survivalButton = new Button("SURVIVAL MODE");
-		survivalButton.setOnAction(new ChooseModeHandler(GAME, "SURVIVAL"));
-		chooseModeButtons.getChildren().addAll(storyButton, survivalButton);
+		
+		
+		MenuButton chooseModeButton = new MenuButton("Choose Play Mode:");
+		
+		MenuItem storyButton = new MenuItem("STORY MODE");
+		storyButton.setOnAction(new ChooseModeHandler(GAME , "STORY", chooseModeButton));
+		MenuItem survivalButton = new MenuItem("SURVIVAL MODE");
+		survivalButton.setOnAction(new ChooseModeHandler(GAME, "SURVIVAL", chooseModeButton));
+		
+		chooseModeButton.getItems().addAll(storyButton, survivalButton);
 
 		HBox chooseMapButtons = new HBox();
-		Button loopMapButton = new Button("", new ImageView(loopMap));
+		ToggleGroup mapGroup = new ToggleGroup();
+		ToggleButton loopMapButton = new ToggleButton("", new ImageView(loopMap));
 		loopMapButton.setOnAction(new ChooseMapHandler(background, "LOOPY", GAME ));
-		Button zigzagMapButton = new Button("", new ImageView(zigzagMap));
+		ToggleButton zigzagMapButton = new ToggleButton("", new ImageView(zigzagMap));
 		zigzagMapButton.setOnAction(new ChooseMapHandler(background, "ZIGZAG", GAME ));
+		loopMapButton.setToggleGroup(mapGroup);
+		zigzagMapButton.setToggleGroup(mapGroup);
+		
 		chooseMapButtons.getChildren().addAll(zigzagMapButton, loopMapButton);
-
-		initGameButtons.getChildren().addAll(chooseModeButtons, chooseMapButtons, startButton);
+		
+		initGameButtons.getChildren().addAll(chooseModeButton, chooseMapButtons, startButton);
 		startUpMenu.getChildren().addAll(startButtonLayer, initGameButtons);
 
         primaryStage.show();

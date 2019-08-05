@@ -5,9 +5,6 @@ import java.util.Random;
 import enemies.Fire;
 import enemies.Lava;
 import enemies.Spirit;
-import javafx.scene.Node;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.media.AudioClip;
 import parents.Enemy;
 import parents.Point;
@@ -24,7 +21,6 @@ public class MainGame {
 	private Player player = new Player();
 	private ArrayList<Tower> towerList = new ArrayList<Tower>();
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
-	private Point[] checkPoints = map.getCheckPoints(OFFSETX, OFFSETY);
 
 	public AudioClip extinguisher = new AudioClip(this.getClass().getResource("/sound/extinguisher.mp3").toString());
 
@@ -137,7 +133,6 @@ public class MainGame {
 		if (waveList.size() == 0) {
 			waveCounter += 1;
 			this.createEnemyList();
-			System.out.println(waveCounter);
 		}
 		Enemy anEnemy = this.waveList.get(waveList.size() - 1);
 		anEnemy.attachPath(map.getCheckPoints(OFFSETX, OFFSETY));

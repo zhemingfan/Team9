@@ -10,19 +10,15 @@ import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import parents.Tower;
 
 public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 	private static ArrayList<Button> buttonInstances = new  ArrayList<Button>();
-	private static ArrayList<PlaceTowerHandler> handlers = new ArrayList<PlaceTowerHandler>();
 	
 	private Button button = new Button();
 	private StackPane GUIactionArea = new StackPane();
@@ -30,6 +26,7 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 	private Tower toBeMade = new Tower();
 	private GridPane inputGrid = new GridPane();
 	private MainGame currentGame = new MainGame();
+	private int clicksCounter = 0;
 	
   	public Image defenderIce = new Image("/img/Defender_Ice.PNG");
   	public Image defenderWaterSprite = new Image("/img/Defender_WaterSprite.PNG");
@@ -53,24 +50,31 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 	
 	@Override
 	public void handle(ActionEvent event) {
-		toggleAllButtons(true);
-		   
-		Image cursorImg = defenderWaterSprite;
-		if (toBeMade instanceof TowerIce) {
-			cursorImg = defenderIce;
+		clicksCounter += 1;
+		if ( clicksCounter % 2 != 0) {  
+			toggleAllButtons();
+			Image cursorImg = defenderWaterSprite;
+			if (toBeMade instanceof TowerIce) {
+				cursorImg = defenderIce;
+			}
+			if (toBeMade instanceof TowerWater) {
+				cursorImg = defenderWaterSprite;
+			}
+			if (toBeMade instanceof TowerWind) {
+				cursorImg = defenderWind;
+			}
+			inputGrid.setCursor( new ImageCursor(cursorImg, 
+					cursorImg.getWidth()/2, cursorImg.getHeight()/2) );
+			
+			makeInputGrid();
+			addEventListenerToInputGrid();
+			GUIactionArea.getChildren().addAll(inputGrid);
+		} else {
+			if ( GUIactionArea.getChildren().contains(this.inputGrid) ) {
+				GUIactionArea.getChildren().remove(this.inputGrid);
+				toggleAllButtons();
+			}
 		}
-		if (toBeMade instanceof TowerWater) {
-			cursorImg = defenderWaterSprite;
-		}
-		if (toBeMade instanceof TowerWind) {
-			cursorImg = defenderWind;
-		}
-		inputGrid.setCursor( new ImageCursor(cursorImg, 
-				cursorImg.getWidth()/2, cursorImg.getHeight()/2) );
-		
-		makeInputGrid();
-		addEventListenerToInputGrid();
-		GUIactionArea.getChildren().addAll(inputGrid);
 
 	}
 	
@@ -108,17 +112,18 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 					
 					if (currentGame.canPurchaseandPlaceTower(toBeMade, row, column) ) {
 						// Add and update Player GUI
+						clicksCounter += 1;
 						currentGame.getMap().updateDefender(row, column);
 						Tower aDefender = new Tower();
 							
 						if (toBeMade instanceof TowerIce) {
 							aDefender = new TowerIce(column*GameInterface.OFFSETX, row*GameInterface.OFFSETY);
-							waterSplash.play();
+							iceCrack.play();
 
 						}
 						if (toBeMade instanceof TowerWater) {
 							aDefender = new TowerWater(column*GameInterface.OFFSETX, row*GameInterface.OFFSETY);
-							iceCrack.play();
+							waterSplash.play();
 
 						}
 						if (toBeMade instanceof TowerWind) {
@@ -135,7 +140,7 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 						
 						// Clean up
 						GUIactionArea.getChildren().remove(inputGrid);
-						toggleAllButtons(false);
+						toggleAllButtons();
 					}
 				}
 			}
@@ -145,21 +150,11 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 	}
 
 
-	
-	public boolean AllButtonsDisabled() {
-		boolean state = true;
-		for (Button aButton: buttonInstances) {
-			if (!aButton.isDisabled() ) {
-				state = false;
+	public void toggleAllButtons() {
+		for (Button aButton: PlaceTowerHandler.buttonInstances) {
+			if( !aButton.equals(this.button) ) {
+				aButton.setDisable(!aButton.isDisabled());
 			}
-		}
-		return state;
-	}
-	
-	public void toggleAllButtons(boolean bool) {
-		for (Button aButton: buttonInstances) {
-			aButton.setDisable(bool);
-
 		}
 	}
 	

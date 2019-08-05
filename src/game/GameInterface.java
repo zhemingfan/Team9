@@ -31,8 +31,8 @@ public class GameInterface extends Application {
 	public static void main(String[] args) {
 		Application.launch();
 	}
-	
-	
+
+
 	public static final int WINDOWWIDTH = 700, WINDOWHEIGHT = 500 ;
 	public static final int BoardWIDTH = 500, BoardHEIGHT = 500 ;
 	public static final int COLUMN = 10, ROW = 10;
@@ -96,10 +96,10 @@ public class GameInterface extends Application {
 
 		background.setPrefSize(BoardWIDTH, BoardHEIGHT);
 		foreground.setPrefSize(BoardWIDTH, BoardHEIGHT);
-		
+
 		// Setting up the place tower button in the utilityPane
 		// PLACEHOLDER: add the Player stats area
-		
+
 	    Player playerObject = GAME.getPlayer();
 
 		// Health
@@ -146,7 +146,7 @@ public class GameInterface extends Application {
 		placeIceButton.setPrefSize(TILESIZE*2, TILESIZE*2);
 		placeIceButton.setOnAction(new PlaceTowerHandler(placeIceButton, mainboard, foreground,
 				new TowerIce(), GAME) );
-		
+
 		utilityPane.getChildren().addAll(placeWaterButton, placeWindButton, placeIceButton);
 
 	    AnimationTimer survivalAnimator = new AnimationTimer(){
@@ -165,7 +165,7 @@ public class GameInterface extends Application {
 	        	   GAME.DefendersAttackEnemies();
 
 	           }
-	           
+
 	           //Removes the enemy sprites when the enemies either die or reach the end
 	           ArrayList<Enemy> KilledEnemies = GAME.removeKilledEnemies();
 	           ArrayList<Enemy> EnemiesReachedEnd = GAME.removeEnemiesReachedEnd();
@@ -177,7 +177,7 @@ public class GameInterface extends Application {
 	           playerObject.moneyLabel.setText(playerObject.toStringMoney());
 	           playerObject.getHealthLabel().setText(playerObject.toStringHealth());
 	           frameCounter += 1;
-	           
+
 	           System.out.println("I AM IN SURVIVAL MODE");
 	           if (GAME.isOver()) {
 	        	   this.stop();
@@ -186,7 +186,8 @@ public class GameInterface extends Application {
 	           }
             }
         };
-        
+
+				/////CHANGE THIS ONE, THIS IS JUST A COPY OF ABOVE RN
         AnimationTimer storyAnimator = new AnimationTimer(){
 	    	int frameCounter = 0;
 	    	double elapsedTime =  ENEMYSPEEDSCALAR;
@@ -203,7 +204,7 @@ public class GameInterface extends Application {
 	        	   GAME.DefendersAttackEnemies();
 
 	           }
-	           
+
 	           //Removes the enemy sprites when the enemies either die or reach the end
 	           ArrayList<Enemy> KilledEnemies = GAME.removeKilledEnemies();
 	           ArrayList<Enemy> EnemiesReachedEnd = GAME.removeEnemiesReachedEnd();
@@ -215,7 +216,7 @@ public class GameInterface extends Application {
 	           playerObject.moneyLabel.setText(playerObject.toStringMoney());
 	           playerObject.getHealthLabel().setText(playerObject.toStringHealth());
 	           frameCounter += 1;
-	           
+
 	           System.out.println("I AM IN STORY MODE");
 	           if (GAME.isOver()) {
 	        	   this.stop();
@@ -224,23 +225,23 @@ public class GameInterface extends Application {
 	           }
             }
         };
-        
+
         GameStartButtonHandler storyButtonHandler = new GameStartButtonHandler(storyAnimator, root, startUpMenu, fireAlarm);
         GameStartButtonHandler survivalButtonHandler = new GameStartButtonHandler(survivalAnimator, root, startUpMenu, fireAlarm);
-        
+
         //GameStartButtonHandler selectedButtonHandler = new GameStartButtonHandler(survivalAnimator, root, startUpMenu, fireAlarm);
-        
-        	
-		
+
+
+
 		VBox initGameButtons = new VBox();
-		
+
 		/*
 		MenuButton chooseModeButton = new MenuButton("Choose Play Mode:");
-		
+
 		ChooseModeHandler storyMode = new ChooseModeHandler(GAME , "STORY", chooseModeButton);
 		ChooseModeHandler survivalMode = new ChooseModeHandler(GAME, "SURVIVAL", chooseModeButton);
-		ChooseModeHandler selectedMode;		
-		
+		ChooseModeHandler selectedMode;
+
 		MenuItem storyButton = new MenuItem("STORY MODE");
 		storyButton.setOnAction(storyMode);
 		MenuItem survivalButton = new MenuItem("SURVIVAL MODE");
@@ -249,10 +250,10 @@ public class GameInterface extends Application {
 		Rectangle startButtonLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
         startButtonLayer.setFill(Color.WHITE);
 		Button startButton = new Button("Start Survival");
-		startButton.setOnAction(survivalButtonHandler);	
+		startButton.setOnAction(survivalButtonHandler);
 		Button startButtonStory = new Button("Start Story");
 		startButtonStory.setOnAction(storyButtonHandler);
-		
+
 		//chooseModeButton.getItems().addAll(storyButton, survivalButton);
 
 		HBox chooseMapButtons = new HBox();
@@ -263,14 +264,14 @@ public class GameInterface extends Application {
 		zigzagMapButton.setOnAction(new ChooseMapHandler(background, "ZIGZAG", GAME ));
 		loopMapButton.setToggleGroup(mapGroup);
 		zigzagMapButton.setToggleGroup(mapGroup);
-		
+
 		Label mapLabel = new Label("Select a Map");
-		
+
 		chooseMapButtons.getChildren().addAll(zigzagMapButton, loopMapButton);
-		
+
 		initGameButtons.getChildren().addAll(/*chooseModeButton, */mapLabel, chooseMapButtons, startButtonStory, startButton);
-		
-		
+
+
 		startUpMenu.getChildren().addAll(startButtonLayer, initGameButtons);
 
 

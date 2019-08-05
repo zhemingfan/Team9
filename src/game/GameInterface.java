@@ -7,6 +7,8 @@ import enemies.Lava;
 import enemies.Spirit;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -41,7 +43,9 @@ public class GameInterface extends Application {
 
 	public MainGame GAME = new MainGame();
 	public Player playerObject = GAME.getPlayer();
-
+	public Scene startUpScene, gamePlayScene;
+	
+	
 	public Image enemyFire = new Image("/img/Enemy_Fire.PNG");
 	public Image enemySpirit = new Image("/img/Enemy_Spirit.PNG");
 	public Image enemyLava = new Image("/img/Enemy_Lava.PNG");
@@ -65,7 +69,13 @@ public class GameInterface extends Application {
 	public static void main(String[] args) {
 		Application.launch();
 	}
-	public void start(Stage primaryStage) {
+	
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		initGame(primaryStage);
+	}
+	
+	public void initGame(Stage primaryStage) {
 
 		// The basic Layout of the Screen
 		StackPane root = new StackPane();
@@ -175,7 +185,7 @@ public class GameInterface extends Application {
 
 	           if (GAME.isOver()) {
 	        	   this.stop();
-	        	   Pane endTitle = createEndScreen();
+	        	   Pane endTitle = createEndScreen(primaryStage);
 	        	   root.getChildren().add(endTitle);
 	           }
             }
@@ -216,18 +226,25 @@ public class GameInterface extends Application {
 
 	}
 
-	public Pane createEndScreen() {
+	public Pane createEndScreen(Stage primaryStage) {
 		Pane endScreen = new Pane();
-		endScreen.setPrefSize(BoardWIDTH, BoardHEIGHT);
+		endScreen.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
 		Rectangle endBGLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
         endBGLayer.setFill(Color.WHITE);
         endBGLayer.setOpacity(0.75);
 		endScreen.setPrefSize(BoardWIDTH, BoardHEIGHT);
 		Label endTitleCard = new Label( GAME.getEndingCard());
-
-		endScreen.getChildren().addAll(endBGLayer, endTitleCard);
-		endTitleCard.relocate( WINDOWWIDTH/2 - endTitleCard.getWidth(),
-				WINDOWHEIGHT/2 + endTitleCard.getHeight());
+		Button restartButton = new Button("NEW GAME?");
+		restartButton.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent event) {
+					// TODO Auto-generated method stub
+					GAME = new MainGame();
+					initGame(primaryStage);
+				}
+			}
+		);
+		endScreen.getChildren().addAll(endBGLayer, endTitleCard, restartButton);
+		restartButton.relocate(WINDOWWIDTH/2, WINDOWHEIGHT/2);
 		return endScreen;
 	}
 
@@ -284,4 +301,5 @@ public class GameInterface extends Application {
 		foreground.getChildren().add(aDefender.getNode());
 		aDefender.getNode().relocate(aDefender.getXCoord(), aDefender.getYCoord());
 	}
+	
 }

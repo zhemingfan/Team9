@@ -7,7 +7,7 @@ public class Point{
   private double xCoord;
   private double yCoord;
   private Image sprite;
-  private VBox UIobject;
+  private Node UIobject;
   public Point() {
 	  
   }
@@ -37,11 +37,11 @@ public class Point{
    * @param aUIobject
    */
   
-  public void setNode(VBox aUIobject) {
+  public void setNode(Node aUIobject) {
 	  UIobject = aUIobject;
   }
   
-  public VBox getNode() {
+  public Node getNode() {
 	  return UIobject;
   }
   

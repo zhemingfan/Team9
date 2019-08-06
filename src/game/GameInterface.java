@@ -22,6 +22,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.*;
 import javafx.stage.Stage;
 import parents.Enemy;
+import parents.Point;
 import parents.Tower;
 import towers.PlaceTowerHandler;
 import towers.TowerIce;
@@ -37,7 +38,7 @@ public class GameInterface extends Application {
 	public static final int OFFSETX = 50, OFFSETY = 50;
 	public static final int TILESIZE = 50;
 
-	public static double ENEMYSPEEDSCALAR = 1.0;
+	public static double ENEMYSPEEDSCALAR = 0.5;
 	public static int TOWERATTACKRATE = 10; //one per 10 frames
 	public static int ENEMYSPAWNRATE = 50; //one per 50 frames
 
@@ -58,7 +59,10 @@ public class GameInterface extends Application {
   	public Image woodBlock = new Image("/img/woodBlock.jpeg");
   	public Image loopMap = new Image("/img/LoopyMap.png");
   	public Image zigzagMap = new Image("/img/ZigZagMap.png");
-
+  	public Image windProj = new Image("/img/projectileWind.png");
+  	public Image waterProj = new Image("/img/projectileWater.png");
+  	public Image iceProj = new Image("/img/projectileWind.png");
+  	
   	public AudioClip fireAlarm = new AudioClip(this.getClass().getResource("/sound/fireAlarm.mp3").toString());
   	public AudioClip waterSplash = new AudioClip(this.getClass().getResource("/sound/waterSplash.mp3").toString());
   	public AudioClip thunderStorm = new AudioClip(this.getClass().getResource("/sound/thunderStorm.mp3").toString());
@@ -169,11 +173,13 @@ public class GameInterface extends Application {
             	}
 
 	           GAME.EnemiesAdvance(elapsedTime);
-
+	           ArrayList<Point[]> pairList = new ArrayList<Point[]>();
+	           
 	           if (frameCounter % TOWERATTACKRATE == 0) {
-	        	   GAME.DefendersAttackEnemies();
-
+	        	   pairList = GAME.DefendersAttackEnemies();
 	           }
+	           paintEnemyTrackers(foreground, GAME.getTowerList());
+	           
 	           ArrayList<Enemy> KilledEnemies = GAME.removeKilledEnemies();
 	           ArrayList<Enemy> EnemiesReachedEnd = GAME.removeEnemiesReachedEnd();
 
@@ -239,8 +245,7 @@ public class GameInterface extends Application {
 		Button restartButton = new Button("NEW GAME?");
 		restartButton.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
-					// TODO Auto-generated method stub
-					GAME = new MainGame();
+					cleanUp();
 					initGame(primaryStage);
 				}
 			}
@@ -249,7 +254,30 @@ public class GameInterface extends Application {
 		restartButton.relocate(WINDOWWIDTH/2, WINDOWHEIGHT/2);
 		return endScreen;
 	}
-
+	
+	public void cleanUp() {
+		GAME = new MainGame();
+		ChooseModeHandler.modeWasChosen = false;
+		ChooseMapHandler.mapWasChosen = false;
+	}
+	
+	public void paintEnemyTrackers(Pane foreground, ArrayList<Tower> towerList) {
+		for (Tower aTower: towerList) {
+			Enemy target = aTower.getTarget();
+			Node tracker = aTower.getNode();
+			if (target != null && !target.isKilled()) {
+				if (tracker instanceof Line) {
+					tracker.setOpacity(1.0);
+					((Line) tracker).setStartX(aTower.getXCoord() + TILESIZE/2);
+					((Line) tracker).setStartY(aTower.getYCoord() + TILESIZE/2 );
+					((Line) tracker).setEndX(target.getXCoord() + TILESIZE/2);
+					((Line) tracker).setEndY(target.getYCoord() + TILESIZE/2);
+				}
+			} else {
+				tracker.setOpacity(0);;
+			}
+		}
+	}
 	public void paintNewEnemy(Enemy anEnemy, Pane foreground) {
 		VBox container = new VBox();
 		anEnemy.setNode(container);
@@ -269,11 +297,14 @@ public class GameInterface extends Application {
 	public void moveEnemiesOnGUI(Pane foreground) {
 		for (int i = 0; i < GAME.getEnemyList().size(); i++) {
         	Enemy anEnemy = GAME.getEnemyList().get(i);
-        	VBox enemyUI = anEnemy.getNode();
+        	Node enemyUI = anEnemy.getNode();
         	enemyUI.relocate(anEnemy.getXCoord(), anEnemy.getYCoord());
         	enemyUI.getParent();
     		Rectangle enemyHealthbar = updateHealthBars(anEnemy);
-    		enemyUI.getChildren().set(0, enemyHealthbar);
+    		if (enemyUI instanceof VBox) {
+    			((VBox)enemyUI).getChildren().set(0, enemyHealthbar);
+    		}
+    		
         }
 	}
 
@@ -294,14 +325,25 @@ public class GameInterface extends Application {
 
 	public void paintTowerOnGUI(Tower aDefender, Pane foreground) {
 		Rectangle rect = new Rectangle(TILESIZE,TILESIZE);
-		VBox container = new VBox();
-		container.getChildren().add(rect);
-		aDefender.setNode(container);
-		if (aDefender instanceof TowerIce) rect.setFill(new ImagePattern(defenderIce));
-		if (aDefender instanceof TowerWater) rect.setFill(new ImagePattern(defenderWaterSprite));
-		if (aDefender instanceof TowerWind) rect.setFill(new ImagePattern(defenderWind));
-		foreground.getChildren().add(aDefender.getNode());
-		aDefender.getNode().relocate(aDefender.getXCoord(), aDefender.getYCoord());
+		Line tracker = new Line();
+		tracker.setStrokeWidth(2.0);
+		tracker.setOpacity(0.0);
+		aDefender.setNode(tracker);
+		if (aDefender instanceof TowerIce) {
+			rect.setFill(new ImagePattern(defenderIce));
+			tracker.setStroke(Color.ALICEBLUE);
+		}
+		if (aDefender instanceof TowerWater) {
+			rect.setFill(new ImagePattern(defenderWaterSprite));
+			tracker.setStroke(Color.DEEPSKYBLUE);
+		}
+		if (aDefender instanceof TowerWind) {
+			rect.setFill(new ImagePattern(defenderWind));
+			tracker.setStroke(Color.PALEGOLDENROD);
+		}
+		foreground.getChildren().addAll(aDefender.getNode(), rect);
+		rect.relocate(aDefender.getXCoord(), aDefender.getYCoord());
+		
 	}
 	
 }

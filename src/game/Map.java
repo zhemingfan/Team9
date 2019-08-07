@@ -15,6 +15,25 @@ public class Map{
   private int ROW;
   private String[][] gridMap = new String[ROW][COLUMN];
   
+  /**
+   * Generates a (ROW)x(COLUMN) map which will generate a 2D array that represents the background to be painted on GUI.
+   * Example:
+   *        r 0 r - - - - r - -
+   *        - p - - r - - - - -
+   *        - 1 p p p p p p 2 -
+   *        - - - r - - - - p -
+   *        - 4 p p p p p p 3 -
+   *        r p - - - - - - r -
+   *        - 5 p p p p p p 6 -
+   *        - - r - - - - - p -
+   *        - 8 p p p p p p 7 r
+   *        - - r - - r - - - -
+   * 0 => n : check points, including start and end
+   * p : path
+   * c : check point
+   * - : tile where defense can be placed
+   * D : defender
+   */
   public Map() {
     COLUMN = 10;
     ROW = 10;
@@ -33,32 +52,19 @@ public class Map{
     	};
     gridMap = temp;
   }
+ 
   /**
-   * Generates a (ROW)x(COLUMN) grid.
-   *        r 0 r - - - - r - -
-   *        - p - - r - - - - -
-   *        - 1 p p p p p p 2 -
-   *        - - - r - - - - p -
-   *        - 4 p p p p p p 3 -
-   *        r p - - - - - - r -
-   *        - 5 p p p p p p 6 -
-   *        - - r - - - - - p -
-   *        - 8 p p p p p p 7 r
-   *        - - r - - r - - - -
-   * 0 => n : check points, including start and end
-   * p : path
-   * c : check point
-   * - : tile where defense can be placed
-   * D : defender
-   * 
-   * @return String[][]
+   * Returns the 2D array that represents the background to be painted on GUI.
+   * @return The 2D array that represents the background to be painted on GUI.
    */
-   
   public String[][] generateGrid() {
     
     return gridMap;
   }
   
+  /**
+   * Changes the 2D array gridMap if the player chooses ZigZag as their map.
+   */
   public void makeZigZagGrid() {
 	  String[][] temp = { 
 				{"r","s","r","-","-","-","-","r","-","-",},
@@ -74,14 +80,16 @@ public class Map{
 	    	};
 	   gridMap = temp;
   }
-  
+  /**
+   * Changes the 2D array gridMap if the player chooses Loopy as their map.
+   */
   public void makeLoopyGrid() {
 	  String[][] alternate = { 
 			{"r","-","-","r","-","-","-","-","r","-",},
 			{"-","1","p","p","2","-","8","p","7","-",},
-			{"-","p","-","-","p","-","p","-","p","-",},
+			{"r","p","-","-","p","-","p","-","p","-",},
 			{"s","0","r","-","p","-","p","r","p","-",},
-			{"-","-","-","-","p","-","p","-","p","-",},
+			{"r","-","-","-","p","-","p","-","p","-",},
 			{"-","5","p","p","p","p","p","p","6","-",},
 			{"-","p","-","r","p","-","p","r","-","-",},
 			{"-","4","p","p","3","-","p","-","-","-",},
@@ -92,24 +100,31 @@ public class Map{
     gridMap = alternate;
   }
   
+  /**
+   * Returns the number of columns of the 2D array gridMap.
+   * @return the number of columns of the 2D array gridMap
+   */
   public int getColumn() {
 	  return COLUMN;
   }
-  
+  /**
+   * Returns the number of rows of the 2D array gridMap.
+   * @return the number of rows of the 2D array gridMap
+   */
   public int getRow() {
 	  return ROW;
   }
   /**
-   * Check if the tile on the grid is "-" and can have a tower put on it
+   * Check if the tile on the grid is "-" at given row and column and  therefore can have a tower put on it.
    * @param row
    * @param column
-   * @return boolean
+   * @return Whether player can place a tower at given row and column 
    */
   public boolean canPlaceDefense(int row, int column) {
 	  return ( gridMap[row][column].equals("-") );
   }
   /**
-   * Update the grid at specified row and column to "D" so that this tile cannot have defender put on it anymore
+   * Update the grid at specified row and column to "D" so that this tile cannot have defender put on it anymore.
    * @param row
    * @param column
    */
@@ -120,13 +135,13 @@ public class Map{
   }
   
   /**
-   * Generate the array with all the check points. Takes in "offset" to convert the rows and columns
-   * to x and y coordinates.
-   * i.e.: row: 1, column: 1. The UI is 10 tiles by 10 tiles, each tile is 50 by 50px.
+   * Generates and returns the array with all the check points that enemies have to move to on the map.
+   * Takes in "offset" to convert the rows and columns to x and y coordinates.
+   * Example: row: 1, column: 1. The UI is 10 tiles by 10 tiles, each tile is 50 by 50px.
    * 	Thus, the x and y coordinates is (50, 50).
    * @param offsetX
    * @param offsetY
-   * @return Point[]
+   * @return The array with all the check points that enemies have to move to on the map.
    */
   public Point[] getCheckPoints(double offsetX, double offsetY) {
 	  // This portion finds out how many checkpoints we have and create an array of corresponding size.
@@ -157,10 +172,10 @@ public class Map{
   }
   
   /**
-   * Return the start point where enemies enter
+   * Returns the start point where enemies enter.
    * @param offsetX
    * @param offsetY
-   * @return
+   * @return The start where enemies enter.
    */
   public Point getStartPoint(double offsetX, double offsetY) {
 	  Point start = new Point(0,0);
@@ -178,10 +193,10 @@ public class Map{
   }
   
   /**
-   * Return the end point where the enemies will damage the Player and disappear
+   * Returns the end point where the enemies will damage the Player and disappear
    * @param offsetX
    * @param offsetY
-   * @return
+   * @return the end point where the enemies will damage the Player and disappear.
    */
   public Point getEndPoint(double offsetX, double offsetY) {
 	  int end = this.getCheckPoints(offsetX, offsetY).length;
@@ -204,22 +219,5 @@ public class Map{
   System.out.println(view);
   return view;
   }
-  
-  public static void main(String[] args) {
-	Map map = new Map();
-	map.generateGrid();
-    System.out.println(map.display());
-    
-    Point start = map.getStartPoint(50, 50);
-    System.out.println( start.toString() );
-    
-    Point end = map.getEndPoint(50, 50);
-    System.out.println( end.toString()  + "\n" );
-    
-    for (Point x: map.getCheckPoints(50, 50)) {
-    	System.out.println(x.toString());
-    }
-    
-  }
-  
+
 }

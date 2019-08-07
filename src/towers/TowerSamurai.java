@@ -15,4 +15,8 @@ public class TowerSamurai extends Tower{
 		range = 55;
 		price = 100;
 	}
+	
+	public String toString() {
+		return "H2O SAMURAI\n" + super.toString();
+	}
 }

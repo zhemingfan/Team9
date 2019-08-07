@@ -25,7 +25,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import parents.Enemy;
-import parents.Point;
 import parents.Tower;
 import spells.CastSpellHandler;
 import spells.RainSpell;
@@ -121,13 +120,12 @@ public class GameInterface extends Application {
 
 		// Setting up the place tower button in the utilityPane
 		// PLACEHOLDER: add the Player stats area
-
+		utilityPane.setAlignment(Pos.CENTER);
 	    Player playerObject = GAME.getPlayer();
 
 		// Health
 		HBox health = new HBox(); //make the Hbox so that you can set a left and right thing
 		utilityPane.getChildren().add(health);
-
 		playerObject.setHealthLabel();
 		Label stats_health = new Label("Player's Health   ");
 		stats_health.setFont(Font.font("Verdana",FontWeight.BOLD,12));
@@ -164,7 +162,8 @@ public class GameInterface extends Application {
 		gold.getChildren().add(stats_gold);
 		gold.getChildren().add(playerObject.getMoneyLabel());
 
-		// add the Button Handler after you guys have worked things out on that
+		////////SIDE MENU BUTTONS BELOW//////////////
+		
 		HBox waterLabel = new HBox();
 		Label waterDescription = new Label(new TowerWater().toString()); //The text describing cost, damage, etc
 		waterDescription.setFont(Font.font("Verdana",FontWeight.BOLD,12)); //Styling the text described above
@@ -204,7 +203,7 @@ public class GameInterface extends Application {
 		placeSamuraiButton.setOnAction(new PlaceTowerHandler(placeSamuraiButton, mainboard, foreground,
 				new TowerSamurai(), GAME));
 		samuraiLabel.getChildren().addAll(placeSamuraiButton, samuraiDescription);
-		
+
 		HBox rainSpellLabel = new HBox();
 		Label rainSpellDescription = new Label(new RainSpell().toString());
 		rainSpellDescription.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
@@ -213,7 +212,7 @@ public class GameInterface extends Application {
 		placeRainButton.setPrefSize(TILESIZE*1.5, TILESIZE*1.5); //Spells are slightly smaller than the tower buttons
 		placeRainButton.setOnAction(new CastSpellHandler(GAME));
 		rainSpellLabel.getChildren().addAll(placeRainButton, rainSpellDescription);
-		
+
 		utilityPane.getChildren().addAll(waterLabel, iceLabel, windLabel, samuraiLabel, rainSpellLabel);
 
 	    AnimationTimer animator = new AnimationTimer(){
@@ -229,10 +228,9 @@ public class GameInterface extends Application {
             	}
 
 	           GAME.EnemiesAdvance(elapsedTime);
-	           ArrayList<Point[]> pairList = new ArrayList<Point[]>();
 
 	           if (frameCounter % TOWERATTACKRATE == 0) {
-	        	   pairList = GAME.DefendersAttackEnemies();
+	        	   GAME.DefendersAttackEnemies();
 	           }
 	           paintEnemyTrackers(foreground, GAME.getTowerList());
 
@@ -259,16 +257,46 @@ public class GameInterface extends Application {
 	           }
             }
         };
-        
+
+
+        Button pauseButton = new Button("PAUSE");
+        pauseButton.setOnAction(new EventHandler<ActionEvent>() {
+			int clickCounter = 0;
+			public void handle(ActionEvent event) {
+				clickCounter += 1;
+				if (clickCounter%2 != 0 ) {
+					animator.stop();
+					pauseButton.setText("RESUME");
+
+				} else {
+					animator.start();
+					pauseButton.setText("PAUSE");
+				}
+
+			}
+        });
+
+        Button quitButton = new Button("QUIT");
+        quitButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			public void handle(ActionEvent event) {
+				animator.stop();
+	        	Pane endTitle = createEndScreen(primaryStage);
+	        	root.getChildren().add(endTitle);
+			}
+        });
+
+        utilityPane.getChildren().addAll(pauseButton, quitButton);
+
         Rectangle startButtonLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
         startButtonLayer.setFill(new ImagePattern(gameStartBG));
-        
+
         Button startStoryButton = new Button("Start Story");
         startStoryButton.setOnAction(new GameStartButtonHandler(GAME, "STORY", animator, root, startUpMenu, fireAlarm));
         Button startSurvivalButton = new Button("Start Survival");
-        startSurvivalButton.setOnAction(new GameStartButtonHandler(GAME, "SURVIVAL", 
+        startSurvivalButton.setOnAction(new GameStartButtonHandler(GAME, "SURVIVAL",
         													animator, root, startUpMenu, fireAlarm));
-        
+
 		//Button startButton = new Button("Start");
 		//startButton.setOnAction(new GameStartButtonHandler(animator, root, startUpMenu, fireAlarm));
 
@@ -305,6 +333,11 @@ public class GameInterface extends Application {
 
 	}
 
+	/**
+	 * Sets up an ending screen with the player's results and a restart button that will initiate a new game if pressed.
+	 * @param primaryStage
+	 * @return the ending screen if the game is over or if the player chooses to quit.
+	 */
 	public Pane createEndScreen(Stage primaryStage) {
 		Pane endScreen = new Pane();
 		endScreen.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
@@ -326,12 +359,59 @@ public class GameInterface extends Application {
 		return endScreen;
 	}
 
+	/**
+	 * Creates an entirely new game and resets the state of mode and map to unchosen to require fresh input from player.
+	 */
 	public void cleanUp() {
 		GAME = new MainGame();
 		ChooseModeHandler.modeWasChosen = false;
 		ChooseMapHandler.mapWasChosen = false;
 	}
 
+	/**
+	 * Paints a new Enemy on the foreground when an enemy is spawned.
+	 * @param anEnemy
+	 * @param foreground
+	 */
+	public void paintNewEnemy(Enemy anEnemy, Pane foreground) {
+		VBox container = new VBox();
+		anEnemy.setNode(container);
+		Rectangle enemyHealthbar = updateHealthBars(anEnemy);
+
+		Rectangle rect = new Rectangle(TILESIZE,TILESIZE);
+		if (anEnemy instanceof Fire) rect.setFill(new ImagePattern(enemyFire));
+		if (anEnemy instanceof Lava) rect.setFill(new ImagePattern(enemyLava));
+		if (anEnemy instanceof Spirit) rect.setFill(new ImagePattern(enemySpirit));
+		if (anEnemy instanceof Demon) rect.setFill(new ImagePattern(enemyDemon));
+
+		container.getChildren().addAll(enemyHealthbar, rect);
+
+		foreground.getChildren().add(anEnemy.getNode());
+	}
+
+	/**
+	 * Moves current enemies'sprites on the foreground.
+	 * @param foreground
+	 */
+	public void moveEnemiesOnGUI(Pane foreground) {
+		for (int i = 0; i < GAME.getEnemyList().size(); i++) {
+        	Enemy anEnemy = GAME.getEnemyList().get(i);
+        	Node enemyUI = anEnemy.getNode();
+        	enemyUI.relocate(anEnemy.getXCoord(), anEnemy.getYCoord());
+        	enemyUI.getParent();
+    		Rectangle enemyHealthbar = updateHealthBars(anEnemy);
+    		if (enemyUI instanceof VBox) {
+    			((VBox)enemyUI).getChildren().set(0, enemyHealthbar);
+    		}
+
+        }
+	}
+
+	/**
+	 * Creates a line on GUI connecting a tower to the enemy it is targeting.
+	 * @param foreground
+	 * @param towerList
+	 */
 	public void paintEnemyTrackers(Pane foreground, ArrayList<Tower> towerList) {
 		for (Tower aTower: towerList) {
 			Enemy target = aTower.getTarget();
@@ -349,42 +429,23 @@ public class GameInterface extends Application {
 			}
 		}
 	}
-	public void paintNewEnemy(Enemy anEnemy, Pane foreground) {
-		VBox container = new VBox();
-		anEnemy.setNode(container);
-		Rectangle enemyHealthbar = updateHealthBars(anEnemy);
 
-		Rectangle rect = new Rectangle(TILESIZE,TILESIZE);
-		if (anEnemy instanceof Fire) rect.setFill(new ImagePattern(enemyFire));
-		if (anEnemy instanceof Lava) rect.setFill(new ImagePattern(enemyLava));
-		if (anEnemy instanceof Spirit) rect.setFill(new ImagePattern(enemySpirit));
-		if (anEnemy instanceof Demon) rect.setFill(new ImagePattern(enemyDemon));
-
-		container.getChildren().addAll(enemyHealthbar, rect);
-
-		foreground.getChildren().add(anEnemy.getNode());
-	}
-
-
-	public void moveEnemiesOnGUI(Pane foreground) {
-		for (int i = 0; i < GAME.getEnemyList().size(); i++) {
-        	Enemy anEnemy = GAME.getEnemyList().get(i);
-        	Node enemyUI = anEnemy.getNode();
-        	enemyUI.relocate(anEnemy.getXCoord(), anEnemy.getYCoord());
-        	enemyUI.getParent();
-    		Rectangle enemyHealthbar = updateHealthBars(anEnemy);
-    		if (enemyUI instanceof VBox) {
-    			((VBox)enemyUI).getChildren().set(0, enemyHealthbar);
-    		}
-
-        }
-	}
-
+	/**
+	 * Creates a rectangle that represents the enemies' current health.
+	 * @param anEnemy
+	 * @return the health bar for the enemy
+	 */
 	public Rectangle updateHealthBars(Enemy anEnemy) {
 		double enemyPercentageHealth = (anEnemy.getEnemyHealth()/anEnemy.getMaxHealth()) * 1;
 		Rectangle enemyHealthbar = new Rectangle(TILESIZE*enemyPercentageHealth,3, Color.RED);
 		return enemyHealthbar;
 	}
+
+	/**
+	 * Removes the sprite of dead enemies and enemies which have reached the end from the GUI.
+	 * @param removeable
+	 * @param foreground
+	 */
 
 	public void cleanRemovedEnemiesfromGUI(ArrayList<Enemy> removeable, Pane foreground) {
 		for (int i = 0; i < removeable.size(); i++) {
@@ -394,7 +455,11 @@ public class GameInterface extends Application {
         }
 
 	}
-
+	/**
+	 * Creates sprite for a tower on the foreground, including the picture that represents the tower and a line which will connect with an enemy when the tower finds a target.
+	 * @param aDefender
+	 * @param foreground
+	 */
 	public void paintTowerOnGUI(Tower aDefender, Pane foreground) {
 		Rectangle rect = new Rectangle(TILESIZE,TILESIZE);
 		Line tracker = new Line();

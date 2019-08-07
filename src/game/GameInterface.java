@@ -149,22 +149,33 @@ public class GameInterface extends Application {
 		gold.getChildren().add(playerObject.getMoneyLabel());
 
 		// add the Button Handler after you guys have worked things out on that
+		HBox waterLabel = new HBox();
+		Label waterDescription = new Label("Range: 50\n"+"Damage: 10\n"+"Price: 10\n");
 		Button placeWaterButton = new Button("", new ImageView(defenderWaterSprite));
 	    placeWaterButton.setPrefSize(TILESIZE*2, TILESIZE*2);
 	    placeWaterButton.setOnAction(new PlaceTowerHandler(placeWaterButton, mainboard, foreground,
 	    		new TowerWater(), GAME) );
+	   waterLabel.getChildren().addAll(placeWaterButton, waterDescription);
 
+		HBox windLabel = new HBox();
+		Label windDescription = new Label("Range: 75\n"+"Price: 15\n");
 	    Button placeWindButton = new Button("", new ImageView(defenderWind));
 		placeWindButton.setPrefSize(TILESIZE*2, TILESIZE*2);
 		placeWindButton.setOnAction(new PlaceTowerHandler(placeWindButton, mainboard, foreground,
 				new TowerWind(), GAME ) );
+		windLabel.getChildren().addAll(placeWindButton, windDescription);
 
+		HBox iceLabel = new HBox();
+		Label iceDescription = new Label("Range: 100\n"+"Damage: 20\n"+"Price: 20\n");
 		Button placeIceButton = new Button("", new ImageView(defenderIce));
 		placeIceButton.setPrefSize(TILESIZE*2, TILESIZE*2);
 		placeIceButton.setOnAction(new PlaceTowerHandler(placeIceButton, mainboard, foreground,
 				new TowerIce(), GAME) );
+		iceLabel.getChildren().addAll(placeIceButton, iceDescription);
 
-		utilityPane.getChildren().addAll(placeWaterButton, placeWindButton, placeIceButton);
+
+
+		utilityPane.getChildren().addAll(waterLabel, windLabel, iceLabel);
 
 	    AnimationTimer animator = new AnimationTimer(){
 	    	int frameCounter = 0;

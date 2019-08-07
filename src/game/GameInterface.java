@@ -21,6 +21,7 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import parents.Enemy;
 import parents.Point;
@@ -226,6 +227,7 @@ public class GameInterface extends Application {
             }
         };
         
+        
         Button pauseButton = new Button("PAUSE");
         pauseButton.setOnAction(new EventHandler<ActionEvent>() {
 			int clickCounter = 0;
@@ -233,8 +235,11 @@ public class GameInterface extends Application {
 				clickCounter += 1;
 				if (clickCounter%2 != 0 ) {
 					animator.stop();
+					pauseButton.setText("RESUME");
+					
 				} else {
 					animator.start();
+					pauseButton.setText("PAUSE");
 				}
 				
 			}

@@ -9,6 +9,8 @@ PRE-REQUISITES
 To best experience FireForce No.9 we recommend using Eclipse to run the project. The Eclipse project will need to have the JUNIT 4 
 library.
 
+The Final GUI version is located in this master branch and the final Text-Based Console version is in the branch TextBasedVersion-final.
+
 GETTING STARTED
 1. Make a new project in Eclipse and add the JUNIT 4 library. 
 2. Download the repo from https://github.com/zhemingfan/Team9 as a zip file and extract the contents to a new folder. 

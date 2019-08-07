@@ -20,6 +20,8 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import parents.Enemy;
 import parents.Point;
@@ -125,12 +127,18 @@ public class GameInterface extends Application {
 
 		playerObject.setHealthLabel();
 		Label stats_health = new Label("Player's Health   ");
+		stats_health.setFont(Font.font("Verdana",FontWeight.BOLD,12));
+		stats_health.setTextFill(Color.BLACK);
 		stats_health.setAlignment(Pos.BASELINE_RIGHT);
+		playerObject.getHealthLabel().setFont(Font.font("Verdana",FontWeight.BOLD,12));
+		playerObject.getHealthLabel().setTextFill(Color.BLACK);
 
 		health.getChildren().addAll(stats_health, playerObject.getHealthLabel());
 
 		//Gold
 		Label stats_gold = new Label("Player's Gold");
+		stats_gold.setFont(Font.font("Verdana",FontWeight.BOLD,12));
+		stats_gold.setTextFill(Color.BLACK);
 		playerObject.setMoneyLabel();
 		//Label playerObject.getMoneyLabel() = new Label(playerObject.toStringMoney());
 
@@ -138,6 +146,11 @@ public class GameInterface extends Application {
 		AnchorPane.setLeftAnchor(playerObject.getMoneyLabel(), 0.0);
 		AnchorPane.setRightAnchor(playerObject.getMoneyLabel(), 0.0);
 		playerObject.getMoneyLabel().setAlignment(Pos.CENTER);
+		playerObject.getMoneyLabel().setFont(Font.font("Verdana",FontWeight.BOLD,12));
+		playerObject.getMoneyLabel().setTextFill(Color.BLACK);
+
+
+
 
 		HBox gold = new HBox(); //make the Hbox so that you can set a left and right thing
 		utilityPane.getChildren().add(gold);
@@ -151,6 +164,8 @@ public class GameInterface extends Application {
 		// add the Button Handler after you guys have worked things out on that
 		HBox waterLabel = new HBox();
 		Label waterDescription = new Label("Range: 50\n"+"Damage: 10\n"+"Price: 10\n");
+		waterDescription.setFont(Font.font("Verdana",FontWeight.BOLD,12));
+		waterDescription.setTextFill(Color.BLACK);
 		Button placeWaterButton = new Button("", new ImageView(defenderWaterSprite));
 	    placeWaterButton.setPrefSize(TILESIZE*2, TILESIZE*2);
 	    placeWaterButton.setOnAction(new PlaceTowerHandler(placeWaterButton, mainboard, foreground,
@@ -159,6 +174,8 @@ public class GameInterface extends Application {
 
 		HBox windLabel = new HBox();
 		Label windDescription = new Label("Range: 75\n"+"Price: 15\n");
+		windDescription.setFont(Font.font("Verdana",FontWeight.BOLD,12));
+		windDescription.setTextFill(Color.BLACK);
 	    Button placeWindButton = new Button("", new ImageView(defenderWind));
 		placeWindButton.setPrefSize(TILESIZE*2, TILESIZE*2);
 		placeWindButton.setOnAction(new PlaceTowerHandler(placeWindButton, mainboard, foreground,
@@ -167,6 +184,8 @@ public class GameInterface extends Application {
 
 		HBox iceLabel = new HBox();
 		Label iceDescription = new Label("Range: 100\n"+"Damage: 20\n"+"Price: 20\n");
+		iceDescription.setFont(Font.font("Verdana",FontWeight.BOLD,12));
+		iceDescription.setTextFill(Color.BLACK);
 		Button placeIceButton = new Button("", new ImageView(defenderIce));
 		placeIceButton.setPrefSize(TILESIZE*2, TILESIZE*2);
 		placeIceButton.setOnAction(new PlaceTowerHandler(placeIceButton, mainboard, foreground,

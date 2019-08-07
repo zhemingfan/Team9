@@ -2,6 +2,7 @@ package game;
 
 import java.util.ArrayList;
 
+import enemies.Demon;
 import enemies.Fire;
 import enemies.Lava;
 import enemies.Spirit;
@@ -39,8 +40,8 @@ public class GameInterface extends Application {
 	public static final int TILESIZE = 50;
 
 	public static double ENEMYSPEEDSCALAR = 0.5;
-	public static int TOWERATTACKRATE = 10; //one per 10 frames
-	public static int ENEMYSPAWNRATE = 50; //one per 50 frames
+	public static int TOWERATTACKRATE = 110; //one per 110 frames
+	public static int ENEMYSPAWNRATE = 250; //one per 250 frames
 
 	public MainGame GAME = new MainGame();
 	public Player playerObject = GAME.getPlayer();
@@ -50,6 +51,7 @@ public class GameInterface extends Application {
 	public Image enemyFire = new Image("/img/Enemy_Fire.PNG");
 	public Image enemySpirit = new Image("/img/Enemy_Spirit.PNG");
 	public Image enemyLava = new Image("/img/Enemy_Lava.PNG");
+	public Image enemyDemon = new Image("/img/Enemy_Demon.PNG");
 	public Image grassTile = new Image("/img/GrassTile.PNG");
   	public Image pathTile = new Image("/img/PathTile.PNG");
   	public Image rockTile = new Image("/img/RockTile.PNG");
@@ -163,7 +165,7 @@ public class GameInterface extends Application {
 	    AnimationTimer animator = new AnimationTimer(){
 	    	int frameCounter = 0;
 	    	double elapsedTime =  ENEMYSPEEDSCALAR;
-
+	    	
             public void handle(long arg0) {
             	if ( frameCounter == 0 || frameCounter % ENEMYSPAWNRATE == 0) {
             		Enemy spawned = GAME.spawnEnemies();
@@ -171,7 +173,7 @@ public class GameInterface extends Application {
             			paintNewEnemy(spawned, foreground);
             		}
             	}
-
+            	
 	           GAME.EnemiesAdvance(elapsedTime);
 	           ArrayList<Point[]> pairList = new ArrayList<Point[]>();
 	           
@@ -190,7 +192,11 @@ public class GameInterface extends Application {
 	           playerObject.moneyLabel.setText(playerObject.toStringMoney());
 	           playerObject.getHealthLabel().setText(playerObject.toStringHealth());
 	           frameCounter += 1;
-
+	           
+	           if(GAME.getGameMode().equals("STORY")) {
+	        	   if(frameCounter % 5000 == 0) ENEMYSPAWNRATE -= 10;
+	           }
+	           
 	           if (GAME.isOver()) {
 	        	   this.stop();
 	        	   Pane endTitle = createEndScreen(primaryStage);
@@ -287,6 +293,7 @@ public class GameInterface extends Application {
 		if (anEnemy instanceof Fire) rect.setFill(new ImagePattern(enemyFire));
 		if (anEnemy instanceof Lava) rect.setFill(new ImagePattern(enemyLava));
 		if (anEnemy instanceof Spirit) rect.setFill(new ImagePattern(enemySpirit));
+		if (anEnemy instanceof Demon) rect.setFill(new ImagePattern(enemyDemon));
 
 		container.getChildren().addAll(enemyHealthbar, rect);
 

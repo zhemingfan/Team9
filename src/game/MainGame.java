@@ -2,9 +2,11 @@ package game;
 import java.util.ArrayList;
 import java.util.Random;
 
+import enemies.Demon;
 import enemies.Fire;
 import enemies.Lava;
 import enemies.Spirit;
+import game.MainGame.GameMode;
 import javafx.scene.media.AudioClip;
 import parents.Enemy;
 import parents.Point;
@@ -12,13 +14,13 @@ import parents.Tower;
 
 public class MainGame {
 
-	public enum GameMode{ SURVIVAL, STORY};
+	public enum GameMode{SURVIVAL, STORY};
 	private static final double OFFSETX = 50, OFFSETY = 50;
-	private static final int MAX_WAVES_STORYMODE =  2;
+	private static final int MAX_WAVES_STORYMODE =  5;
 
-	private GameMode currentMode = GameMode.SURVIVAL;
+	private GameMode currentMode;
 	private Map map = new Map();
-	private Player player = new Player();
+	private Player player = new Player(50, 0);
 	private ArrayList<Tower> towerList = new ArrayList<Tower>();
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 
@@ -42,6 +44,10 @@ public class MainGame {
 	  if (chosenMapLayout.equals("LOOPY") ){
 			map.makeLoopyGrid();
 	}
+	}
+	
+	public String getGameMode() {
+		return "" + currentMode;
 	}
 
 	public void setGameMode(String chosenMode) {
@@ -108,24 +114,91 @@ public class MainGame {
 	   * @param wave Wave Number
 	   */
 	public void createEnemyList() {
-	    int enemyCount = waveCounter*10;
-	    int i = 0;
-	    Point start = map.getStartPoint(OFFSETX, OFFSETY);
-		Enemy anEnemy = new Enemy(start.getXCoord(), start.getYCoord());
-	    while (i < enemyCount) {
-	      int n = new Random().nextInt(3);
-	      if (n == 0) {
-	    	  anEnemy = new Fire(start.getXCoord(), start.getYCoord());
-	      }
-	      else if (n == 1) {
-	    	  anEnemy = new Lava(start.getXCoord(), start.getYCoord());
-	      }
-	      else {
-	    	  anEnemy = new Spirit(start.getXCoord(), start.getYCoord());
-	      }
-	      i++;
-	      waveList.add(anEnemy);
+		if(currentMode == GameMode.SURVIVAL) {
+			//For Survival
+			//There will be 10 times as many enemies as the wave number.
+			//For example, there will be 20 enemies on wave 2 and 30 on wave 3
+		    int enemyCount = waveCounter*10;
+		    int i = 0;
+		    Point start = map.getStartPoint(OFFSETX, OFFSETY);
+			Enemy anEnemy = new Enemy(start.getXCoord(), start.getYCoord());
+		    while (i < enemyCount) {
+		    	//The random number will determine what TYPE of enemy to spawn/add to the enemy list.
+		    	//0 For the fire sprite, 1 for the lava sprite, and 2 for the spirit/blue fire sprite
+		      int n = new Random().nextInt(4);
+		      if (n == 0) {
+		    	  anEnemy = new Fire(start.getXCoord(), start.getYCoord());
+		      }
+		      else if (n == 1) {
+		    	  anEnemy = new Lava(start.getXCoord(), start.getYCoord());
+		      }
+		      else {
+		    	  anEnemy = new Spirit(start.getXCoord(), start.getYCoord());
+		      }
+		      i++;
+		      waveList.add(anEnemy);
+		    }
 	    }
+		/////FOR STORY MODE
+		else {
+			if(waveCounter == 1) {
+				int i = 0;
+				Point start = map.getStartPoint(OFFSETX, OFFSETY);
+				Enemy anEnemy = new Enemy(start.getXCoord(), start.getYCoord());
+				while (i < 10) {
+					anEnemy = new Fire(start.getXCoord(), start.getYCoord());
+					i++;
+					waveList.add(anEnemy);
+				}
+			}
+			else if(waveCounter == 2) {
+				int i = 0;
+				Point start = map.getStartPoint(OFFSETX, OFFSETY);
+				Enemy anEnemy = new Enemy(start.getXCoord(), start.getYCoord());
+				while (i < 20) {
+					if(i < 10) anEnemy = new Spirit(start.getXCoord(), start.getYCoord());
+					else anEnemy = new Fire(start.getXCoord(), start.getYCoord());
+					i++;
+					waveList.add(anEnemy);
+				}
+			}
+			else if(waveCounter == 3) {
+				int i = 0;
+				Point start = map.getStartPoint(OFFSETX, OFFSETY);
+				Enemy anEnemy = new Enemy(start.getXCoord(), start.getYCoord());
+				while (i < 25) {
+					if(i < 10) anEnemy = new Spirit(start.getXCoord(), start.getYCoord());
+					else if (i < 15) anEnemy = new Fire(start.getXCoord(), start.getYCoord());
+					else anEnemy = new Lava(start.getXCoord(), start.getYCoord());
+					i++;
+					waveList.add(anEnemy);
+				}
+			}
+			else if(waveCounter == 4) {
+				int i = 0;
+				Point start = map.getStartPoint(OFFSETX, OFFSETY);
+				Enemy anEnemy = new Enemy(start.getXCoord(), start.getYCoord());
+				while (i < 25) {
+					if(i < 10) anEnemy = new Lava(start.getXCoord(), start.getYCoord());
+					else anEnemy = new Spirit(start.getXCoord(), start.getYCoord());
+					i++;
+					waveList.add(anEnemy);
+				}
+			}
+			else if(waveCounter == 5) {
+				int i = 0;
+				Point start = map.getStartPoint(OFFSETX, OFFSETY);
+				Enemy anEnemy = new Enemy(start.getXCoord(), start.getYCoord());
+				while (i < 30) {
+					if(i < 1) anEnemy = new Demon(start.getXCoord(), start.getYCoord());
+					else if (i < 10) anEnemy = new Fire(start.getXCoord(), start.getYCoord());
+					else if (i < 20) anEnemy = new Lava(start.getXCoord(), start.getYCoord());
+					else anEnemy = new Spirit(start.getXCoord(), start.getYCoord());
+					i++;
+					waveList.add(anEnemy);
+				}
+			}
+		}
   	}
 	/*
 	 * Generate a generic enemy and add it to the enemyList
@@ -133,9 +206,10 @@ public class MainGame {
 	public Enemy spawnEnemies() {
 		if (waveList.size() == 0) {
 			if (!(this.currentMode.equals(GameMode.STORY) && this.waveCounter == MainGame.MAX_WAVES_STORYMODE)) {
-				waveCounter += 1;
+				waveCounter++;
 				this.createEnemyList();
 				System.out.println(waveCounter);
+				player.gainMoney(20);
 			}
 		}
 		Enemy anEnemy = null;
@@ -214,30 +288,4 @@ public class MainGame {
 		}
 		return pairList;
 	}
-	/*
-	public static void main(String[] args) {
-		long elapsedTime = 1;
-    	int counter = 0;
-    	MainGame GAME = new MainGame();
-    	GAME.spawnEnemies();
-    	while (1 == 1) {
-	    	if ( counter == 0 || counter % 300 == 0) {
-	    		Enemy spawned = GAME.spawnEnemies();
-	    		System.out.println(spawned.toString());
-
-	    	}
-
-	    	if ( counter % 60 == 0) {
-	    		for (int i = 0; i < GAME.enemyList.size(); i++) {
-	    			Enemy anEnemy = GAME.enemyList.get(i);
-	    			System.out.println(anEnemy.toString());
-	    		}
-	        	GAME.EnemiesAdvance(elapsedTime);
-	        	GAME.removeKilledEnemies();
-	        	GAME.EnemiesReachedEnd();
-
-	    	}
-	    	counter += 1;
-    	}
-	}*/
 }

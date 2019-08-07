@@ -3,28 +3,28 @@ import javafx.scene.control.Label;
 import parents.Enemy;
 import parents.Point;
 
-public class Player extends Point{
-  private int playerHealth = 70;
-  private int money = 50;
+import javafx.scene.control.Label;
+
+public class Player /*extends Point*/{
+  private int playerHealth;
+  private int money;
   Label healthLabel;
   public Label moneyLabel;
 
-
-  public Player() {
-
-  }
   public Player(int aHealth, int initCurrency){
-    playerHealth = aHealth;
-    money = initCurrency;
+    setHealth(aHealth);
+    setMoney(initCurrency);
 
   }
 
   public void setHealth(int initHealth){
-    playerHealth = initHealth;
+    if(initHealth >= 20) playerHealth = initHealth;
+    else playerHealth = 20;
   }
 
   public void setMoney(int initMoney){
-    money = initMoney;
+    if(initMoney >= 0) money = initMoney;
+    else money = 0;
   }
 
   public void setHealthLabel(){
@@ -36,11 +36,13 @@ public class Player extends Point{
   }
 
   public int getHealth(){
-    return playerHealth;
+    int healthCopy = playerHealth;
+    return healthCopy;
   }
 
   public int getMoney(){
-    return money;
+    int moneyCopy = money;
+    return moneyCopy;
   }
 
   public Label getHealthLabel(){
@@ -56,7 +58,7 @@ public class Player extends Point{
   }
 
   public void takeDamage(int dealtDamage){
-    playerHealth -= dealtDamage;
+    if(dealtDamage >= 0) playerHealth -= dealtDamage;
   }
 
   public boolean enoughFunds(int moneyLost) {
@@ -64,13 +66,13 @@ public class Player extends Point{
   }
 
   public void buyDefense(int moneyLost) {
-    if (enoughFunds(moneyLost)) {
+    if (enoughFunds(moneyLost) && moneyLost >= 0) {
     	money -= moneyLost;
     }
   }
 
   public void gainMoney(int moneyGained){
-    money += moneyGained;
+    if(moneyGained >= 0) money += moneyGained;
     //System.out.println("You gained $"+moneyGained+"\nCASH: $"+money);
   }
 
@@ -81,7 +83,7 @@ public class Player extends Point{
   public String toStringHealth() {
 	  return  " " + getHealth();
   }
-  
+
   //CODE FOR TEXT-BASED BELOW
   public void attack(String[][] grid,Enemy anEnemy,int damage,int xD, int yD,int eX, int eY,int range) {
 	    if (enemyIsWithinRange(xD,yD,eX,eY,range)){
@@ -106,9 +108,11 @@ public class Player extends Point{
 	   * @param range
 	   * @return
 	   */
+
 	  public boolean enemyIsWithinRange(int defenderX, int defenderY,int eX, int eY,int range) {
 	    return this.TextgetDistance(eX,eY,defenderX,defenderY) <= range;
 	  }
 
- 
+
 }
+

@@ -91,6 +91,14 @@ public class Enemy extends Point{
   public void takeDamage(int damage) {
     this.health -= damage;
   }
+  
+  /**
+   * Function specifically for the wind-trap tower. Freezes a single enemy by reducing it's speed.
+   * @param debuff
+   */
+  public void slowDown(double debuff) {
+	  speed -= debuff;
+  }
 
   /**
    * Update the enemy's location. If an enemy has reached a check point, this increases the checkPointIndex variable by 1.

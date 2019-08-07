@@ -32,10 +32,7 @@ public class TowerWind extends Tower{
 
 	@Override
 	public String toString() {
-		return "No Damage\nSlows Down\n" + "Range: " + range + "\n" + "Price: " + price + "\n";
+		return "WIND SPIRIT\nSlows Down\n" + super.toString();
 	}
-	
-	public String toString() {
-		  return " WIND SPIRIT\n" + super.toString() + "\n (?)";
-	  }
 }
+	

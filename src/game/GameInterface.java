@@ -168,7 +168,6 @@ public class GameInterface extends Application {
 		Label waterDescription = new Label(new TowerWater().toString()); //The text describing cost, damage, etc
 		waterDescription.setFont(Font.font("Verdana",FontWeight.BOLD,12)); //Styling the text described above
 		waterDescription.setTextFill(Color.BLACK);
-		GridPane buttonContainer = new GridPane();
 		Button placeWaterButton = new Button("", new ImageView(defenderWaterSprite));
 	    placeWaterButton.setPrefSize(TILESIZE*1.75, TILESIZE*1.75);
 	    placeWaterButton.setOnAction(new PlaceTowerHandler(placeWaterButton, mainboard, foreground,
@@ -215,15 +214,6 @@ public class GameInterface extends Application {
 		rainSpellLabel.getChildren().addAll(placeRainButton, rainSpellDescription);
 
 		utilityPane.getChildren().addAll(waterLabel, iceLabel, windLabel, samuraiLabel, rainSpellLabel);
-
-		buttonContainer.add(placeWaterButton, 0, 0);
-		buttonContainer.add(waterLabel, 1, 0);
-		buttonContainer.add(placeWindButton, 0, 1);
-		buttonContainer.add(windLabel , 1, 1);
-		buttonContainer.add(placeIceButton, 0, 2);
-		buttonContainer.add(iceLabel, 1, 2);
-
-		utilityPane.getChildren().addAll(buttonContainer);
 
 	    AnimationTimer animator = new AnimationTimer(){
 	    	int frameCounter = 0;
@@ -377,25 +367,6 @@ public class GameInterface extends Application {
 		ChooseModeHandler.modeWasChosen = false;
 		ChooseMapHandler.mapWasChosen = false;
 	}
-
-	public void paintEnemyTrackers(Pane foreground, ArrayList<Tower> towerList) {
-		for (Tower aTower: towerList) {
-			Enemy target = aTower.getTarget();
-			Node tracker = aTower.getNode();
-			if (target != null && !target.isKilled()) {
-				if (tracker instanceof Line) {
-					tracker.setOpacity(1.0);
-					((Line) tracker).setStartX(aTower.getXCoord() + TILESIZE/2);
-					((Line) tracker).setStartY(aTower.getYCoord() + TILESIZE/2 );
-					((Line) tracker).setEndX(target.getXCoord() + TILESIZE/2);
-					((Line) tracker).setEndY(target.getYCoord() + TILESIZE/2);
-				}
-			} else {
-				tracker.setOpacity(0);;
-			}
-		}
-	}
-
 
 	/**
 	 * Paints a new Enemy on the foreground when an enemy is spawned.

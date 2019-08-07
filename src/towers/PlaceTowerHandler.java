@@ -73,6 +73,9 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 				if (toBeMade instanceof TowerWind) {
 					cursorImg = defenderWind;
 				}
+				if (toBeMade instanceof TowerSamurai) {
+					cursorImg = defenderSamurai;
+				}
 				inputGrid.setCursor( new ImageCursor(cursorImg,
 						cursorImg.getWidth()/2, cursorImg.getHeight()/2) );
 
@@ -81,13 +84,9 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 			} else {
 				currentGame.getPlayer().getMoneyLabel().setTextFill(Color.RED);
 			}
-			if (toBeMade instanceof TowerSamurai) {
-				cursorImg = defenderSamurai;
-			}
-			inputGrid.setCursor( new ImageCursor(cursorImg,
-					cursorImg.getWidth()/2, cursorImg.getHeight()/2) );
-
-		} else {
+			
+		} 
+		else {
 			if ( GUIactionArea.getChildren().contains(this.inputGrid) ) {
 				GUIactionArea.getChildren().remove(this.inputGrid);
 				toggleAllButtons();

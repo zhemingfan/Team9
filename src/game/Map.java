@@ -1,3 +1,5 @@
+package game;
+import parents.Point;
 /** TEXT BASED VERSION
  * Map Class that creates/updates/prints map
  * with path.
@@ -88,6 +90,26 @@ public class Map {
     return checkPoints;
   }
   
+  /** Displays grid with labeled axis' when placing towers.
+   */
+  public void displayTowerGrid() {
+    System.out.println("\n");
+    String[][] towerGrid = gridMap;
+    for (int r = 0; r < towerGrid.length; r++) {
+      System.out.print("  "+r);
+    }
+    System.out.println("");
+    for (int r = 0; r < towerGrid.length; r++){
+      System.out.print("  \n"+r);
+      for (int c = 0; c < towerGrid[r].length; c++){
+        System.out.print(" "+towerGrid[r][c]+" ");
+      }
+      System.out.println("");
+    }
+    System.out.println("\n");
+  }
+
+  
   /** Takes gridMap and prints it out as a string.
    */
   public void display() {
@@ -97,7 +119,7 @@ public class Map {
         System.out.print(gridMap[r][c]+"   ");
       }
     }
-    System.out.println("\n");
+    System.out.println("\n\n");
   }
 
   

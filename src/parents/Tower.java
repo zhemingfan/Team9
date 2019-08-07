@@ -1,3 +1,4 @@
+package parents;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -149,7 +150,7 @@ public class Tower extends Point{
    * @param anEnemy findTarget 
    */
   public void attack(Enemy anEnemy) {
-    if (anEnemy != null) anEnemy.takeDamage(damage);
+    if (anEnemy != null) anEnemy.takeDamage(getDamage());
   }
   
 

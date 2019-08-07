@@ -1,10 +1,12 @@
+package game;
+import parents.Point;
 import java.util.Scanner;
 /** TEXT BASED VERSION
  * GAME METHOD
  * @author Team 9
  */
 public class GameMethod {
-    private static Scanner input = new Scanner(System.in); 
+  private static Scanner input = new Scanner(System.in);
   /**
    * This class incorporates WaveTextBased class that implements all the logic classes
    * and is called in this method.

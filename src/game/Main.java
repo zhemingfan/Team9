@@ -1,3 +1,4 @@
+package game;
 /** TEXT BASED VERSION
  * MAIN CLASS
  * @author Team 9

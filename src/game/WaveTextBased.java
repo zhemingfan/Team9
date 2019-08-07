@@ -1,3 +1,12 @@
+package game;
+import parents.Enemy;
+import parents.Tower;
+import parents.Point;
+import towers.TowerIce;
+import towers.TowerWater;
+import enemies.Fire;
+import enemies.Lava;
+import enemies.Spirit;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,6 +19,7 @@ import java.util.Random;
  */
 public class WaveTextBased {
   boolean waveActive = true; //boolean operator that determines if waveActive is on.
+  private int numenemies = 5;
   private static Scanner input = new Scanner(System.in); //scanner instance
   private ArrayList<Enemy> enemyList = new ArrayList<Enemy>(); //list of enemies generated
   private ArrayList<Enemy> aliveList = new ArrayList<Enemy>(); //list of enemies alive/on map
@@ -27,7 +37,7 @@ public class WaveTextBased {
    * @param wave Wave Number
    */
   public void createEnemyList(int wave) {
-    int enemyCount = wave*10;
+    int enemyCount = wave*numenemies;
     int i = 0;
     /*
      * In a while loop, enemies will be randomly selected and added to the list of enemies generated.
@@ -157,7 +167,7 @@ public class WaveTextBased {
    * @param aPlayer Player Class object
    * @param grid gridMap from Map Class
    */
-  public void promptNextMove(Player aPlayer, String[][] grid) {
+  public void promptNextMove(Player aPlayer, String[][] grid,Map aMap) {
     /*
      * If wave is active, select from the choices.
      */
@@ -169,7 +179,7 @@ public class WaveTextBased {
     }
     String choice = input.nextLine().toUpperCase();
     if (choice.equals("P")) {
-      towerSelection(aPlayer,grid);
+      towerSelection(aPlayer,grid,aMap);
     }
     else if (choice.equals("M")) {
       menu(aPlayer);
@@ -232,7 +242,7 @@ public class WaveTextBased {
    * @param aPlayer Player Class Object
    * @param grid gridMap from Map Class
    */
-  public void towerSelection(Player aPlayer, String[][] grid) {
+  public void towerSelection(Player aPlayer, String[][] grid, Map aMap) {
     System.out.println("SELECT YOUR DEFENDER:"
                      + "\nCASH: $"+aPlayer.getMoney()
                      + "\n\nEnter (W) for Water Tower ($5)"
@@ -242,11 +252,13 @@ public class WaveTextBased {
     if(choice.equals("W") && aPlayer.hasEnoughFunds(5)) {
       System.out.println("You bought a Water Tower!\n$"+aPlayer.getMoney()+" - $"+5);
       aPlayer.buyTower(5);
+      aMap.displayTowerGrid();
       towerList.add(new TowerWater(grid));
     }
     else if (choice.equals("I") && aPlayer.hasEnoughFunds(10)) {
       System.out.println("You bought an Ice Tower!\n$"+aPlayer.getMoney()+" - $"+10);
       aPlayer.buyTower(10);
+      aMap.displayTowerGrid();
       towerList.add(new TowerIce(grid));
     }
     else if (!aPlayer.hasEnoughFunds(10) && !aPlayer.hasEnoughFunds(5)){
@@ -307,7 +319,7 @@ public class WaveTextBased {
       /*
        * Prompt Player for next move
        */
-      promptNextMove(aPlayer,grid);                   // Line 126
+      promptNextMove(aPlayer,grid,aMap);                   // Line 126
       counter++;
     }
     /*

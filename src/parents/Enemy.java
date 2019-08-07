@@ -1,3 +1,5 @@
+package parents;
+import game.Player;
 /** TEXT BASED VERSION
  * Enemy Super Class
  * Moves through the Map and attacks Player object.

@@ -1,18 +1,21 @@
+package towers;
+import parents.Tower;
+import parents.Enemy;
 /** TEXT BASED VERSION
  * Sub Class of Tower
  * @author Team 9
  */
-public class TowerIce extends Tower{
+public class TowerWater extends Tower{
   
   /** Once created prompts user to place tower on map.
    * @param grid gridMap from Map Class
    */
-  public TowerIce(String[][] grid) {
+  public TowerWater(String[][] grid) {
     super();
-    damage = 2;
+    damage = 3;
     range = 2;
     price = 10;
-    name = "I";
+    name = "W";
     placeTower(grid);
   }
   
@@ -29,7 +32,7 @@ public class TowerIce extends Tower{
    */
   @Override
   public void placeTower(String[][] grid) {
-    System.out.println("Place your Ice Tower");
+    System.out.println("Place your Water Tower");
     super.placeTower(grid);
   }
 }

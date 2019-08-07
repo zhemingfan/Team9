@@ -1,19 +1,22 @@
+package enemies;
+import parents.Enemy;
+import game.Player;
 /** TEXT BASED VERSION
  * Sub Class of Enemy
  * @author Team 9
  */
-public class Spirit extends Enemy{
+public class Fire extends Enemy{
   
   /** Creates new enemy
    * @param i enemy number
    */
-  public Spirit(int i) {
+  public Fire(int i) {
     super(1,0);
-    health = 10;
+    health = 15;
     damage = 10;
     speed = 1;   // Do not change
     bounty = 10;
-    name = "S"+(i+1);
+    name = "F"+(i+1);
   }
   
   /** Overrides method from parent class.
@@ -21,7 +24,7 @@ public class Spirit extends Enemy{
    */
   @Override
   public void spawnEnemyTextBased(String[][] grid) {
-    System.out.println("SPIRIT enemy "+getName()+" has appeared\n");
+    System.out.println("FIRE enemy "+getName()+" has appeared\n");
     super.spawnEnemyTextBased(grid);
   }
   
@@ -30,7 +33,7 @@ public class Spirit extends Enemy{
    */
   @Override
   public void attackTextBased(Player aPlayer) {
-    System.out.println("SPIRIT enemy has attacked");
+    System.out.println("FIRE enemy has attacked");
     super.attackTextBased(aPlayer);
   }
 }

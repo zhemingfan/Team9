@@ -1,3 +1,4 @@
+package game;
 /** TEXT BASED VERSION
  * Main player class.
  * @author Team 9
@@ -30,7 +31,7 @@ public class Player{
    * @return int playerHealth
    */
   public int getHealth(){
-	int healthCopy = playerHealth;
+        int healthCopy = playerHealth;
     return healthCopy;
   }
   
@@ -42,13 +43,13 @@ public class Player{
   }
 
   void setHealth(int someHealth) {
-	  if (someHealth >= 20) playerHealth = someHealth;
-	  else playerHealth = 20;
+          if (someHealth >= 20) playerHealth = someHealth;
+          else playerHealth = 20;
   }
   
   public void setMoney(int someMoney) {
-	  if (someMoney >= 20) money = someMoney;
-	  else money = 20;
+          if (someMoney >= 20) money = someMoney;
+          else money = 20;
   }
   /**
    * @return boolean if player health is zero

@@ -18,25 +18,36 @@ public class Tower extends Point{
     range = 100;
     
   }
-  
+  /**
+   * Returns the tower's price.
+   * @return The tower's price
+   */
   public int getPrice() {
     return price;
   }
   
+  /**
+   * Checks if an enemy is within the tower's attack range.
+   * @param anEnemy
+   * @return if an enemy is within the tower's attack range
+   */
   private boolean enemyIsWithinRange(Enemy anEnemy) {
     return this.getDistance(anEnemy) <= range;
   }
   
   /**
-   * Return the first enemy that is within range among all current enemies.
-   * !!!NEEDS IMPROVEMENT SO THAT THE DEFENDER DOESN"T CHANGE TARGET EVERY FRAME.
-   * 
-   * @param currentEnemies
-   * @return target: Enemy
+   * Returns the tower's current enemy.
+   * @return the tower's current enemy
    */
   public Enemy getTarget() {
 	  return this.target;
   }
+  
+  /**
+   * Return the first enemy that is within range among all current enemies.
+   * @param currentEnemies
+   * @return target: Enemy
+   */
   public Enemy findTarget(ArrayList<Enemy> currentEnemies) {
     this.target = null;
     for(Enemy item: currentEnemies) {
@@ -48,8 +59,19 @@ public class Tower extends Point{
     return target;
   }
   
+  /**
+   * Attacks the given enemy.
+   * @param anEnemy
+   */
   public void attack(Enemy anEnemy) {
     if (anEnemy != null) anEnemy.takeDamage(damage);
+  }
+  
+  /**
+   * Returns a string with the tower's essential stats.
+   */
+  public String toString() {
+	  return " Range  " + this.range + "\n Damage " + this.damage + "\n Price  " + this.price;
   }
   
 }

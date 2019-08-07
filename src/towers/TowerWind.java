@@ -29,4 +29,8 @@ public class TowerWind extends Tower{
 		speedDebuff = anEnemy.getSpeed();
 		if(anEnemy != null) anEnemy.slowDown(speedDebuff);
 	}
+	
+	public String toString() {
+		  return " WIND SPIRIT\n" + super.toString() + "\n (?)";
+	  }
 }

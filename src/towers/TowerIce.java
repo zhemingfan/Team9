@@ -15,5 +15,7 @@ public class TowerIce extends Tower{
 		this.damage = 15;
 		this.price = 50;
 	}
-
+	public String toString() {
+		  return " ICE GHOUL\n" + super.toString();
+	  }
 }

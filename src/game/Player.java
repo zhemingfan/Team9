@@ -5,66 +5,118 @@ import parents.Point;
 
 import javafx.scene.control.Label;
 
-public class Player /*extends Point*/{
+public class Player{
   private int playerHealth;
   private int money;
   Label healthLabel;
   public Label moneyLabel;
 
+  /**
+   * Creates a new Player with specified initial health and money.
+   * @param aHealth
+   * @param initCurrency
+   */
   public Player(int aHealth, int initCurrency){
     setHealth(aHealth);
     setMoney(initCurrency);
 
   }
 
+  /**
+   * Sets the current health to given number if it is more than 20, and defaults to 20 otherwise.
+   * @param initHealth
+   */
   public void setHealth(int initHealth){
     if(initHealth >= 20) playerHealth = initHealth;
     else playerHealth = 20;
   }
 
+  /**
+   * Sets the current money to given number if it is larger than 0, and defaults to 0 otherwise.
+   * @param initHealth
+   */
   public void setMoney(int initMoney){
     if(initMoney >= 0) money = initMoney;
     else money = 0;
   }
 
+  /**
+   * Sets the player's health stats label on GUI.
+   */
   public void setHealthLabel(){
 	healthLabel = new Label(toStringHealth());
   }
 
+  /**
+   * Sets the player's money stats label on GUI.
+   */
   public void setMoneyLabel(){
 	 moneyLabel = new Label(toStringMoney());
   }
 
+  /**
+   * Returns the current player's health.
+   * @return The current player's health
+   */
   public int getHealth(){
     int healthCopy = playerHealth;
     return healthCopy;
   }
 
+  /**
+   * Returns the current player's money.
+   * @return The current player's money
+   */
   public int getMoney(){
     int moneyCopy = money;
     return moneyCopy;
   }
 
+  /**
+   * Returns the player's health label on GUI.
+   * @return the player's health label on GUI
+   */
   public Label getHealthLabel(){
     return healthLabel;
   }
 
+  /**
+   * Returns the player's money label on GUI.
+   * @return the player's money label on GUI
+   */
   public Label getMoneyLabel(){
     return moneyLabel;
   }
 
+  /**
+   * Checks whether player has been killed.
+   * @return whether player has been killed
+   */
   public boolean isKilled() {
     return playerHealth <= 0;
   }
 
+  /**
+   * Deducts the specified amount from player's health.
+   * @param dealtDamage
+   */
   public void takeDamage(int dealtDamage){
     if(dealtDamage >= 0) playerHealth -= dealtDamage;
   }
 
+  /**
+   * Checks if player has enough funds to spend the amount of money given.
+   * @param moneyLost
+   * @return if player has enough funds to spend the amount of money given
+   */
   public boolean enoughFunds(int moneyLost) {
     return moneyLost <= money;
   }
 
+  /**
+   * Deducts the specified amount from player's money if the player has enough funds.
+   * @param moneyLost
+   */
   public void buyDefense(int moneyLost) {
     if (enoughFunds(moneyLost) && moneyLost >= 0) {
     	money -= moneyLost;

@@ -16,12 +16,29 @@ public class ChooseMapHandler implements EventHandler<ActionEvent> {
 	public Image grassTile = new Image("/img/GrassTile.PNG");
   	public Image pathTile = new Image("/img/PathTile.PNG");
   	public Image rockTile = new Image("/img/RockTile.PNG");
-  	
+  	/**
+  	 * Creates an EventHandler - that checks for when players choose their desired map, with:
+  	 * a background to be filled
+  	 * a map type that it will create when clicked
+  	 * a copy of the current game to get a 2D array as a blue print for GUI Map. 
+  	 * @param background
+  	 * @param mapType
+  	 * @param currentGame
+  	 */
 	public ChooseMapHandler(GridPane background, String mapType, MainGame currentGame) {
 		this.background = background;
 		this.mapType = mapType;
 		this.currentGame = currentGame;
 	}
+/**
+ * Implements abstract method from EventHandler interface.
+ * Fills the background grid pane with tiles corresponding to the underlying 2D array.
+ * 0 => n : check points, including start and end
+ * p : path
+ * c : check point
+ * - : tile where defense can be placed
+ *@see Map 
+ */
 	public void handle(ActionEvent event) {
 		mapWasChosen = true;
 		currentGame.customizeGrid(mapType);

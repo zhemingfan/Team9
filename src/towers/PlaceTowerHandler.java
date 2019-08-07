@@ -4,6 +4,8 @@ import game.Player;
 import game.GameInterface;
 import game.MainGame;
 import game.Map;
+import javafx.animation.FadeTransition;
+import javafx.animation.FillTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.ImageCursor;
@@ -15,6 +17,7 @@ import javafx.scene.layout.*;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import parents.Tower;
 
 public class PlaceTowerHandler implements EventHandler<ActionEvent>{
@@ -51,24 +54,30 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 	@Override
 	public void handle(ActionEvent event) {
 		clicksCounter += 1;
-		if ( clicksCounter % 2 != 0) {  
-			toggleAllButtons();
-			Image cursorImg = defenderWaterSprite;
-			if (toBeMade instanceof TowerIce) {
-				cursorImg = defenderIce;
+		if ( clicksCounter % 2 != 0) { 
+			if (currentGame.getPlayer().enoughFunds(toBeMade.getPrice())) {
+				toggleAllButtons();
+				currentGame.getPlayer().getMoneyLabel().setTextFill(Color.BLACK);
+				makeInputGrid();
+				Image cursorImg = defenderWaterSprite;
+				if (toBeMade instanceof TowerIce) {
+					cursorImg = defenderIce;
+				}
+				if (toBeMade instanceof TowerWater) {
+					cursorImg = defenderWaterSprite;
+				}
+				if (toBeMade instanceof TowerWind) {
+					cursorImg = defenderWind;
+				}
+				inputGrid.setCursor( new ImageCursor(cursorImg, 
+						cursorImg.getWidth()/2, cursorImg.getHeight()/2) );
+				
+				addEventListenerToInputGrid();
+				GUIactionArea.getChildren().addAll(inputGrid);
+			} else {
+				currentGame.getPlayer().getMoneyLabel().setTextFill(Color.RED);
 			}
-			if (toBeMade instanceof TowerWater) {
-				cursorImg = defenderWaterSprite;
-			}
-			if (toBeMade instanceof TowerWind) {
-				cursorImg = defenderWind;
-			}
-			inputGrid.setCursor( new ImageCursor(cursorImg, 
-					cursorImg.getWidth()/2, cursorImg.getHeight()/2) );
 			
-			makeInputGrid();
-			addEventListenerToInputGrid();
-			GUIactionArea.getChildren().addAll(inputGrid);
 		} else {
 			if ( GUIactionArea.getChildren().contains(this.inputGrid) ) {
 				GUIactionArea.getChildren().remove(this.inputGrid);
@@ -78,6 +87,9 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 
 	}
 	
+	/**
+	 * Creates a grid on top of the game play's foreground to get input from the player on where to place towers.
+	 */
 	public void makeInputGrid() {
 		inputGrid = new GridPane();
 		inputGrid.setPrefSize(GameInterface.BoardWIDTH, GameInterface.BoardHEIGHT);
@@ -85,9 +97,9 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 		Map map = this.currentGame.getMap();
 		String[][] grid = map.generateGrid();
 		
-		for(int r = 0; r < 10; r++) {
-			for(int c = 0; c < 10; c++) {
-				Rectangle rect = new Rectangle(50,50);
+		for(int r = 0; r < GameInterface.ROW; r++) {
+			for(int c = 0; c < GameInterface.COLUMN; c++) {
+				Rectangle rect = new Rectangle(GameInterface.TILESIZE, GameInterface.TILESIZE);
 				if (grid[r][c].equals("-") ) {
 					rect.setFill(Color.BLACK);
 					rect.setOpacity(0.25);
@@ -99,6 +111,10 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 		 };
 	}
 	
+	/**
+	 * Adds event listener to individual nodes in input grid to handle input from player.
+	 * Creates a new tower and paints that tower on GUI if the chosen spot is valid.
+	 */
 	public void addEventListenerToInputGrid() {
 		for(Node each: inputGrid.getChildren()) {
 			
@@ -141,6 +157,15 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 						// Clean up
 						GUIactionArea.getChildren().remove(inputGrid);
 						toggleAllButtons();
+					} else {
+						if (each instanceof Rectangle) {
+							((Rectangle) each).setOpacity(0.5);
+							((Rectangle) each).setFill(Color.RED);
+							FadeTransition ft = new FadeTransition(Duration.millis(1000), (Rectangle) each);
+							ft.setFromValue(0.5);
+						    ft.setToValue(0.0);
+						    ft.play();
+						}
 					}
 				}
 			}
@@ -149,7 +174,9 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 		};	
 	}
 
-
+	/**
+	 * Disables other place tower buttons if player if this handler's button was chosen and turns thse buttons back on otherwise.
+	 */
 	public void toggleAllButtons() {
 		for (Button aButton: PlaceTowerHandler.buttonInstances) {
 			if( !aButton.equals(this.button) ) {

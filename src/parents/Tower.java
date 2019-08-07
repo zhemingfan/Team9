@@ -7,7 +7,7 @@ public class Tower extends Point{
   protected double range;
   protected int damage;
   protected int price;
-
+  protected Enemy target;
   public Tower() {
 	  
   }
@@ -34,12 +34,14 @@ public class Tower extends Point{
    * @param currentEnemies
    * @return target: Enemy
    */
-  
+  public Enemy getTarget() {
+	  return this.target;
+  }
   public Enemy findTarget(ArrayList<Enemy> currentEnemies) {
-    Enemy target = null;
+    this.target = null;
     for(Enemy item: currentEnemies) {
       if (enemyIsWithinRange(item)) {
-        target = item;
+        this.target = item;
         break;
       }
     };

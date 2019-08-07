@@ -7,11 +7,13 @@ public class TowerIce extends Tower{
 		super(x, y);
 		this.range = 150;
 		this.damage = 15;
-		this.price = 30;
+		this.price = 50;
 	}
 
 	public TowerIce() {
-		// TODO Auto-generated constructor stub
+		this.range = 150;
+		this.damage = 15;
+		this.price = 50;
 	}
 
 }

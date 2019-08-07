@@ -3,7 +3,6 @@ import game.Player;
 import parents.Enemy;
 
 public class Lava extends Enemy{
-	
   public Lava(double x, double y) {
     super(x,y);
     maxHealth = 80;

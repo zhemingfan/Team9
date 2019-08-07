@@ -15,7 +15,7 @@ public class ChooseModeHandler implements EventHandler<ActionEvent> {
 		this.mode = mode;
 		this.chooseModeButton = chooseModeButton;
 	}
-	
+
 	@Override
 	public void handle(ActionEvent event) {
 		modeWasChosen = true;

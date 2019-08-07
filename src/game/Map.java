@@ -59,9 +59,6 @@ public class Map{
     return gridMap;
   }
   
-  /**
-   * Creates a basic map as seen in Demo 2
-   */
   public void makeZigZagGrid() {
 	  String[][] temp = { 
 				{"r","s","r","-","-","-","-","r","-","-",},
@@ -78,9 +75,6 @@ public class Map{
 	   gridMap = temp;
   }
   
-  /**
-   * Creates a more complicated map with a loop
-   */
   public void makeLoopyGrid() {
 	  String[][] alternate = { 
 			{"r","-","-","r","-","-","-","-","r","-",},

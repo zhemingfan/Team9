@@ -1,3 +1,4 @@
+package game;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -9,7 +10,7 @@ public class PlayerTestGUIVERSION {
 	public void test_Constructor_AllZero() {
 		Player testPlayer = new Player(0,0);
 		assertEquals("Created player with 0 HP and starting currency - testing HP", 20, testPlayer.getHealth());
-		assertEquals("Created player with 0 HP and starting currency - testing Money", 20, testPlayer.getMoney());
+		assertEquals("Created player with 0 HP and starting currency - testing Money", 0, testPlayer.getMoney());
 	}
 	
 	@Test
@@ -23,21 +24,21 @@ public class PlayerTestGUIVERSION {
 	public void test_Constructor_ZeroMoney() {
 		Player testPlayer = new Player(50, 0);
 		assertEquals("Created player with 50 HP and 0 starting currency - testing HP", 50, testPlayer.getHealth());
-		assertEquals("Created player with 50 HP and 0 starting currency - testing Money", 20, testPlayer.getMoney());
+		assertEquals("Created player with 50 HP and 0 starting currency - testing Money", 0, testPlayer.getMoney());
 	}
 
 	@Test
 	public void test_Constructor_AllNonZeroInvalid() {
-		Player testPlayer = new Player (10, 10);
-		assertEquals("Created player with 10 HP and 10 starting currency - testing HP", 20, testPlayer.getHealth());
-		assertEquals("Created player with 10 HP and 10 starting currency - testing Money", 20, testPlayer.getMoney());
+		Player testPlayer = new Player (10, -1);
+		assertEquals("Created player with 10 HP and -1 starting currency - testing HP", 20, testPlayer.getHealth());
+		assertEquals("Created player with 10 HP and -1 starting currency - testing Money", 0, testPlayer.getMoney());
 	}
 
 	@Test
 	public void test_Constructor_MinimumValue() {
-		Player testPlayer = new Player(20,20);
-		assertEquals("Created player with 20 HP and 20 starting currency - testing HP", 20, testPlayer.getHealth());
-		assertEquals("Created player with 20 HP and 20 starting currency - testing Money", 20, testPlayer.getMoney());
+		Player testPlayer = new Player(20,0);
+		assertEquals("Created player with 20 HP and 5 starting currency - testing HP", 20, testPlayer.getHealth());
+		assertEquals("Created player with 20 HP and 5 starting currency - testing Money", 0, testPlayer.getMoney());
 	}
 
 	@Test
@@ -108,7 +109,7 @@ public class PlayerTestGUIVERSION {
 	public void test_setter_and_getter_Money_NegativeValue() {
 		Player testPlayer = new Player(20, 20);
 		testPlayer.setMoney(-1);
-		assertEquals("Set starting Money to a negative value -1 and will default to 20", 20, testPlayer.getMoney());
+		assertEquals("Set starting Money to a negative value -1 and will default to 0", 0, testPlayer.getMoney());
 	}
 	
 	@Test
@@ -121,15 +122,15 @@ public class PlayerTestGUIVERSION {
 	@Test
 	public void test_setter_and_getter_Money_InvalidNonZeroValue() {
 		Player testPlayer = new Player(20, 20);
-		testPlayer.setMoney(10);
-		assertEquals("Set starting Money to an invalid value 10 and will default to 20", 20, testPlayer.getMoney());
+		testPlayer.setMoney(-10);
+		assertEquals("Set starting Money to an invalid value -10 and will default to 0", 0, testPlayer.getMoney());
 	}
 	
 	@Test
 	public void test_setter_and_getter_Money_Zero() {
 		Player testPlayer = new Player(20, 20);
 		testPlayer.setMoney(0);
-		assertEquals("Set starting Money to zero and will default to 20", 20, testPlayer.getMoney());
+		assertEquals("Set starting Money to zero", 0, testPlayer.getMoney());
 	}
 	
 	//Testing isKilled

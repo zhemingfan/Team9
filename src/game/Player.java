@@ -23,8 +23,8 @@ public class Player /*extends Point*/{
   }
 
   public void setMoney(int initMoney){
-    if(initMoney >= 20) money = initMoney;
-    else money = 20;
+    if(initMoney >= 0) money = initMoney;
+    else money = 0;
   }
 
   public void setHealthLabel(){

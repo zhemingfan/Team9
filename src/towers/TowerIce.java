@@ -5,15 +5,17 @@ public class TowerIce extends Tower{
 
 	public TowerIce(double x, double y) {
 		super(x, y);
-		this.range = 200;
+		this.range = 175;
 		this.damage = 15;
 		this.price = 50;
 	}
 
 	public TowerIce() {
-		this.range = 200;
+		this.range = 175;
 		this.damage = 15;
 		this.price = 50;
 	}
-
+	public String toString() {
+		  return " ICE GHOUL\n" + super.toString();
+	  }
 }

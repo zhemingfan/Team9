@@ -43,38 +43,60 @@ public class Enemy extends Point{
     speed = aSpeed;
     health = someHealth;
   }
-
+  /**
+   * Returns the enemy's name.
+   * @return the enemy's name
+   */
   public String getName() {
 	    return name;
   }
 
-
-
+  /**
+   * Returns the enemy's bounty (how much the player gets for killing the enemy).
+   * @return
+   */
   public int getBounty() {
 	return bounty;
 }
 
+  /**
+   * Return the enemy's current health.
+   * @return the enemy's current health
+   */
   public int getEnemyHealth() {
     return health;
   }
 
+  /**
+   * Return the enemy's damage to the player.
+   * @return the enemy's damage to the player
+   */
   public int getDamage() {
 	 return damage;
   }
+
 
   public Rectangle getRect(){
     return enemyRect;
   }
 
+  /**
+   * Return the enemy's speed.
+   * @return the enemy's speed
+   */
   public double getSpeed() {
     return speed;
   }
 
+  /**
+   * Checks if the enemy is dead.
+   * @return whether the enemy is dead
+   */
   public boolean isKilled() {
     return health <= 0;
   }
   /**
-   * method that attacks Player if an Enemy has crossed
+   * Deals damage to the player if an Enemy has got the final check point.
    * @param aMap
    * @param aPlayer
    * @param anEnemy
@@ -138,49 +160,30 @@ public class Enemy extends Point{
 	  }
   }
 
+  /**
+   * Returns the enemy's maximum health.
+   * @return the enemy's maximum health
+   */
   public double getMaxHealth() {
 	  return maxHealth;
   }
 
+  /**
+   * Sets the enemy's maximum health to given value
+   * @param value
+   */
   public void setMaxHealth(int value) {
-	  this.maxHealth = value;
+	 if (value >= 0) this.maxHealth = value;
   }
 
+  /**
+   * Returns the specified enemy's health in String format.
+   * @param anEnemy
+   * @return the specified enemy's health in String format.
+   */
   public String healthToString(Enemy anEnemy) {
     String eHealth = Integer.toString(anEnemy.getEnemyHealth());
     return eHealth;
   }
 
-
-
-/*
-  public static void main(String[] args) {
-	  ArrayList<Enemy> list = new ArrayList<Enemy>(0);
-	  long start = new Date().getTime();
-	  int counter = 0;
-	  Map map = new Map();
-	  map.generateGrid();
-	  Point[] checkPoints = map.getCheckPoints(50, 50);
-	  while(true) {
-		  long current = new Date().getTime();
-		  Enemy testEnemy = new Enemy(50,0);
-		  if ( (current - start) % 1000 == 0) {
-			  counter += 1;
-			  testEnemy = new Enemy(50,0);
-			  testEnemy.attachPath(checkPoints);
-			  list.add(testEnemy);
-			  System.out.println("/n " +counter + " e spawned");
-
-			  //for (int i = 0; i < list.size(); i ++) {
-				  list.get(0).advance(1);
-				  System.out.println( " : "+list.get(0).toString() + " " + list.get(0).checkPointIndex);
-			  //}
-		  }
-
-		  if ( current - start == 20000) {
-			  break;
-		  }
-
-	  }
-	  */
   }

@@ -17,7 +17,8 @@ public class Demon extends Enemy{
 	  }
 	
 	/**
-	 * The boss enemy Demon does not get trapped by the wind towers because that would be too easy
+	 * Overrides slowDown() in parent class.
+	 * The boss enemy Demon does not get trapped by the wind towers because that would be too easy.
 	 */
 	@Override
 	public void slowDown(double debuff) {

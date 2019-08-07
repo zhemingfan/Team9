@@ -27,18 +27,30 @@ public class MainGame {
 
 	public AudioClip enemyDeath = new AudioClip(this.getClass().getResource("/sound/plop.mp3").toString());
 	public AudioClip rainCasted = new AudioClip(this.getClass().getResource("/sound/thunderStorm.mp3").toString());
-	
+
 	private int waveCounter = 0;
 	private ArrayList<Enemy> waveList = new ArrayList<Enemy>();
 
+	/**
+	 * Returns the player instance for the current game.
+	 * @return the player instance for current game
+	 */
 	public Player getPlayer() {
 		return player;
 	}
 
+	/**
+	 * Returns the map instance for the current game.
+	 * @return the map instance for the current game.
+	 */
 	public Map getMap() {
 		return map;
 	}
 
+	/**
+	 * Creates a new 2D array to represent the background map according to player's input
+	 * @param chosenMapLayout
+	 */
 	public void customizeGrid(String chosenMapLayout) {
 	  if (chosenMapLayout.equals("ZIGZAG") ) {
 			map.makeZigZagGrid();
@@ -47,11 +59,18 @@ public class MainGame {
 			map.makeLoopyGrid();
 	}
 	}
-
+	/**
+	 * Returns a string that corresponds to current game mode
+	 * @return A string that corresponds to current game mode
+	 */
 	public String getGameMode() {
 		return "" + currentMode;
 	}
 
+	/**
+	 * Sets the current game mode to the one chosen by the player.
+	 * @param chosenMode
+	 */
 	public void setGameMode(String chosenMode) {
 		if (chosenMode.equals("STORY") ) {
 			this.currentMode = GameMode.STORY;
@@ -61,6 +80,10 @@ public class MainGame {
 		}
 	}
 
+	/**
+	 * Checks if the game has ended either because the player has been killed or because has won the Story mode.
+	 * @return whether the game is over
+	 */
 	public boolean isOver() {
 		boolean isOver = false;
 		if (player.isKilled()) {
@@ -75,12 +98,19 @@ public class MainGame {
 
 		return isOver;
 	}
-
+	/**
+	 * Checks if player has won story mode if the mode is Story
+	 * @return whether the player has won story mode if the mode is Story
+	 */
 	public boolean wonStoryMode() {
 		return ( !player.isKilled() ) && this.waveCounter == MainGame.MAX_WAVES_STORYMODE
 				&& this.enemyList.size() == 0 && this.waveList.size() == 0;
 	}
 
+	/**
+	 * Returns the ending message to tell the player their result.
+	 * @return the ending message
+	 */
 	public String getEndingCard() {
 		String endCard = new String();
 		if ( this.currentMode.equals(GameMode.STORY) ) {
@@ -98,16 +128,36 @@ public class MainGame {
 		return endCard;
 	}
 
+	/**
+	 * Returns the current wave number.
+	 * @return the current wave number
+	 */
 	public int getWaveNumber() {
 		return waveCounter;
 	}
+
+	/**
+	 * Returns the list of towers made by player
+	 * @return the list of towers made by player
+	 */
 	public ArrayList<Tower> getTowerList(){
 		return towerList;}
 
+	/**
+	 * Returns the list of alive enemies
+	 * @return the list of alive enemies
+	 */
 	public ArrayList<Enemy> getEnemyList() {
 		return enemyList;
 	}
 
+	/**
+	 * Checks if player has enough funds to buy a new tower and if a tower can be placed on the tile at the row and column given.
+	 * @param aTower
+	 * @param row
+	 * @param column
+	 * @return whether player can buy and place new tower
+	 */
 	public boolean canPurchaseandPlaceTower(Tower aTower, int row, int column){
 		return player.enoughFunds(aTower.getPrice()) && map.canPlaceDefense(row, column);
 	}
@@ -203,8 +253,10 @@ public class MainGame {
 			}
 		}
   	}
-	/*
-	 * Generate a generic enemy and add it to the enemyList
+	/**
+	 * Creates and returns a new enemy by taking an enemy from the current wave list.
+	 * This method also updates the alive enemies list and generates new wave list if needed.
+	 * @return A new enemy
 	 */
 	public Enemy spawnEnemies() {
 		if (waveList.size() == 0) {
@@ -238,7 +290,8 @@ public class MainGame {
 	}
 
 	/**
-	 * Remove all enemies that have been killed
+	 * Removes killed enemies from current alive enemies list and returns a list of enemies that also needs to be removed from GUI.
+	 * @return List of dead enemies to be removed from GUI
 	 */
 	public ArrayList<Enemy> removeKilledEnemies() {
 		ArrayList<Enemy> toBeRemoved = new ArrayList<Enemy>() ;
@@ -256,7 +309,9 @@ public class MainGame {
 	}
 
 	/**
-	 * Check if any enemies has reached the end. Have the enemies deal damage to the Player. Remove these enemies.
+	 * Removes enemies that reached the from current alive enemies list and returns a list of enemies that also needs to be removed from GUI.
+	 * This method also calls on the enemies that reached the end to deal damage to player.
+	 * @return List of enemies that reached the end to be removed from GUI
 	 */
 
 	public ArrayList<Enemy> removeEnemiesReachedEnd() {
@@ -276,7 +331,9 @@ public class MainGame {
 	}
 
 	/**
-	 * Have each defender find their target enemy and deal damage to the target
+	 * Commands all towers that have been added to target and attack an enemy in the current alive enemies list.
+	 * Returns a list of pairs containing a tower and its targeted enemy.
+	 * @return the list of pairs containing a tower and its targeted enemy.
 	 */
 	public ArrayList<Point[] > DefendersAttackEnemies() {
 		ArrayList<Point[]> pairList = new ArrayList<Point[]>();
@@ -291,7 +348,7 @@ public class MainGame {
 		}
 		return pairList;
 	}
-	
+
 	public void spellAttackEnemies() {
 		RainSpell rainAttack = new RainSpell();
 		if(player.enoughFunds(rainAttack.getPrice())) {

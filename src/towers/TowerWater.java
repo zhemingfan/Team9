@@ -15,5 +15,7 @@ public class TowerWater extends Tower{
 		this.damage = 5;
 		this.price = 5;
 	}
-
+	public String toString() {
+		  return " WATER SPRITE\n" + super.toString();
+	  }
 }

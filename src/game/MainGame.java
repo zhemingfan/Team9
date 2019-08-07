@@ -11,6 +11,7 @@ import javafx.scene.media.AudioClip;
 import parents.Enemy;
 import parents.Point;
 import parents.Tower;
+import spells.RainSpell;
 
 public class MainGame {
 
@@ -24,8 +25,9 @@ public class MainGame {
 	private ArrayList<Tower> towerList = new ArrayList<Tower>();
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 
-	public AudioClip extinguisher = new AudioClip(this.getClass().getResource("/sound/extinguisher.mp3").toString());
-
+	public AudioClip enemyDeath = new AudioClip(this.getClass().getResource("/sound/plop.mp3").toString());
+	public AudioClip rainCasted = new AudioClip(this.getClass().getResource("/sound/thunderStorm.mp3").toString());
+	
 	private int waveCounter = 0;
 	private ArrayList<Enemy> waveList = new ArrayList<Enemy>();
 
@@ -178,8 +180,9 @@ public class MainGame {
 				int i = 0;
 				Point start = map.getStartPoint(OFFSETX, OFFSETY);
 				Enemy anEnemy = new Enemy(start.getXCoord(), start.getYCoord());
-				while (i < 25) {
+				while (i < 35) {
 					if(i < 10) anEnemy = new Lava(start.getXCoord(), start.getYCoord());
+					else if(i < 25) anEnemy = new Fire(start.getXCoord(), start.getYCoord());
 					else anEnemy = new Spirit(start.getXCoord(), start.getYCoord());
 					i++;
 					waveList.add(anEnemy);
@@ -190,10 +193,10 @@ public class MainGame {
 				Point start = map.getStartPoint(OFFSETX, OFFSETY);
 				Enemy anEnemy = new Enemy(start.getXCoord(), start.getYCoord());
 				while (i < 30) {
-					if(i < 1) anEnemy = new Demon(start.getXCoord(), start.getYCoord());
-					else if (i < 10) anEnemy = new Fire(start.getXCoord(), start.getYCoord());
+					if (i < 10) anEnemy = new Fire(start.getXCoord(), start.getYCoord());
 					else if (i < 20) anEnemy = new Lava(start.getXCoord(), start.getYCoord());
-					else anEnemy = new Spirit(start.getXCoord(), start.getYCoord());
+					else if (i < 29) anEnemy = new Spirit(start.getXCoord(), start.getYCoord());
+					else anEnemy = new Demon(start.getXCoord(), start.getYCoord());
 					i++;
 					waveList.add(anEnemy);
 				}
@@ -244,7 +247,7 @@ public class MainGame {
 			if (anEnemy.isKilled() ) {
 				toBeRemoved.add(anEnemy);
 				this.getPlayer().gainMoney(anEnemy.getBounty());
-				extinguisher.play();
+				enemyDeath.play();
 			}
 
 		};
@@ -287,5 +290,14 @@ public class MainGame {
 			}
 		}
 		return pairList;
+	}
+	
+	public void spellAttackEnemies() {
+		RainSpell rainAttack = new RainSpell();
+		if(player.enoughFunds(rainAttack.getPrice())) {
+			player.buyDefense(rainAttack.getPrice());
+			rainAttack.castSpell(enemyList);
+			rainCasted.play();
+		}
 	}
 }

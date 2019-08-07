@@ -52,4 +52,8 @@ public class Tower extends Point{
     if (anEnemy != null) anEnemy.takeDamage(damage);
   }
   
+  public String toString() {
+	  return "Range: " + range + "\n" + "Damage: " + damage + "\n" + "Price: " + price + "\n";
+  }
+  
 }

@@ -5,11 +5,11 @@ import parents.Enemy;
 public class Lava extends Enemy{
   public Lava(double x, double y) {
     super(x,y);
-    maxHealth = 80;
-    health = 80;
+    maxHealth = 100;
+    health = 100;
     damage = 20;
     speed = 0.5;
-    bounty = 3;
+    bounty = 5;
   }
   public void attack(Player aPlayer) {
     super.attack(aPlayer);

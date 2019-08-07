@@ -27,8 +27,11 @@ import javafx.stage.Stage;
 import parents.Enemy;
 import parents.Point;
 import parents.Tower;
+import spells.CastSpellHandler;
+import spells.RainSpell;
 import towers.PlaceTowerHandler;
 import towers.TowerIce;
+import towers.TowerSamurai;
 import towers.TowerWater;
 import towers.TowerWind;
 
@@ -55,26 +58,24 @@ public class GameInterface extends Application {
 	public Image enemyLava = new Image("/img/Enemy_Lava.PNG");
 	public Image enemyDemon = new Image("/img/Enemy_Demon.PNG");
 	public Image grassTile = new Image("/img/GrassTile.PNG");
-  	public Image pathTile = new Image("/img/PathTile.PNG");
-  	public Image rockTile = new Image("/img/RockTile.PNG");
-  	public Image defenderIce = new Image("/img/Defender_Ice.PNG");
-  	public Image defenderWaterSprite = new Image("/img/Defender_WaterSprite.PNG");
-  	public Image defenderWind = new Image("/img/Defender_Wind.PNG");
-  	public Image woodBlock = new Image("/img/woodBlock.jpeg");
-  	public Image loopMap = new Image("/img/LoopyMap.png");
-  	public Image zigzagMap = new Image("/img/ZigZagMap.png");
-  	public Image windProj = new Image("/img/projectileWind.png");
-  	public Image waterProj = new Image("/img/projectileWater.png");
-  	public Image iceProj = new Image("/img/projectileWind.png");
-  	public Image utilityPaneBG = new Image("/img/utilityPaneBG.jpg");
-  	public Image gameStartBG = new Image("/img/gameStartBG.jpg");
+	public Image pathTile = new Image("/img/PathTile.PNG");
+	public Image rockTile = new Image("/img/RockTile.PNG");
+	public Image rainSpell = new Image("/img/Spell_Rain.PNG");
+	public Image defenderIce = new Image("/img/Defender_Ice.PNG");
+	public Image defenderWaterSprite = new Image("/img/Defender_WaterSprite.PNG");
+	public Image defenderWind = new Image("/img/Defender_Wind.PNG");
+	public Image defenderSamurai = new Image("/img/Defender_Samurai.PNG");
+	public Image woodBlock = new Image("/img/woodBlock.jpeg");
+	public Image loopMap = new Image("/img/LoopyMap.png");
+	public Image zigzagMap = new Image("/img/ZigZagMap.png");
+	public Image windProj = new Image("/img/projectileWind.png");
+	public Image waterProj = new Image("/img/projectileWater.png");
+	public Image iceProj = new Image("/img/projectileWind.png");
+	public Image utilityPaneBG = new Image("/img/utilityPaneBG.jpg");
+	public Image gameStartBG = new Image("/img/gameStartBG.jpg");
 
-  	public AudioClip fireAlarm = new AudioClip(this.getClass().getResource("/sound/fireAlarm.mp3").toString());
-  	public AudioClip waterSplash = new AudioClip(this.getClass().getResource("/sound/waterSplash.mp3").toString());
-  	public AudioClip thunderStorm = new AudioClip(this.getClass().getResource("/sound/thunderStorm.mp3").toString());
-  	public AudioClip iceCrack = new AudioClip(this.getClass().getResource("/sound/iceCrack.mp3").toString());
-
-
+	//Sounds from soundbible
+	public AudioClip fireAlarm = new AudioClip(this.getClass().getResource("/sound/fireAlarm.mp3").toString());
 
 	public static void main(String[] args) {
 		Application.launch();
@@ -90,7 +91,7 @@ public class GameInterface extends Application {
 		// The basic Layout of the Screen
 		StackPane root = new StackPane();
 		Scene scene = new Scene(root, WINDOWWIDTH, WINDOWHEIGHT);
-	    primaryStage.setTitle("Demo");
+	    primaryStage.setTitle("FireForce No9");
 	    primaryStage.setScene(scene);
 
 	    //setting up startup Menu
@@ -165,38 +166,55 @@ public class GameInterface extends Application {
 
 		// add the Button Handler after you guys have worked things out on that
 		HBox waterLabel = new HBox();
-		Label waterDescription = new Label("Range: 50\n"+"Damage: 10\n"+"Price: 10\n");
-		waterDescription.setFont(Font.font("Verdana",FontWeight.BOLD,12));
+		Label waterDescription = new Label(new TowerWater().toString()); //The text describing cost, damage, etc
+		waterDescription.setFont(Font.font("Verdana",FontWeight.BOLD,12)); //Styling the text described above
 		waterDescription.setTextFill(Color.BLACK);
 		Button placeWaterButton = new Button("", new ImageView(defenderWaterSprite));
-	    placeWaterButton.setPrefSize(TILESIZE*2, TILESIZE*2);
+	    placeWaterButton.setPrefSize(TILESIZE*1.75, TILESIZE*1.75);
 	    placeWaterButton.setOnAction(new PlaceTowerHandler(placeWaterButton, mainboard, foreground,
 	    		new TowerWater(), GAME) );
 	   waterLabel.getChildren().addAll(placeWaterButton, waterDescription);
 
 		HBox windLabel = new HBox();
-		Label windDescription = new Label("Range: 75\n"+"Price: 15\n");
+		Label windDescription = new Label(new TowerWind().toString());
 		windDescription.setFont(Font.font("Verdana",FontWeight.BOLD,12));
 		windDescription.setTextFill(Color.BLACK);
 	    Button placeWindButton = new Button("", new ImageView(defenderWind));
-		placeWindButton.setPrefSize(TILESIZE*2, TILESIZE*2);
+		placeWindButton.setPrefSize(TILESIZE*1.75, TILESIZE*1.75);
 		placeWindButton.setOnAction(new PlaceTowerHandler(placeWindButton, mainboard, foreground,
 				new TowerWind(), GAME ) );
 		windLabel.getChildren().addAll(placeWindButton, windDescription);
 
 		HBox iceLabel = new HBox();
-		Label iceDescription = new Label("Range: 100\n"+"Damage: 20\n"+"Price: 20\n");
+		Label iceDescription = new Label(new TowerIce().toString());
 		iceDescription.setFont(Font.font("Verdana",FontWeight.BOLD,12));
 		iceDescription.setTextFill(Color.BLACK);
 		Button placeIceButton = new Button("", new ImageView(defenderIce));
-		placeIceButton.setPrefSize(TILESIZE*2, TILESIZE*2);
+		placeIceButton.setPrefSize(TILESIZE*1.75, TILESIZE*1.75);
 		placeIceButton.setOnAction(new PlaceTowerHandler(placeIceButton, mainboard, foreground,
 				new TowerIce(), GAME) );
 		iceLabel.getChildren().addAll(placeIceButton, iceDescription);
 
-
-
-		utilityPane.getChildren().addAll(waterLabel, windLabel, iceLabel);
+		HBox samuraiLabel = new HBox();
+		Label samuraiDescription = new Label(new TowerSamurai().toString());
+		samuraiDescription.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+		samuraiDescription.setTextFill(Color.BLACK);
+		Button placeSamuraiButton = new Button("", new ImageView(defenderSamurai));
+		placeSamuraiButton.setPrefSize(TILESIZE*1.75, TILESIZE*1.75);
+		placeSamuraiButton.setOnAction(new PlaceTowerHandler(placeSamuraiButton, mainboard, foreground,
+				new TowerSamurai(), GAME));
+		samuraiLabel.getChildren().addAll(placeSamuraiButton, samuraiDescription);
+		
+		HBox rainSpellLabel = new HBox();
+		Label rainSpellDescription = new Label(new RainSpell().toString());
+		rainSpellDescription.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+		rainSpellDescription.setTextFill(Color.BLACK);
+		Button placeRainButton = new Button("", new ImageView(rainSpell));
+		placeRainButton.setPrefSize(TILESIZE*1.5, TILESIZE*1.5); //Spells are slightly smaller than the tower buttons
+		placeRainButton.setOnAction(new CastSpellHandler(GAME));
+		rainSpellLabel.getChildren().addAll(placeRainButton, rainSpellDescription);
+		
+		utilityPane.getChildren().addAll(waterLabel, iceLabel, windLabel, samuraiLabel, rainSpellLabel);
 
 	    AnimationTimer animator = new AnimationTimer(){
 	    	int frameCounter = 0;
@@ -230,8 +248,9 @@ public class GameInterface extends Application {
 	           frameCounter += 1;
 
 	           if(GAME.getGameMode().equals("STORY")) {
-	        	   if(frameCounter % 5000 == 0) ENEMYSPAWNRATE -= 10;
+	        	   if(frameCounter % 1000 == 0) ENEMYSPAWNRATE -= 10;
 	           }
+	           else if (frameCounter % 2000 == 0) ENEMYSPAWNRATE -= 10;
 
 	           if (GAME.isOver()) {
 	        	   this.stop();
@@ -240,26 +259,32 @@ public class GameInterface extends Application {
 	           }
             }
         };
-
+        
         Rectangle startButtonLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
         startButtonLayer.setFill(new ImagePattern(gameStartBG));
-		Button startButton = new Button("Start");
-		startButton.setOnAction(new GameStartButtonHandler(animator, root, startUpMenu, fireAlarm));
+        
+        Button startStoryButton = new Button("Start Story");
+        startStoryButton.setOnAction(new GameStartButtonHandler(GAME, "STORY", animator, root, startUpMenu, fireAlarm));
+        Button startSurvivalButton = new Button("Start Survival");
+        startSurvivalButton.setOnAction(new GameStartButtonHandler(GAME, "SURVIVAL", 
+        													animator, root, startUpMenu, fireAlarm));
+        
+		//Button startButton = new Button("Start");
+		//startButton.setOnAction(new GameStartButtonHandler(animator, root, startUpMenu, fireAlarm));
 
 		VBox initGameButtons = new VBox();
 		initGameButtons.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
 		initGameButtons.setAlignment(Pos.CENTER);
 
 
-		MenuButton chooseModeButton = new MenuButton("Choose Play Mode:");
+		//MenuButton chooseModeButton = new MenuButton("Choose Play Mode:");
 
-
+		/*
 		MenuItem storyButton = new MenuItem("STORY MODE");
 		storyButton.setOnAction(new ChooseModeHandler(GAME , "STORY", chooseModeButton));
 		MenuItem survivalButton = new MenuItem("SURVIVAL MODE");
 		survivalButton.setOnAction(new ChooseModeHandler(GAME, "SURVIVAL", chooseModeButton));
-
-		chooseModeButton.getItems().addAll(storyButton, survivalButton);
+		*/
 
 		HBox chooseMapButtons = new HBox();
 		chooseMapButtons.setAlignment(Pos.CENTER);
@@ -273,7 +298,7 @@ public class GameInterface extends Application {
 
 		chooseMapButtons.getChildren().addAll(zigzagMapButton, loopMapButton);
 
-		initGameButtons.getChildren().addAll(chooseModeButton, chooseMapButtons, startButton);
+		initGameButtons.getChildren().addAll(chooseMapButtons, startStoryButton, startSurvivalButton);
 		startUpMenu.getChildren().addAll(startButtonLayer, initGameButtons);
 
         primaryStage.show();
@@ -387,6 +412,10 @@ public class GameInterface extends Application {
 		if (aDefender instanceof TowerWind) {
 			rect.setFill(new ImagePattern(defenderWind));
 			tracker.setStroke(Color.PALEGOLDENROD);
+		}
+		if (aDefender instanceof TowerSamurai) {
+			rect.setFill(new ImagePattern(defenderSamurai));
+			tracker.setStroke(Color.RED);
 		}
 		foreground.getChildren().addAll(aDefender.getNode(), rect);
 		rect.relocate(aDefender.getXCoord(), aDefender.getYCoord());

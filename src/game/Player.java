@@ -65,12 +65,20 @@ public class Player{
     return moneyLost <= money;
   }
 
+  /**
+   * 
+   * @param moneyLost - The price of the tower or spell being purchased
+   */
   public void buyDefense(int moneyLost) {
     if (enoughFunds(moneyLost) && moneyLost >= 0) {
     	money -= moneyLost;
     }
   }
 
+  /**
+   * Not to be confused with getMoney; This method increases the player's funds
+   * @param moneyGained - The amount to increase by
+   */
   public void gainMoney(int moneyGained){
     if(moneyGained >= 0) money += moneyGained;
     //System.out.println("You gained $"+moneyGained+"\nCASH: $"+money);

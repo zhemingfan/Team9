@@ -16,21 +16,27 @@ public class GameStartButtonHandler implements EventHandler<ActionEvent> {
 	AudioClip fireAlarm;
 	Stage primaryStage;
 	Scene gamePlayScene;
+	MainGame aGame;
+	String aMode;
 	
-	public GameStartButtonHandler(AnimationTimer aTimer, StackPane root, Pane startUpMenu, AudioClip fireAlarm) {
+	public GameStartButtonHandler(MainGame someGame, String someMode, 
+									AnimationTimer aTimer, StackPane root, Pane startUpMenu, AudioClip fireAlarm) {
 		this.aTimer = aTimer;
 		this.root = root;
 		this.startUpMenu = startUpMenu;
 		this.fireAlarm = fireAlarm;	
+		aGame = someGame;
+		aMode = someMode;
 	}
 	
 	
 	@Override
 	public void handle(ActionEvent event) {
-		if (ChooseMapHandler.mapWasChosen && ChooseModeHandler.modeWasChosen) {
+		if (ChooseMapHandler.mapWasChosen) {
 			aTimer.start();
 			fireAlarm.play();
 			root.getChildren().remove(startUpMenu);
+			aGame.setGameMode(aMode);
 		}
 	}
 	

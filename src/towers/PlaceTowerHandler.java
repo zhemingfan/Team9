@@ -31,11 +31,15 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
   	public Image defenderIce = new Image("/img/Defender_Ice.PNG");
   	public Image defenderWaterSprite = new Image("/img/Defender_WaterSprite.PNG");
   	public Image defenderWind = new Image("/img/Defender_Wind.PNG");
+  	public Image defenderSamurai = new Image("/img/Defender_Samurai.PNG");
   	public Image woodBlock = new Image("/img/woodBlock.jpeg");
   	
+  	//Sound effects are from soundbible.com
   	public AudioClip waterSplash = new AudioClip(this.getClass().getResource("/sound/waterSplash.mp3").toString());
-  	public AudioClip thunderStorm = new AudioClip(this.getClass().getResource("/sound/thunderStorm.mp3").toString());
-  	public AudioClip iceCrack = new AudioClip(this.getClass().getResource("/sound/iceCrack.mp3").toString());
+  	//public AudioClip thunderStorm = new AudioClip(this.getClass().getResource("/sound/thunderStorm.mp3").toString());
+  	public AudioClip iceCrack = new AudioClip(this.getClass().getResource("/sound/iceCrack.mp3").toString()); //Except this one, from zapsplat.com
+  	public AudioClip swordSwish = new AudioClip(this.getClass().getResource("/sound/Swish.mp3").toString());
+  	public AudioClip windWoosh = new AudioClip(this.getClass().getResource("/sound/wind.mp3").toString());
   	
 	public PlaceTowerHandler(Button aB, StackPane aG, Pane aSP, Tower toBeMade, MainGame currentGame) {
 		button = aB;
@@ -62,6 +66,9 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 			}
 			if (toBeMade instanceof TowerWind) {
 				cursorImg = defenderWind;
+			}
+			if (toBeMade instanceof TowerSamurai) {
+				cursorImg = defenderSamurai;
 			}
 			inputGrid.setCursor( new ImageCursor(cursorImg, 
 					cursorImg.getWidth()/2, cursorImg.getHeight()/2) );
@@ -128,7 +135,11 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 						}
 						if (toBeMade instanceof TowerWind) {
 							aDefender = new TowerWind(column*GameInterface.OFFSETX, row*GameInterface.OFFSETY);
-							thunderStorm.play();
+							windWoosh.play();
+						}
+						if (toBeMade instanceof TowerSamurai) {
+							aDefender = new TowerSamurai(column*GameInterface.OFFSETX, row*GameInterface.OFFSETY);
+							swordSwish.play();
 						}
 							
 						currentGame.addDefender(aDefender);

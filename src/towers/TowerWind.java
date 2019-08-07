@@ -29,4 +29,9 @@ public class TowerWind extends Tower{
 		speedDebuff = anEnemy.getSpeed();
 		if(anEnemy != null) anEnemy.slowDown(speedDebuff);
 	}
+	
+	@Override
+	public String toString() {
+		return "No Damage\nSlows Down\n" + "Range: " + range + "\n" + "Price: " + price + "\n";
+	}
 }

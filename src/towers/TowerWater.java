@@ -15,5 +15,5 @@ public class TowerWater extends Tower{
 		this.damage = 5;
 		this.price = 5;
 	}
-	
+
 }

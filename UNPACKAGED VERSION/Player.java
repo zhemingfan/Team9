@@ -1,30 +1,27 @@
-package game;
-import javafx.scene.control.Label;
-import parents.Enemy;
-import parents.Point;
-
 import javafx.scene.control.Label;
 
-public class Player{
-  private int playerHealth;
-  private int money;
+public class Player extends Point{
+  private int playerHealth = 70;
+  private int money = 50;
   Label healthLabel;
-  public Label moneyLabel;
+  Label moneyLabel;
 
+
+  public Player() {
+
+  }
   public Player(int aHealth, int initCurrency){
-    setHealth(aHealth);
-    setMoney(initCurrency);
+    playerHealth = aHealth;
+    money = initCurrency;
 
   }
 
   public void setHealth(int initHealth){
-    if(initHealth >= 20) playerHealth = initHealth;
-    else playerHealth = 20;
+    playerHealth = initHealth;
   }
 
   public void setMoney(int initMoney){
-    if(initMoney >= 0) money = initMoney;
-    else money = 0;
+    money = initMoney;
   }
 
   public void setHealthLabel(){
@@ -36,13 +33,11 @@ public class Player{
   }
 
   public int getHealth(){
-    int healthCopy = playerHealth;
-    return healthCopy;
+    return playerHealth;
   }
 
   public int getMoney(){
-    int moneyCopy = money;
-    return moneyCopy;
+    return money;
   }
 
   public Label getHealthLabel(){
@@ -54,11 +49,11 @@ public class Player{
   }
 
   public boolean isKilled() {
-    return playerHealth <= 0;
+    return playerHealth == 0;
   }
 
   public void takeDamage(int dealtDamage){
-    if(dealtDamage >= 0) playerHealth -= dealtDamage;
+    playerHealth -= dealtDamage;
   }
 
   public boolean enoughFunds(int moneyLost) {
@@ -66,13 +61,13 @@ public class Player{
   }
 
   public void buyDefense(int moneyLost) {
-    if (enoughFunds(moneyLost) && moneyLost >= 0) {
+    if (enoughFunds(moneyLost)) {
     	money -= moneyLost;
     }
   }
 
   public void gainMoney(int moneyGained){
-    if(moneyGained >= 0) money += moneyGained;
+    money += moneyGained;
     //System.out.println("You gained $"+moneyGained+"\nCASH: $"+money);
   }
 
@@ -83,7 +78,7 @@ public class Player{
   public String toStringHealth() {
 	  return  " " + getHealth();
   }
-
+  
   //CODE FOR TEXT-BASED BELOW
   public void attack(String[][] grid,Enemy anEnemy,int damage,int xD, int yD,int eX, int eY,int range) {
 	    if (enemyIsWithinRange(xD,yD,eX,eY,range)){
@@ -108,10 +103,9 @@ public class Player{
 	   * @param range
 	   * @return
 	   */
-
 	  public boolean enemyIsWithinRange(int defenderX, int defenderY,int eX, int eY,int range) {
 	    return this.TextgetDistance(eX,eY,defenderX,defenderY) <= range;
 	  }
 
-
+ 
 }

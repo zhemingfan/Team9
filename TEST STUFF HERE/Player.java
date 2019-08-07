@@ -1,15 +1,10 @@
-package game;
-import javafx.scene.control.Label;
-import parents.Enemy;
-import parents.Point;
-
 import javafx.scene.control.Label;
 
-public class Player{
-  private int playerHealth;
-  private int money;
+public class Player /*extends Point*/{
+  private int playerHealth = 70;
+  private int money = 50;
   Label healthLabel;
-  public Label moneyLabel;
+  Label moneyLabel;
 
   public Player(int aHealth, int initCurrency){
     setHealth(aHealth);
@@ -23,8 +18,8 @@ public class Player{
   }
 
   public void setMoney(int initMoney){
-    if(initMoney >= 0) money = initMoney;
-    else money = 0;
+    if(initMoney >= 20) money = initMoney;
+    else money = 20;
   }
 
   public void setHealthLabel(){
@@ -54,7 +49,7 @@ public class Player{
   }
 
   public boolean isKilled() {
-    return playerHealth <= 0;
+    return playerHealth == 0;
   }
 
   public void takeDamage(int dealtDamage){
@@ -108,10 +103,10 @@ public class Player{
 	   * @param range
 	   * @return
 	   */
-
+  
 	  public boolean enemyIsWithinRange(int defenderX, int defenderY,int eX, int eY,int range) {
 	    return this.TextgetDistance(eX,eY,defenderX,defenderY) <= range;
-	  }
+	  } 
 
 
 }

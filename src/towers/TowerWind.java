@@ -9,7 +9,7 @@ import parents.Tower;
  */
 public class TowerWind extends Tower{
 	private double speedDebuff;
-	
+
 	public TowerWind(double x, double y) {
 		super(x, y);
 		this.range = 75;
@@ -20,7 +20,7 @@ public class TowerWind extends Tower{
 		this.range = 75;
 		this.price = 15;
 	}
-	
+
 	@Override
 	/**Overrides the tower's normal attack method to freeze an enemy instead.
 	 * @param anEnemy - The target enemy

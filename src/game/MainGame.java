@@ -45,7 +45,7 @@ public class MainGame {
 			map.makeLoopyGrid();
 	}
 	}
-	
+
 	public String getGameMode() {
 		return "" + currentMode;
 	}
@@ -75,7 +75,7 @@ public class MainGame {
 	}
 
 	public boolean wonStoryMode() {
-		return ( !player.isKilled() ) && this.waveCounter == MainGame.MAX_WAVES_STORYMODE 
+		return ( !player.isKilled() ) && this.waveCounter == MainGame.MAX_WAVES_STORYMODE
 				&& this.enemyList.size() == 0 && this.waveList.size() == 0;
 	}
 
@@ -219,7 +219,7 @@ public class MainGame {
 			enemyList.add(anEnemy);
 			waveList.remove(anEnemy);
 		}
-		
+
 		System.out.println("Enemies remaining: " + waveList.size());
 		return anEnemy;
 	}

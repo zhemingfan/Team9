@@ -1,9 +1,5 @@
-package parents;
-
 import java.util.ArrayList;
 import java.util.Date;
-
-import game.Player;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.Node;
 
@@ -43,13 +39,13 @@ public class Enemy extends Point{
     speed = aSpeed;
     health = someHealth;
   }
-
+ 
   public String getName() {
 	    return name;
   }
-
-
-
+	  
+  
+  
   public int getBounty() {
 	return bounty;
 }
@@ -93,14 +89,6 @@ public class Enemy extends Point{
   }
 
   /**
-   * Function specifically for the wind-trap tower. Freezes a single enemy by reducing it's speed.
-   * @param debuff
-   */
-  public void slowDown(double debuff) {
-	  speed -= debuff;
-  }
-
-  /**
    * Update the enemy's location. If an enemy has reached a check point, this increases the checkPointIndex variable by 1.
    * After this, the enemy will start heading towards the next check point.
    * @param checkPoints
@@ -141,17 +129,17 @@ public class Enemy extends Point{
   public double getMaxHealth() {
 	  return maxHealth;
   }
-
+  
   public void setMaxHealth(int value) {
 	  this.maxHealth = value;
   }
-
+  
   public String healthToString(Enemy anEnemy) {
     String eHealth = Integer.toString(anEnemy.getEnemyHealth());
     return eHealth;
   }
-
-
+  
+  
 
 /*
   public static void main(String[] args) {
@@ -184,3 +172,4 @@ public class Enemy extends Point{
 	  }
 	  */
   }
+

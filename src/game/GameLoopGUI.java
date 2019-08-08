@@ -146,7 +146,9 @@ public class GameLoopGUI extends AnimationTimer{
 				}
 			}
 		);
-		endScreen.getChildren().addAll(endBGLayer, endTitleCard, restartButton);
+		Button exitButton = new Button("EXIT");
+		exitButton.setOnAction(e -> primaryStage.close());
+		endScreen.getChildren().addAll(endBGLayer, endTitleCard, restartButton, exitButton);
 		restartButton.relocate(WINDOWWIDTH/2, WINDOWHEIGHT/2);
 		return endScreen;
 	}

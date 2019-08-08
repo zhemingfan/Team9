@@ -268,11 +268,14 @@ public class GameInterface extends Application {
 
 		chooseMapButtons.getChildren().addAll(zigzagMapButton, loopMapButton);
 
-		initGameButtons.getChildren().addAll(chooseMapButtons, startStoryButton, startSurvivalButton);
+		Button exitButton = new Button("EXIT");
+		exitButton.setOnAction(e -> primaryStage.close());
+		initGameButtons.getChildren().addAll(chooseMapButtons, startStoryButton, startSurvivalButton,
+				exitButton);
 		startUpMenu.getChildren().addAll(startButtonLayer, initGameButtons);
 
         primaryStage.show();
 
 	}
-	
+
 }

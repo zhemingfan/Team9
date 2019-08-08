@@ -1,5 +1,7 @@
 package towers;
 import java.util.ArrayList;
+import game.GameLoopGUI;
+import game.GameLoopGUI;
 import game.Player;
 import game.GameInterface;
 import game.MainGame;
@@ -35,7 +37,6 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
   	public Image defenderWaterSprite = new Image("/img/Defender_WaterSprite.PNG");
   	public Image defenderWind = new Image("/img/Defender_Wind.PNG");
   	public Image defenderSamurai = new Image("/img/Defender_Samurai.PNG");
-  	public Image woodBlock = new Image("/img/woodBlock.jpeg");
 
   	//Sound effects are from soundbible.com
   	public AudioClip waterSplash = new AudioClip(this.getClass().getResource("/sound/waterSplash.mp3").toString());
@@ -158,12 +159,12 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 							aDefender = new TowerSamurai(column*GameInterface.OFFSETX, row*GameInterface.OFFSETY);
 							swordSwish.play();
 						}
-
+						aDefender.setframeCreated(GameLoopGUI.frameCounter);
 						currentGame.addDefender(aDefender);
 						Player playerObject = currentGame.getPlayer();
 						// Add and update Player GUI
 						playerObject.buyDefense(aDefender.getPrice());
-						new GameInterface().paintTowerOnGUI(aDefender, GUIforeground); //from GameInterface
+						new GameLoopGUI().paintTowerOnGUI(aDefender, GUIforeground); //from GameInterface
 						playerObject.moneyLabel.setText(playerObject.toStringMoney());
 
 						// Clean up

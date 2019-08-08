@@ -122,17 +122,29 @@ public class Enemy extends Point{
 	  speed -= debuff;
   }
 
+  
+
+  public void attachPath(Point[] checkPoints) {
+	  path = checkPoints;
+  }
+  
+  public int getCurrentCheckPointIndex() {
+	  return checkPointIndex;
+  }
+  
+  public Point getCPCoord(int i) {
+	  return path[i];
+  }
+  
+  public double getDistantFromCP(int i) {
+	return this.getDistance(path[i]);
+  }
   /**
    * Update the enemy's location. If an enemy has reached a check point, this increases the checkPointIndex variable by 1.
    * After this, the enemy will start heading towards the next check point.
    * @param checkPoints
    * @param elapsedTime
    */
-
-  public void attachPath(Point[] checkPoints) {
-	  path = checkPoints;
-  }
-
   public void advance(double elapsedTime) {
 	  if ( !this.isKilled() ) {
 		int LASTCHECKINDEX = path.length - 1;

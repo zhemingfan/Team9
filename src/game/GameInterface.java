@@ -10,6 +10,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -261,11 +262,13 @@ public class GameInterface extends Application {
 		ToggleGroup mapGroup = new ToggleGroup();
 		ToggleButton loopMapButton = new ToggleButton("", new ImageView(loopMap));
 		loopMapButton.setOnAction(new ChooseMapHandler(background, "LOOPY", GAME ));
+		loopMapButton.setPadding(Insets.EMPTY);
+		
 		ToggleButton zigzagMapButton = new ToggleButton("", new ImageView(zigzagMap));
 		zigzagMapButton.setOnAction(new ChooseMapHandler(background, "ZIGZAG", GAME ));
 		loopMapButton.setToggleGroup(mapGroup);
 		zigzagMapButton.setToggleGroup(mapGroup);
-
+		zigzagMapButton.setPadding(Insets.EMPTY);
 		chooseMapButtons.getChildren().addAll(zigzagMapButton, loopMapButton);
 
 		Button exitButton = new Button("EXIT");

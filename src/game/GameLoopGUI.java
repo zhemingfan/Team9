@@ -158,6 +158,7 @@ public class GameLoopGUI extends AnimationTimer{
 	 */
 	public void cleanUp() {
 		GAME = new MainGame();
+		GameLoopGUI.frameCounter = 0;
 		ChooseModeHandler.modeWasChosen = false;
 		ChooseMapHandler.mapWasChosen = false;
 	}

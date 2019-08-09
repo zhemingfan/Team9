@@ -1,7 +1,5 @@
 package game;
 
-import java.util.ArrayList;
-
 import enemies.Demon;
 import enemies.Fire;
 import enemies.Lava;
@@ -38,38 +36,26 @@ import towers.TowerWind;
 
 public class GameInterface extends Application {
 
-
-	public static final int WINDOWWIDTH = 700, WINDOWHEIGHT = 500 ;
-	public static final int BoardWIDTH = 500, BoardHEIGHT = 500 ;
+	public static final int WINDOWWIDTH = 1200, WINDOWHEIGHT = 800 ;
+	public static final int BoardWIDTH = 800, BoardHEIGHT = 800 ;
 	public static final int COLUMN = 10, ROW = 10;
-	public static final int OFFSETX = 50, OFFSETY = 50;
-	public static final int TILESIZE = 50;
+	public static final int OFFSETX = 80, OFFSETY = 80;
+	public static final int TILESIZE = 80;
 	
-	public static final Image enemyFire = new Image("/img/Enemy_Fire.PNG");
-	public static final Image enemySpirit = new Image("/img/Enemy_Spirit.PNG");
-	public static final Image enemyLava = new Image("/img/Enemy_Lava.PNG");
-	public static final Image enemyDemon = new Image("/img/Enemy_Demon.PNG");
-	public static final Image grassTile = new Image("/img/GrassTile.PNG");
-	public static final Image pathTile = new Image("/img/PathTile.PNG");
-	public static final Image rockTile = new Image("/img/RockTile.PNG");
-	public static final Image rainSpell = new Image("/img/Spell_Rain.PNG");
-	public static final Image defenderIce = new Image("/img/Defender_Ice.PNG");
-	public static final Image defenderWaterSprite = new Image("/img/Defender_WaterSprite.PNG");
-	public static final Image defenderWind = new Image("/img/Defender_Wind.PNG");
-	public static final Image defenderSamurai = new Image("/img/Defender_Samurai.PNG");
-	public static final Image woodBlock = new Image("/img/woodBlock.jpeg");
+	public static final Image rainSpell = new Image("/img/RainSpell.png");
+	public static final Image defenderIce = new Image("/img/TowerIce.png");
+	public static final Image defenderWaterSprite = new Image("/img/TowerWater.png");
+	public static final Image defenderWind = new Image("/img/TowerWind.png");
+	public static final Image defenderSamurai = new Image("/img/TowerSamurai.png");
+	
+	public static final Image woodBlock = new Image("/img/WoodBlock.png");
 	public static final Image loopMap = new Image("/img/LoopyMap.png");
 	public static final Image zigzagMap = new Image("/img/ZigZagMap.png");
-	public static final Image windProj = new Image("/img/projectileWind.png");
-	public static final Image waterProj = new Image("/img/projectileWater.png");
-	public static final Image iceProj = new Image("/img/projectileWind.png");
-	public static final Image utilityPaneBG = new Image("/img/utilityPaneBG.jpg");
-	public static final Image gameStartBG = new Image("/img/gameStartBG.jpg");
-	public AudioClip fireAlarm = new AudioClip(this.getClass().getResource("/sound/fireAlarm.mp3").toString());
 	
-	public GameInterface() {
-		
-	}
+	public static final Image utilityPaneBG = new Image("/img/utilityPaneBG.jpg");
+	public static final Image gameStartBG = new Image("/img/StartBG.png");
+	
+	public AudioClip fireAlarm = new AudioClip(this.getClass().getResource("/sound/fireAlarm.mp3").toString());
 	
 	public static void main(String[] args) {
 		Application.launch();
@@ -121,6 +107,8 @@ public class GameInterface extends Application {
 
 		// Health
 		HBox health = new HBox(); //make the Hbox so that you can set a left and right thing
+		Image heart = new Image("/img/PlayerHeart.png");
+		Rectangle heartRect = new Rectangle(50, 50, new ImagePattern(heart));
 		utilityPane.getChildren().add(health);
 		playerObject.setHealthLabel();
 		Label stats_health = new Label("Player's Health   ");
@@ -130,9 +118,11 @@ public class GameInterface extends Application {
 		playerObject.getHealthLabel().setFont(Font.font("Verdana",FontWeight.BOLD,12));
 		playerObject.getHealthLabel().setTextFill(Color.BLACK);
 
-		health.getChildren().addAll(stats_health, playerObject.getHealthLabel());
+		health.getChildren().addAll(heartRect,stats_health, playerObject.getHealthLabel());
 
 		//Gold
+		Image goldimg = new Image("/img/PlayerHeart.png");
+		Rectangle goldRect = new Rectangle(50, 50, new ImagePattern(goldimg));
 		Label stats_gold = new Label("Player's Gold");
 		stats_gold.setFont(Font.font("Verdana",FontWeight.BOLD,12));
 		stats_gold.setTextFill(Color.BLACK);
@@ -155,8 +145,7 @@ public class GameInterface extends Application {
 		gold.setSpacing(23);
 		//gold.setStyle("-fx-background-color: #336699;");
 
-		gold.getChildren().add(stats_gold);
-		gold.getChildren().add(playerObject.getMoneyLabel());
+		gold.getChildren().addAll(goldRect ,stats_gold, playerObject.getMoneyLabel());
 
 		// add the Button Handler after you guys have worked things out on that
 		HBox waterLabel = new HBox();

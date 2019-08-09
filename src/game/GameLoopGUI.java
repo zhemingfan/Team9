@@ -6,7 +6,10 @@ import enemies.Demon;
 import enemies.Fire;
 import enemies.Lava;
 import enemies.Spirit;
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,6 +26,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import parents.Enemy;
 import parents.Point;
 import parents.Tower;
@@ -33,33 +37,24 @@ import towers.TowerWind;
 
 public class GameLoopGUI extends AnimationTimer{
 	
-	public static final int WINDOWWIDTH = 700, WINDOWHEIGHT = 500 ;
-	public static final int BoardWIDTH = 500, BoardHEIGHT = 500 ;
+	public static final int WINDOWWIDTH = 1200, WINDOWHEIGHT = 800 ;
+	public static final int BoardWIDTH = 800, BoardHEIGHT = 800 ;
 	public static final int COLUMN = 10, ROW = 10;
-	public static final int OFFSETX = 50, OFFSETY = 50;
-	public static final int TILESIZE = 50;
+	public static final int OFFSETX = 80, OFFSETY = 80;
+	public static final int TILESIZE = 80;
 	
-	public static final Image enemyFire = new Image("/img/Enemy_Fire.PNG");
-	public static final Image enemySpirit = new Image("/img/Enemy_Spirit.PNG");
-	public static final Image enemyLava = new Image("/img/Enemy_Lava.PNG");
-	public static final Image enemyDemon = new Image("/img/Enemy_Demon.PNG");
-	public static final Image grassTile = new Image("/img/GrassTile.PNG");
-	public static final Image pathTile = new Image("/img/PathTile.PNG");
-	public static final Image rockTile = new Image("/img/RockTile.PNG");
-	public static final Image rainSpell = new Image("/img/Spell_Rain.PNG");
-	public static final Image defenderIce = new Image("/img/Defender_Ice.PNG");
-	public static final Image defenderWaterSprite = new Image("/img/Defender_WaterSprite.PNG");
-	public static final Image defenderWind = new Image("/img/Defender_Wind.PNG");
-	public static final Image defenderSamurai = new Image("/img/Defender_Samurai.PNG");
-	public static final Image woodBlock = new Image("/img/woodBlock.jpeg");
-	public static final Image loopMap = new Image("/img/LoopyMap.png");
-	public static final Image zigzagMap = new Image("/img/ZigZagMap.png");
-	public static final Image windProj = new Image("/img/projectileWind.png");
-	public static final Image waterProj = new Image("/img/projectileWater.png");
-	public static final Image iceProj = new Image("/img/projectileWind.png");
-	public static final Image utilityPaneBG = new Image("/img/utilityPaneBG.jpg");
-	public static final Image gameStartBG = new Image("/img/gameStartBG.jpg");
-
+	public static final Image enemyFire = new Image("/img/EnemyFire.png");
+	public static final Image enemySpirit = new Image("/img/EnemySpirit.png");
+	public static final Image enemyLava = new Image("/img/EnemyLava.png");
+	public static final Image enemyDemon = new Image("/img/EnemyDemon.png");
+	
+	public static final Image rainSpell = new Image("/img/RainSpell.png");
+	public static final Image defenderIce = new Image("/img/TowerIce.png");
+	public static final Image defenderWaterSprite = new Image("/img/TowerWater.png");
+	public static final Image defenderWind = new Image("/img/TowerWind.png");
+	public static final Image defenderSamurai = new Image("/img/TowerSamurai.png");
+	
+	
 	public static double ENEMYSPEEDSCALAR = 0.5;
 	public static int TOWERATTACKRATE = 110; //one per 110 frames
 	public int ENEMYSPAWNRATE = 100; //one per 250 frames
@@ -116,12 +111,11 @@ public class GameLoopGUI extends AnimationTimer{
        playerObject.getHealthLabel().setText(playerObject.toStringHealth());
        frameCounter += 1;
        
-       /*
+       
        if(GAME.getGameMode().equals("STORY")) {
-    	   if(frameCounter % 1000 == 0) ENEMYSPAWNRATE -= 10;
+    	   if(frameCounter % 1000 == 0 &&  ENEMYSPAWNRATE > 50) ENEMYSPAWNRATE -= 10;
        }
-       else if (frameCounter % 2000 == 0) ENEMYSPAWNRATE -= 10;
-       */
+       else if (frameCounter % 2000 == 0 &&  ENEMYSPAWNRATE > 50) ENEMYSPAWNRATE -= 10;
        
        if (GAME.isOver()) {
     	   this.stop();
@@ -197,6 +191,12 @@ public class GameLoopGUI extends AnimationTimer{
     		Rectangle enemyHealthbar = updateHealthBars(anEnemy);
     		if (enemyUI instanceof VBox) {
     			((VBox)enemyUI).getChildren().set(0, enemyHealthbar);
+    			Node rect = ((VBox)enemyUI).getChildren().get(1);
+    			if (rect.getOpacity() == 1.0) {
+    				rect.setOpacity(rect.getOpacity() - 0.5);
+    			} else if ( rect.getOpacity() == 0.5){
+    				rect.setOpacity(rect.getOpacity() + 0.5);
+    			}
     		}
 
         }
@@ -286,6 +286,15 @@ public class GameLoopGUI extends AnimationTimer{
 			rect.setFill(new ImagePattern(defenderSamurai));
 			tracker.setStroke(Color.RED);
 		}
+		
+		RotateTransition rt = new RotateTransition(Duration.millis(1500), rect);
+	    rt.setFromAngle(-45); 
+		rt.setByAngle(60);
+	    rt.setCycleCount(Animation.INDEFINITE);
+	    rt.setAutoReverse(true);
+	 
+	    rt.play();
+	     
 		foreground.getChildren().addAll(aDefender.getNode(), rect);
 		rect.relocate(aDefender.getXCoord(), aDefender.getYCoord());
 
@@ -304,27 +313,19 @@ public class GameLoopGUI extends AnimationTimer{
 		this.playerObject = playerObject;
 	}
 	
-	public GameInterface getGUI() {
-		return GUI;
-	}
+	
 	public void setGUI(GameInterface gUI) {
 		GUI = gUI;
 	}
-	public Stage getPrimaryStage() {
-		return primaryStage;
-	}
+	
 	public void setPrimaryStage(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 	}
-	public Pane getForeground() {
-		return foreground;
-	}
+	
 	public void setForeground(Pane foreground) {
 		this.foreground = foreground;
 	}
-	public StackPane getRoot() {
-		return root;
-	}
+	
 	public void setRoot(StackPane root) {
 		this.root = root;
 	}

@@ -16,7 +16,7 @@ import spells.RainSpell;
 public class MainGame {
 
 	public enum GameMode{SURVIVAL, STORY};
-	private static final double OFFSETX = 50, OFFSETY = 50;
+	private static final double OFFSETX = GameInterface.OFFSETX, OFFSETY = GameInterface.OFFSETY;
 	private static final int MAX_WAVES_STORYMODE =  5;
 
 	private GameMode currentMode;

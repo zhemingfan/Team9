@@ -1,13 +1,11 @@
 package towers;
 import java.util.ArrayList;
 import game.GameLoopGUI;
-import game.GameLoopGUI;
 import game.Player;
 import game.GameInterface;
 import game.MainGame;
 import game.Map;
 import javafx.animation.FadeTransition;
-import javafx.animation.FillTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.ImageCursor;
@@ -33,10 +31,11 @@ public class PlaceTowerHandler implements EventHandler<ActionEvent>{
 	private MainGame currentGame = new MainGame();
 	private int clicksCounter = 0;
 
-  	public Image defenderIce = new Image("/img/Defender_Ice.PNG");
-  	public Image defenderWaterSprite = new Image("/img/Defender_WaterSprite.PNG");
-  	public Image defenderWind = new Image("/img/Defender_Wind.PNG");
-  	public Image defenderSamurai = new Image("/img/Defender_Samurai.PNG");
+	public static final Image rainSpell = new Image("/img/RainSpell.png");
+	public static final Image defenderIce = new Image("/img/TowerIce.png");
+	public static final Image defenderWaterSprite = new Image("/img/TowerWater.png");
+	public static final Image defenderWind = new Image("/img/TowerWind.png");
+	public static final Image defenderSamurai = new Image("/img/TowerSamurai.png");
 
   	//Sound effects are from soundbible.com
   	public AudioClip waterSplash = new AudioClip(this.getClass().getResource("/sound/waterSplash.mp3").toString());

@@ -19,7 +19,7 @@ public class TowerIce extends Tower{
 		this.damage = 15;
 		this.price = 50;
 	}
-	
+
 	public Enemy findEnemyClosestEnd (ArrayList<Enemy> enemiesWithinRange) {
 		int largestCPIndex = 0;
 		for(Enemy item: enemiesWithinRange) {
@@ -42,7 +42,7 @@ public class TowerIce extends Tower{
 		    }
 		return closest;
 	}
-	
+
 	public Enemy findTarget(ArrayList<Enemy> currentEnemies) {
 	    this.target = null;
 	    ArrayList<Enemy> withinRange = new ArrayList<Enemy>();
@@ -56,8 +56,8 @@ public class TowerIce extends Tower{
 	    }
 	    return target;
 	  }
-	
+
 	public String toString() {
-		  return " ICE GHOUL\n" + super.toString();
+		  return "\n" + " ICE GHOUL\n" + super.toString();
 	  }
 }

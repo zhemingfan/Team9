@@ -18,6 +18,6 @@ public class TowerWater extends Tower{
 		this.attackRate = 20;
 	}
 	public String toString() {
-		  return " WATER SPRITE\n" + super.toString();
+		  return "\n" + " WATER SPRITE\n" + super.toString();
 	  }
 }

@@ -9,7 +9,7 @@ public class Tower extends Point{
   protected int price;
   protected int attackRate;
   protected Enemy target;
-  
+
   protected int frameCreated;
   public Tower() {
 
@@ -27,7 +27,7 @@ public class Tower extends Point{
   public void setframeCreated(int i) {
 	  if (i >= 0) this.frameCreated = i;
   }
-  
+
   public int getframeCreated() {
 	  return this.frameCreated;
   }
@@ -81,7 +81,7 @@ public class Tower extends Point{
   }
 
   public String toString() {
-	  return "Range: " + range + "\n" + "Damage: " + damage + "\n" + "Price: " + price + "\n";
+	  return "\n" + "\n" + "Range: " + range + "\n" + "Damage: " + damage + "\n" + "Price: " + price + "\n";
   }
 
 }

@@ -44,27 +44,27 @@ import towers.TowerWater;
 import towers.TowerWind;
 
 public class GameLoopGUI extends AnimationTimer{
-	
+
 	public static final int WINDOWWIDTH = 1200, WINDOWHEIGHT = 800 ;
 	public static final int BoardWIDTH = 800, BoardHEIGHT = 800 ;
 	public static final int COLUMN = 10, ROW = 10;
 	public static final int OFFSETX = 80, OFFSETY = 80;
 	public static final int TILESIZE = 80;
-	
+
 	public static final Image enemyFire = new Image("/img/EnemyFire.png");
 	public static final Image enemySpirit = new Image("/img/EnemySpirit.png");
 	public static final Image enemyLava = new Image("/img/EnemyLava.png");
 	public static final Image enemyDemon = new Image("/img/EnemyDemon.png");
-	
+
 	public static final Image rainSpell = new Image("/img/RainSpell.png");
 	public static final Image defenderIce = new Image("/img/TowerIce.png");
 	public static final Image defenderWaterSprite = new Image("/img/TowerWater.png");
 	public static final Image defenderWind = new Image("/img/TowerWind.png");
 	public static final Image defenderSamurai = new Image("/img/TowerSamurai.png");
-	
+
 	public static final Image exitBG = new Image("/img/button/exitButton.png");
 	public static final Image newGameBG = new Image("/img/button/newGame.png");
-	
+
 	public static double ENEMYSPEEDSCALAR = 0.5;
 	public static int TOWERATTACKRATE = 110; //one per 110 frames
 	public int ENEMYSPAWNRATE = 100; //one per 250 frames
@@ -72,7 +72,7 @@ public class GameLoopGUI extends AnimationTimer{
 	public MainGame GAME = new MainGame();
 	public Player playerObject = GAME.getPlayer();
 	public Scene startUpScene, gamePlayScene;
-	
+
 
 	public static int frameCounter = 0;
 	private GameInterface GUI = new GameInterface();
@@ -80,20 +80,20 @@ public class GameLoopGUI extends AnimationTimer{
 	private Stage primaryStage = new Stage();
 	private Pane foreground = new Pane();
 	private StackPane root = new StackPane();
-	
+
 	public GameLoopGUI(GameInterface GUI, Stage primaryStage, StackPane root, Pane foreground) {
 		this.GUI = GUI;
 		this.root  = root;
 		this.primaryStage = primaryStage;
 		this.foreground = foreground;
 	}
-	
+
     public GameLoopGUI() {
-		
+
 	}
-	
-	
-    
+
+
+
 	public void handle(long arg0) {
     	if ( frameCounter == 0 || frameCounter % ENEMYSPAWNRATE == 0) {
     		Enemy spawned = GAME.spawnEnemies();
@@ -103,9 +103,9 @@ public class GameLoopGUI extends AnimationTimer{
     	}
 
        GAME.EnemiesAdvance(elapsedTime);
-       
+
        ArrayList<Point[]> pairList = new ArrayList<Point[]>();
-       
+
        pairList = GAME.DefendersAttackEnemies(frameCounter);
 
        paintEnemyTrackers(foreground, pairList);
@@ -120,20 +120,20 @@ public class GameLoopGUI extends AnimationTimer{
        playerObject.moneyLabel.setText(playerObject.toStringMoney());
        playerObject.getHealthLabel().setText(playerObject.toStringHealth());
        frameCounter += 1;
-       
-       
+
+
        if(GAME.getGameMode().equals("STORY")) {
     	   if(frameCounter % 1000 == 0 &&  ENEMYSPAWNRATE > 50) ENEMYSPAWNRATE -= 10;
        }
        else if (frameCounter % 2000 == 0 &&  ENEMYSPAWNRATE > 50) ENEMYSPAWNRATE -= 10;
-       
+
        if (GAME.isOver()) {
     	   this.stop();
     	   Pane endTitle = createEndScreen(primaryStage);
     	   root.getChildren().add(endTitle);
        }
     }
-	
+
 	public Pane createEndScreen(Stage primaryStage) {
 		Pane endScreen = new Pane();
 		endScreen.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
@@ -147,7 +147,7 @@ public class GameLoopGUI extends AnimationTimer{
 	        Background backGroundRestart = new Background(bImageRestart);
 	        restartButton.setBackground(backGroundRestart);
 	        restartButton.setPrefSize(10, 1);
-	        restartButton.setOnAction(e -> primaryStage.close());      
+	        restartButton.setOnAction(e -> primaryStage.close());
 		restartButton.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
 					cleanUp();
@@ -160,7 +160,7 @@ public class GameLoopGUI extends AnimationTimer{
 	        Background backGroundExit = new Background(bImageExit);
 	        exitButton.setBackground(backGroundExit);
 	        exitButton.setPrefSize(10, 1);
-	        exitButton.setOnAction(e -> primaryStage.close());      
+	        exitButton.setOnAction(e -> primaryStage.close());
 		exitButton.setOnAction(e -> primaryStage.close());
 		HBox endScreenButtons = new HBox();
 		endScreenButtons.setAlignment(Pos.CENTER);
@@ -169,7 +169,7 @@ public class GameLoopGUI extends AnimationTimer{
 		restartButton.relocate(WINDOWWIDTH/2, WINDOWHEIGHT/2);
 		return endScreen;
 	}
-	
+
 	/**
 	 * Creates an entirely new game and resets the state of mode and map to unchosen to require fresh input from player.
 	 */
@@ -309,20 +309,20 @@ public class GameLoopGUI extends AnimationTimer{
 			rect.setFill(new ImagePattern(defenderSamurai));
 			tracker.setStroke(Color.RED);
 		}
-		
+
 		RotateTransition rt = new RotateTransition(Duration.millis(1500), rect);
-	    rt.setFromAngle(-45); 
+	    rt.setFromAngle(-45);
 		rt.setByAngle(60);
 	    rt.setCycleCount(Animation.INDEFINITE);
 	    rt.setAutoReverse(true);
-	 
+
 	    rt.play();
-	     
+
 		foreground.getChildren().addAll(aDefender.getNode(), rect);
 		rect.relocate(aDefender.getXCoord(), aDefender.getYCoord());
 
 	}
-	
+
 	public MainGame getGAME() {
 		return GAME;
 	}
@@ -335,20 +335,20 @@ public class GameLoopGUI extends AnimationTimer{
 	public void setPlayerObject(Player playerObject) {
 		this.playerObject = playerObject;
 	}
-	
-	
+
+
 	public void setGUI(GameInterface gUI) {
 		GUI = gUI;
 	}
-	
+
 	public void setPrimaryStage(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 	}
-	
+
 	public void setForeground(Pane foreground) {
 		this.foreground = foreground;
 	}
-	
+
 	public void setRoot(StackPane root) {
 		this.root = root;
 	}

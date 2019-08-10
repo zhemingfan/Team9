@@ -10,11 +10,15 @@ public class TowerSamurai extends Tower{
 		price = 100;
 		this.attackRate = 200;
 	}
-	
+
 	public TowerSamurai() {
 		damage = 50;
 		range = 55;
 		price = 100;
 		this.attackRate = 200;
 	}
+
+	public String toString() {
+		  return "\n" + " SAMURAI TOWER\n" + super.toString();
+	  }
 }

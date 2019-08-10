@@ -14,11 +14,13 @@ public class TowerWind extends Tower{
 		super(x, y);
 		this.range = 75;
 		this.price = 15;
+		this.attackRate = 200;
 	}
 
 	public TowerWind() {
 		this.range = 75;
 		this.price = 15;
+		this.attackRate = 200;
 	}
 
 	@Override

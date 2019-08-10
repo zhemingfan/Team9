@@ -16,12 +16,12 @@ import spells.RainSpell;
 public class MainGame {
 
 	public enum GameMode{SURVIVAL, STORY};
-	private static final double OFFSETX = 50, OFFSETY = 50;
+	private static final double OFFSETX = GameInterface.OFFSETX, OFFSETY = GameInterface.OFFSETY;
 	private static final int MAX_WAVES_STORYMODE =  5;
 
 	private GameMode currentMode;
 	private Map map = new Map();
-	private Player player = new Player(50, 0);
+	private Player player = new Player(50, 1000);
 	private ArrayList<Tower> towerList = new ArrayList<Tower>();
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 
@@ -335,15 +335,17 @@ public class MainGame {
 	 * Returns a list of pairs containing a tower and its targeted enemy.
 	 * @return the list of pairs containing a tower and its targeted enemy.
 	 */
-	public ArrayList<Point[] > DefendersAttackEnemies() {
+	public ArrayList<Point[] > DefendersAttackEnemies(int frameCounter) {
 		ArrayList<Point[]> pairList = new ArrayList<Point[]>();
 		for (int i = 0; i < towerList.size(); i++) {
 			Tower aTower = towerList.get(i);
-			Enemy target = aTower.findTarget(enemyList);
-			if (target != null) {
-				aTower.attack(target);
-				Point[] pair = new Point[] {aTower, target};
-				pairList.add(pair);
+			if ( (frameCounter - aTower.getframeCreated()) % aTower.getAttackRate() == 0) {
+				Enemy target = aTower.findTarget(enemyList);
+				if (target != null) {
+					aTower.attack(target);
+					Point[] pair = new Point[] {aTower, target};
+					pairList.add(pair);
+				}
 			}
 		}
 		return pairList;

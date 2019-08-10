@@ -8,12 +8,14 @@ public class TowerWater extends Tower{
 		this.range = 100;
 		this.damage = 5;
 		this.price = 5;
+		this.attackRate = 20;
 	}
 
 	public TowerWater() {
 		this.range = 100;
 		this.damage = 5;
 		this.price = 5;
+		this.attackRate = 20;
 	}
 	public String toString() {
 		  return " WATER SPRITE\n" + super.toString();

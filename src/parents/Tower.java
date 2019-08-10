@@ -7,7 +7,10 @@ public class Tower extends Point{
   protected double range;
   protected int damage;
   protected int price;
+  protected int attackRate;
   protected Enemy target;
+  
+  protected int frameCreated;
   public Tower() {
 
   }
@@ -17,6 +20,16 @@ public class Tower extends Point{
     damage = 0;
     range = 100;
 
+  }
+  public int getAttackRate() {
+	  return this.attackRate;
+  }
+  public void setframeCreated(int i) {
+	  if (i >= 0) this.frameCreated = i;
+  }
+  
+  public int getframeCreated() {
+	  return this.frameCreated;
   }
   /**
    * Returns the tower's price.
@@ -31,7 +44,7 @@ public class Tower extends Point{
    * @param anEnemy
    * @return if an enemy is within the tower's attack range
    */
-  private boolean enemyIsWithinRange(Enemy anEnemy) {
+  protected boolean enemyIsWithinRange(Enemy anEnemy) {
     return this.getDistance(anEnemy) <= range;
   }
 

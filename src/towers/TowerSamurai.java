@@ -8,11 +8,13 @@ public class TowerSamurai extends Tower{
 		damage = 50;
 		range = 55;
 		price = 100;
+		this.attackRate = 200;
 	}
 	
 	public TowerSamurai() {
 		damage = 50;
 		range = 55;
 		price = 100;
+		this.attackRate = 200;
 	}
 }

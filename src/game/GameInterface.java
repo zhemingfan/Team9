@@ -65,7 +65,7 @@ public class GameInterface extends Application {
 	public static final Image screenTitle = new Image("/img/OpeningTitle.png");
 	public static final Image creditsRollBG = new Image("/img/creditsRoll.png");
 
-	public static final Image buttonLegendBG = new Image("img/button/buttonLegend.png");
+	public static final Image buttonLegendBG = new Image("/img/button/buttonLegend.png");
 	public static final Image startButtonBG = new Image("/img/button/startButton.png");
 	public static final Image skipButtonBG = new Image("/img/button/skipButton.png");
 	public static final Image creditsButtonBG = new Image("/img/button/creditsButton.png");
@@ -74,7 +74,7 @@ public class GameInterface extends Application {
 	public static final Image exitBG = new Image("/img/button/exitButton.png");
 
 	public static final Image chooseMapBG = new Image("/img/maps/chooseMap.png");
-	public static final Image selectLoopBG = new Image("img/maps/selectLoop.png");
+	public static final Image selectLoopBG = new Image("/img/maps/selectLoop.png");
 	public static final Image selectZigZagBG = new Image("/img/maps/selectZigZag.png");
 
 	private boolean qPressed;

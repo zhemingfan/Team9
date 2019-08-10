@@ -8,6 +8,8 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -41,22 +43,24 @@ public class GameInterface extends Application {
 	public static final int COLUMN = 10, ROW = 10;
 	public static final int OFFSETX = 80, OFFSETY = 80;
 	public static final int TILESIZE = 80;
-	
+
 	public static final Image rainSpell = new Image("/img/RainSpell.png");
 	public static final Image defenderIce = new Image("/img/TowerIce.png");
 	public static final Image defenderWaterSprite = new Image("/img/TowerWater.png");
 	public static final Image defenderWind = new Image("/img/TowerWind.png");
 	public static final Image defenderSamurai = new Image("/img/TowerSamurai.png");
-	
+
 	public static final Image woodBlock = new Image("/img/WoodBlock.png");
 	public static final Image loopMap = new Image("/img/LoopyMap.png");
 	public static final Image zigzagMap = new Image("/img/ZigZagMap.png");
-	
+
 	public static final Image utilityPaneBG = new Image("/img/utilityPaneBG.jpg");
 	public static final Image gameStartBG = new Image("/img/StartBG.png");
-	
+	private boolean qPressed;
+
+
 	public AudioClip fireAlarm = new AudioClip(this.getClass().getResource("/sound/fireAlarm.mp3").toString());
-	
+
 	public static void main(String[] args) {
 		Application.launch();
 	}
@@ -198,39 +202,45 @@ public class GameInterface extends Application {
 		rainSpellLabel.getChildren().addAll(placeRainButton, rainSpellDescription);
 
 		utilityPane.getChildren().addAll(waterLabel, iceLabel, windLabel, samuraiLabel, rainSpellLabel);
-		
+
 		animator.setForeground(foreground);
 		animator.setPrimaryStage(primaryStage);
 		animator.setRoot(root);
-		
-        Button pauseButton = new Button("PAUSE");
-        pauseButton.setOnAction(new EventHandler<ActionEvent>() {
-			int clickCounter = 0;
-			public void handle(ActionEvent event) {
-				clickCounter += 1;
-				if (clickCounter%2 != 0 ) {
-					animator.stop();
-					pauseButton.setText("RESUME");
 
-				} else {
-					animator.start();
-					pauseButton.setText("PAUSE");
-				}
+	    scene.setOnKeyPressed(event -> {
+    		switch(event.getCode())
+    		{
+    		case P:
+    			animator.stop();
+    			break;
+    		case R:
+    			animator.start();
+    			break;
+    		default:
+    			break;
 
-			}
-        });
+    		}
+    	});
 
-        Button quitButton = new Button("QUIT");
-        quitButton.setOnAction(new EventHandler<ActionEvent>() {
+        gamePlayLayer.setOnKeyPressed(event -> {
+     			if(qPressed) {
+             		event.consume();
+             		return;
+             	}
+             	switch (event.getCode()) {
+             	case Q:
+             		  	qPressed = true;
+             			animator.stop();
+             			Pane endTitle = animator.createEndScreen(primaryStage);
+             			root.getChildren().add(endTitle);
+             			event.consume();
+             			break;
 
-			public void handle(ActionEvent event) {
-				animator.stop();
-	        	Pane endTitle = animator.createEndScreen(primaryStage);
-	        	root.getChildren().add(endTitle);
-			}
-        });
+     			default:
+     				break;
 
-        utilityPane.getChildren().addAll(pauseButton, quitButton);
+             	}
+             });
 
         Rectangle startButtonLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
         startButtonLayer.setFill(new ImagePattern(gameStartBG));
@@ -241,7 +251,7 @@ public class GameInterface extends Application {
         startSurvivalButton.setOnAction(new GameStartButtonHandler(GAME, "SURVIVAL",
         													animator, root, startUpMenu, fireAlarm));
 
-		
+
 		VBox initGameButtons = new VBox();
 		initGameButtons.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
 		initGameButtons.setAlignment(Pos.CENTER);
@@ -252,7 +262,7 @@ public class GameInterface extends Application {
 		ToggleButton loopMapButton = new ToggleButton("", new ImageView(loopMap));
 		loopMapButton.setOnAction(new ChooseMapHandler(background, "LOOPY", GAME ));
 		loopMapButton.setPadding(Insets.EMPTY);
-		
+
 		ToggleButton zigzagMapButton = new ToggleButton("", new ImageView(zigzagMap));
 		zigzagMapButton.setOnAction(new ChooseMapHandler(background, "ZIGZAG", GAME ));
 		loopMapButton.setToggleGroup(mapGroup);

@@ -54,8 +54,6 @@ public class GameInterface extends Application {
 	public static final Image defenderSamurai = new Image("/img/TowerSamurai.png");
 	
 	public static final Image woodBlock = new Image("/img/WoodBlock.png");
-	public static final Image loopMap = new Image("/img/LoopyMap.png");
-	public static final Image zigzagMap = new Image("/img/ZigZagMap.png");
 	
 	public static final Image utilityPaneBG = new Image("/img/utilityPaneBG.jpg");
 	public static final Image gameStartBG = new Image("/img/StartBG.png");
@@ -70,6 +68,11 @@ public class GameInterface extends Application {
 	public static final Image startStoryBG = new Image("/img/button/startStoryButton.png");
 	public static final Image startSurvivalBG = new Image("/img/button/startSurvivalButton.png");
 	public static final Image exitBG = new Image("/img/button/exitButton.png");
+	
+	public static final Image chooseMapBG = new Image("/img/maps/chooseMap.png");
+	public static final Image selectLoopBG = new Image("img/maps/selectLoop.png");
+	public static final Image selectZigZagBG = new Image("/img/maps/selectZigZag.png");
+	
 	private boolean qPressed;
 	
 	public AudioClip fireAlarm = new AudioClip(this.getClass().getResource("/sound/fireAlarm.mp3").toString());
@@ -85,18 +88,25 @@ public class GameInterface extends Application {
 	}
 
 	public void initGame(Stage primaryStage, GameLoopGUI animator) {
-	    MainGame GAME = animator.getGAME();
-	    // The basic Layout of the Screen
-	    StackPane root = new StackPane();
-	    Scene scene = new Scene(root, WINDOWWIDTH, WINDOWHEIGHT);
-	    primaryStage.setTitle("Fire Force No. 9");
-	    primaryStage.setScene(scene);
-	    
-	    //setting up startup Menu
-	    Pane startUpMenu = new Pane();
-	    HBox gamePlayLayer = new HBox();
-	    gamePlayLayer.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
-            startUpMenu.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
+      	        MainGame GAME = animator.getGAME();
+      	        // The basic Layout of the Screen
+      	        StackPane root = new StackPane();
+      	        Scene scene = new Scene(root, WINDOWWIDTH, WINDOWHEIGHT);
+      	        primaryStage.setTitle("Fire Force No. 9");
+      	        primaryStage.setScene(scene);
+      	      
+      	        //setting up startup Menu
+      	        Pane startUpMenu = new Pane();
+      	        HBox gamePlayLayer = new HBox();
+      	        VBox mapSelectLayer = new VBox();
+      
+      	        startUpMenu.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
+      	        gamePlayLayer.setPrefSize(WINDOWHEIGHT, WINDOWWIDTH);
+      	        mapSelectLayer.setPrefSize(WINDOWWIDTH,WINDOWHEIGHT);
+      	        mapSelectLayer.setAlignment(Pos.TOP_CENTER);
+      	        Rectangle chooseMapSign = new Rectangle(200,200);
+                chooseMapSign.setFill(new ImagePattern(chooseMapBG));
+                
 		
                 //Credits 
                 Rectangle creditsScreen = new Rectangle(WINDOWWIDTH,WINDOWHEIGHT);
@@ -130,8 +140,8 @@ public class GameInterface extends Application {
 	        
 		//Credits Transition
 		TranslateTransition tt = new TranslateTransition(Duration.seconds(30), creditsScreen);
-		     tt.setFromY(-700);
-		     tt.setByY(1800);
+		     tt.setFromY(700);
+		     tt.setByY(-1800);
 		     tt.setCycleCount(1);		 
 		     
 		     
@@ -170,7 +180,7 @@ public class GameInterface extends Application {
 	        
 		startGameButton.setOnAction(new EventHandler<ActionEvent>() {
 		  public void handle(ActionEvent event) {
-		  root.getChildren().removeAll(gamePlayLayer, startButtonLayer,openingTitle,openingScreenButtons);
+		  root.getChildren().removeAll(gamePlayLayer, openingTitle,openingScreenButtons);
 		  root.getChildren().addAll(gamePlayLayer, startUpMenu);
 		  }
 		});
@@ -191,15 +201,16 @@ public class GameInterface extends Application {
 		
 		root.getChildren().add(loadingScreen);      
 		ft.setOnFinished((e)->{root.getChildren().addAll(gamePlayLayer,startButtonLayer,openingTitle,openingScreenButtons); });
+                
+                
 		
-
-
-	    StackPane mainboard = new StackPane();
-	    Rectangle containerBG = new Rectangle(WINDOWWIDTH-BoardWIDTH,BoardHEIGHT);
-	    containerBG.setFill(new ImagePattern(utilityPaneBG));
-	    StackPane utilityPaneContainer = new StackPane();
-	    VBox utilityPane = new VBox();
-	    utilityPaneContainer.getChildren().addAll(containerBG, utilityPane);
+		//Game Play Layer
+	        StackPane mainboard = new StackPane();
+	        Rectangle containerBG = new Rectangle(WINDOWWIDTH-BoardWIDTH,BoardHEIGHT);
+	        containerBG.setFill(new ImagePattern(utilityPaneBG));
+	        StackPane utilityPaneContainer = new StackPane();
+	        VBox utilityPane = new VBox();
+	        utilityPaneContainer.getChildren().addAll(containerBG, utilityPane);
 		gamePlayLayer.getChildren().addAll(mainboard, utilityPaneContainer);
 
 		//Setting up the mainboard with grid background and foreground where enemies move
@@ -213,7 +224,7 @@ public class GameInterface extends Application {
 		// Setting up the place tower button in the utilityPane
 		// PLACEHOLDER: add the Player stats area
 		utilityPane.setAlignment(Pos.CENTER);
-	    Player playerObject = GAME.getPlayer();
+	        Player playerObject = GAME.getPlayer();
 
 		// Health
 		HBox health = new HBox(); //make the Hbox so that you can set a left and right thing
@@ -231,7 +242,7 @@ public class GameInterface extends Application {
 		health.getChildren().addAll(heartRect,stats_health, playerObject.getHealthLabel());
 
 		//Gold
-		Image goldimg = new Image("/img/PlayerHeart.png");
+		Image goldimg = new Image("/img/PlayerGold.png");
 		Rectangle goldRect = new Rectangle(50, 50, new ImagePattern(goldimg));
 		Label stats_gold = new Label("Player's Gold");
 		stats_gold.setFont(Font.font("Verdana",FontWeight.BOLD,12));
@@ -263,16 +274,16 @@ public class GameInterface extends Application {
 		waterDescription.setFont(Font.font("Verdana",FontWeight.BOLD,12)); //Styling the text described above
 		waterDescription.setTextFill(Color.BLACK);
 		Button placeWaterButton = new Button("", new ImageView(defenderWaterSprite));
-	    placeWaterButton.setPrefSize(TILESIZE*1.75, TILESIZE*1.75);
-	    placeWaterButton.setOnAction(new PlaceTowerHandler(placeWaterButton, mainboard, foreground,
+	        placeWaterButton.setPrefSize(TILESIZE*1.75, TILESIZE*1.75);
+	        placeWaterButton.setOnAction(new PlaceTowerHandler(placeWaterButton, mainboard, foreground,
 	    		new TowerWater(), GAME) );
-	   waterLabel.getChildren().addAll(placeWaterButton, waterDescription);
+	        waterLabel.getChildren().addAll(placeWaterButton, waterDescription);
 
 		HBox windLabel = new HBox();
 		Label windDescription = new Label(new TowerWind().toString());
 		windDescription.setFont(Font.font("Verdana",FontWeight.BOLD,12));
 		windDescription.setTextFill(Color.BLACK);
-	    Button placeWindButton = new Button("", new ImageView(defenderWind));
+		Button placeWindButton = new Button("", new ImageView(defenderWind));
 		placeWindButton.setPrefSize(TILESIZE*1.75, TILESIZE*1.75);
 		placeWindButton.setOnAction(new PlaceTowerHandler(placeWindButton, mainboard, foreground,
 				new TowerWind(), GAME ) );
@@ -319,96 +330,108 @@ public class GameInterface extends Application {
 		animator.setPrimaryStage(primaryStage);
 		animator.setRoot(root);
 		
-        scene.setOnKeyPressed(event -> {
-	switch(event.getCode())
-	{
-	case P:
-	    animator.stop();
-	    break;
-        case R:
-	    animator.start();
-	    break;
-	default:
-	    break;
-
-	  }
-	});
-        gamePlayLayer.setOnKeyPressed(event -> {
-	if(qPressed) {
-	   event.consume();
-	   return;
-	}
-	    switch (event.getCode()) {
-        case Q:
-	  qPressed = true;
-  	  animator.stop();
-  	  Pane endTitle = animator.createEndScreen(primaryStage);
-  	  root.getChildren().add(endTitle);
-  	  event.consume();
-  	  break;
-
-	  default:
-	  break;
-
-	   }
-	});
-
-        Rectangle startScreenLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
-        startScreenLayer.setFill(new ImagePattern(gameStartBG));
+                scene.setOnKeyPressed(event -> {
+        	switch(event.getCode())
+        	{
+        	case P:
+        	    animator.stop();
+        	    break;
+                case R:
+        	    animator.start();
+        	    break;
+        	default:
+        	    break;
         
-        // Story Button
-        Button startStoryButton = new Button("", new ImageView(startStoryBG));
-        BackgroundImage bImageStartStory = new BackgroundImage(startStoryBG,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(10, 1, true, true, true, false));
-        Background backGroundStartStory = new Background(bImageStartStory);
-        startStoryButton.setBackground(backGroundStartStory);
-        startStoryButton.setPrefSize(10, 1);
-        startStoryButton.setOnAction(new GameStartButtonHandler(GAME, "STORY", animator, root, startUpMenu, fireAlarm));
+        	  }
+        	});
+                gamePlayLayer.setOnKeyPressed(event -> {
+        	if(qPressed) {
+        	   event.consume();
+        	   return;
+        	}
+        	    switch (event.getCode()) {
+                case Q:
+        	  qPressed = true;
+          	  animator.stop();
+          	  Pane endTitle = animator.createEndScreen(primaryStage);
+          	  root.getChildren().add(endTitle);
+          	  event.consume();
+          	  break;
         
+        	  default:
+        	  break;
         
-        // Survival Button
-        Button startSurvivalButton = new Button("", new ImageView(startSurvivalBG));
-        BackgroundImage bImageStartSurvival = new BackgroundImage(startSurvivalBG,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(10, 1, true, true, true, false));
-        Background backGroundStartSurvival = new Background(bImageStartSurvival);
-        startSurvivalButton.setBackground(backGroundStartSurvival);
-        startSurvivalButton.setPrefSize(10, 1);
-        startSurvivalButton.setOnAction(new GameStartButtonHandler(GAME, "SURVIVAL", animator, root, startUpMenu, fireAlarm));
-        
-        // Exit Button
-        Button exitButton = new Button("", new ImageView(exitBG));
-        BackgroundImage bImageExit = new BackgroundImage(exitBG,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(10, 1, true, true, true, false));
-        Background backGroundExit = new Background(bImageExit);
-        exitButton.setBackground(backGroundExit);
-        exitButton.setPrefSize(10, 1);
-        exitButton.setOnAction(e -> primaryStage.close());	
-        
-		HBox initGameButtons = new HBox();	
-		initGameButtons.setAlignment(Pos.BOTTOM_CENTER);
-                initGameButtons.getChildren().addAll(startSurvivalButton, startStoryButton, exitButton);
+        	   }
+        	});
                 
-		HBox chooseMapButtons = new HBox();
-		chooseMapButtons.setAlignment(Pos.CENTER);
+                Rectangle startScreenLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
+                startScreenLayer.setFill(new ImagePattern(gameStartBG));
+                
+                HBox initGameButtons = new HBox();      
+                initGameButtons.setAlignment(Pos.CENTER);
+        
+                // Story Button
+                Button startStoryButton = new Button("", new ImageView(startStoryBG));
+                BackgroundImage bImageStartStory = new BackgroundImage(startStoryBG,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(10, 1, true, true, true, false));
+                Background backGroundStartStory = new Background(bImageStartStory);
+                startStoryButton.setBackground(backGroundStartStory);
+                startStoryButton.setPrefSize(10, 1);
+                startStoryButton.setOnAction(new GameStartButtonHandler(GAME, "STORY", animator, root, startUpMenu, fireAlarm));
+                
+                
+                // Survival Button
+                Button startSurvivalButton = new Button("", new ImageView(startSurvivalBG));
+                BackgroundImage bImageStartSurvival = new BackgroundImage(startSurvivalBG,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(10, 1, true, true, true, false));
+                Background backGroundStartSurvival = new Background(bImageStartSurvival);
+                startSurvivalButton.setBackground(backGroundStartSurvival);
+                startSurvivalButton.setPrefSize(10, 1);
+                startSurvivalButton.setOnAction(new GameStartButtonHandler(GAME, "SURVIVAL", animator, root, startUpMenu, fireAlarm));
+                
+                // Exit Button
+                Button exitButton = new Button("", new ImageView(exitBG));
+                BackgroundImage bImageExit = new BackgroundImage(exitBG,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(10, 1, true, true, true, false));
+                Background backGroundExit = new Background(bImageExit);
+                exitButton.setBackground(backGroundExit);
+                exitButton.setPrefSize(10, 1);
+                exitButton.setOnAction(e -> primaryStage.close());	
+                        
+                        
+                        
+                HBox chooseMapButtons = new HBox();
+                chooseMapButtons.setAlignment(Pos.CENTER);
+		
 		ToggleGroup mapGroup = new ToggleGroup();
-		ToggleButton loopMapButton = new ToggleButton("", new ImageView(loopMap));
+		ToggleButton loopMapButton = new ToggleButton("", new ImageView(selectLoopBG));
+                BackgroundImage bImageLoop = new BackgroundImage(selectLoopBG,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(100, 100, true, true, true, false));
+                Background backGroundLoop = new Background(bImageLoop);
+                loopMapButton.setBackground(backGroundLoop);
+                loopMapButton.setPrefSize(100, 100);
 		loopMapButton.setOnAction(new ChooseMapHandler(background, "LOOPY", GAME ));
-		loopMapButton.setPadding(Insets.EMPTY);
+                loopMapButton.setPadding(Insets.EMPTY);
+
 		
-		ToggleButton zigzagMapButton = new ToggleButton("", new ImageView(zigzagMap));
-		zigzagMapButton.setOnAction(new ChooseMapHandler(background, "ZIGZAG", GAME ));
-		loopMapButton.setToggleGroup(mapGroup);
-		zigzagMapButton.setToggleGroup(mapGroup);
-		zigzagMapButton.setPadding(Insets.EMPTY);
-		chooseMapButtons.getChildren().addAll(zigzagMapButton, loopMapButton);
+		ToggleButton zigzagMapButton = new ToggleButton("", new ImageView(selectZigZagBG));
+                BackgroundImage bImageZigZag = new BackgroundImage(selectZigZagBG,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(100, 100, true, true, true, false));
+                Background backGroundZigZag = new Background(bImageZigZag);
+                zigzagMapButton.setBackground(backGroundZigZag);
+                zigzagMapButton.setPrefSize(100, 100);
+                zigzagMapButton.setOnAction(new ChooseMapHandler(background, "ZIGZAG", GAME ));
+                loopMapButton.setToggleGroup(mapGroup);
+                zigzagMapButton.setToggleGroup(mapGroup);
+                zigzagMapButton.setPadding(Insets.EMPTY);
+                chooseMapButtons.getChildren().addAll(zigzagMapButton, loopMapButton);
+
+                mapSelectLayer.getChildren().addAll(chooseMapSign,chooseMapButtons,initGameButtons);
+                initGameButtons.getChildren().addAll(startSurvivalButton, startStoryButton, exitButton);
+
 		
-		VBox mainMenuButtons = new VBox();
-		mainMenuButtons.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
-		mainMenuButtons.setAlignment(Pos.CENTER);
-		mainMenuButtons.getChildren().addAll(chooseMapButtons, initGameButtons);
 		
+		startUpMenu.getChildren().addAll(startScreenLayer,mapSelectLayer);
 		
-		startUpMenu.getChildren().addAll(startScreenLayer, mainMenuButtons);
 		Image icon = new Image(getClass().getResourceAsStream("/img/EnemyFire.png"));
 		primaryStage.getIcons().add(icon);
-        primaryStage.show();
+                
+		primaryStage.show();
         
 	}
 	

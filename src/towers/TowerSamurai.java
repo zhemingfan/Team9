@@ -5,15 +5,15 @@ public class TowerSamurai extends Tower{
 
 	public TowerSamurai(double x, double y) {
 		super(x,y);
-		damage = 50;
-		range = 55;
+		damage = 100;
+		range = 85;
 		price = 100;
 		this.attackRate = 200;
 	}
 
 	public TowerSamurai() {
-		damage = 50;
-		range = 55;
+		damage = 100;
+		range = 85;
 		price = 100;
 		this.attackRate = 200;
 	}

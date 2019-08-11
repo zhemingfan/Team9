@@ -10,7 +10,7 @@ public class Fire extends Enemy{
     health = 50;
     damage = 10;
     speed = 1.25;
-    bounty = 3;
+    bounty = 2;
   }
   public void attack(Player aPlayer) {
     super.attack(aPlayer);

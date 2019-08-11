@@ -12,13 +12,15 @@ public class TowerWind extends Tower{
 
 	public TowerWind(double x, double y) {
 		super(x, y);
-		this.range = 75;
+		this.range = 100;
 		this.price = 15;
+		this.attackRate = 200;
 	}
 
 	public TowerWind() {
-		this.range = 75;
+		this.range = 100;
 		this.price = 15;
+		this.attackRate = 200;
 	}
 
 	@Override
@@ -32,7 +34,6 @@ public class TowerWind extends Tower{
 
 	@Override
 	public String toString() {
-		return "WIND SPIRIT\nSlows Down\n" + super.toString();
+		return "\n" + " WIND SPIRIT\n" + super.toString();
 	}
 }
-	

@@ -12,10 +12,11 @@ public class ChooseMapHandler implements EventHandler<ActionEvent> {
 	String mapType = new String();
 	GridPane background = new GridPane();
 	private MainGame currentGame = new MainGame();
+
+	public static final Image grassTile = new Image("/img/GrassTile.png");
+	public static final Image pathTile = new Image("/img/PathTile.png");
+	public static final Image rockTile = new Image("/img/RockTile.png");
 	
-	public Image grassTile = new Image("/img/GrassTile.PNG");
-  	public Image pathTile = new Image("/img/PathTile.PNG");
-  	public Image rockTile = new Image("/img/RockTile.PNG");
   	/**
   	 * Creates an EventHandler - that checks for when players choose their desired map, with:
   	 * a background to be filled

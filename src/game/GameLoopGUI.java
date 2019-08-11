@@ -67,7 +67,7 @@ public class GameLoopGUI extends AnimationTimer{
 
 	public static double ENEMYSPEEDSCALAR = 0.5;
 	public static int TOWERATTACKRATE = 110; //one per 110 frames
-	public int ENEMYSPAWNRATE = 100; //one per 250 frames
+	public int ENEMYSPAWNRATE = 220; //one per 220 frames
 
 	public MainGame GAME = new MainGame();
 	public Player playerObject = GAME.getPlayer();

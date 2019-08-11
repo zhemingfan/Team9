@@ -9,7 +9,7 @@ public class Lava extends Enemy{
     health = 100;
     damage = 20;
     speed = 0.5;
-    bounty = 5;
+    bounty = 3;
   }
   public void attack(Player aPlayer) {
     super.attack(aPlayer);

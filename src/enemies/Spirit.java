@@ -10,7 +10,7 @@ public class Spirit extends Enemy{
     health = 20;
     damage = 5;
     speed = 2;
-    bounty = 2;
+    bounty = 1;
   }
   public void attack(Player aPlayer) {
     super.attack(aPlayer);

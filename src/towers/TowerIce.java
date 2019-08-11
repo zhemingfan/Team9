@@ -9,15 +9,16 @@ public class TowerIce extends Tower{
 	public TowerIce(double x, double y) {
 		super(x, y);
 		this.range = 175;
-		this.damage = 15;
+		this.damage = 12;
 		this.price = 50;
-		this.attackRate = 50;
+		this.attackRate = 95;
 	}
 
 	public TowerIce() {
 		this.range = 175;
-		this.damage = 15;
+		this.damage = 12;
 		this.price = 50;
+		this.attackRate = 95;
 	}
 
 	public Enemy findEnemyClosestEnd (ArrayList<Enemy> enemiesWithinRange) {

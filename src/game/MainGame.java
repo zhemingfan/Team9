@@ -21,7 +21,7 @@ public class MainGame {
 
 	private GameMode currentMode;
 	private Map map = new Map();
-	private Player player = new Player(50, 1000);
+	private Player player = new Player(50, 0);
 	private ArrayList<Tower> towerList = new ArrayList<Tower>();
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 
@@ -197,7 +197,7 @@ public class MainGame {
 				int i = 0;
 				Point start = map.getStartPoint(OFFSETX, OFFSETY);
 				Enemy anEnemy = new Enemy(start.getXCoord(), start.getYCoord());
-				while (i < 10) {
+				while (i < 20) {
 					anEnemy = new Fire(start.getXCoord(), start.getYCoord());
 					i++;
 					waveList.add(anEnemy);

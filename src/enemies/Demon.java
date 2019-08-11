@@ -5,8 +5,8 @@ import parents.Enemy;
 public class Demon extends Enemy{
 	public Demon(double x, double y) {
 		super(x,y);
-		maxHealth = 800;
-		health = 800;
+		maxHealth = 1800;
+		health = 1000;
 		damage = 200;
 	    speed = 0.5;
 	    bounty = 500;

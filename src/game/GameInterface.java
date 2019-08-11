@@ -1,17 +1,11 @@
 package game;
 
-import enemies.Demon;
-import enemies.Fire;
-import enemies.Lava;
-import enemies.Spirit;
-import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -21,7 +15,6 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.*;
-import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.scene.text.Font;
@@ -29,9 +22,6 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.text.TextAlignment;
-import parents.Enemy;
-import parents.Point;
-import parents.Tower;
 import spells.CastSpellHandler;
 import spells.RainSpell;
 import towers.PlaceTowerHandler;
@@ -84,6 +74,9 @@ public class GameInterface extends Application {
 
 	public AudioClip fireAlarm = new AudioClip(this.getClass().getResource("/sound/fireAlarm.mp3").toString());
 
+	
+
+	
 	public static void main(String[] args) {
 		Application.launch();
 	}
@@ -95,6 +88,7 @@ public class GameInterface extends Application {
 	}
 
 	public void initGame(Stage primaryStage, GameLoopGUI animator) {
+				//primaryStage.setResizable(false);
       	        MainGame GAME = animator.getGAME();
       	        // The basic Layout of the Screen
       	        StackPane root = new StackPane();

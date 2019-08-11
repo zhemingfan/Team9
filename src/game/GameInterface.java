@@ -28,7 +28,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.scene.layout.Background;
 import javafx.scene.text.TextAlignment;
 import parents.Enemy;
 import parents.Point;
@@ -77,6 +76,10 @@ public class GameInterface extends Application {
 	public static final Image selectLoopBG = new Image("/img/maps/selectLoop.png");
 	public static final Image selectZigZagBG = new Image("/img/maps/selectZigZag.png");
 
+	public static final Image pauseButtonPicture = new Image("/img/pauseButton.png");
+	public static final Image resumeButtonPicture = new Image("/img/resumeButton.png");
+	public static final Image quitButtonPicture = new Image("/img/quitButton.png");
+	
 	private boolean qPressed;
 
 	public AudioClip fireAlarm = new AudioClip(this.getClass().getResource("/sound/fireAlarm.mp3").toString());
@@ -389,8 +392,56 @@ public class GameInterface extends Application {
 			buttonLegend.setTranslateY(-100);
 
 
-			utilityPane.getChildren().addAll(buttonLegend, waterLabel, iceLabel, windLabel, samuraiLabel, rainSpellLabel);
+			utilityPane.getChildren().addAll(waterLabel, iceLabel, windLabel, samuraiLabel, rainSpellLabel);
 
+			Button pauseButton = new Button();
+			pauseButton.setPrefSize(TILESIZE*2.5, TILESIZE*1.5);
+		    BackgroundImage bImagePauseButton = new BackgroundImage(pauseButtonPicture, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(pauseButton.getWidth(), pauseButton.getHeight(), true, true, true, false));
+		    Background backGroundPauseButton = new Background(bImagePauseButton);
+		    pauseButton.setBackground(backGroundPauseButton);
+
+			Button resumeButton = new Button();
+			resumeButton.setPrefSize(TILESIZE*2.5, TILESIZE*1.5);
+		    BackgroundImage bImageResumeButton = new BackgroundImage(resumeButtonPicture, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(resumeButton.getWidth(), resumeButton.getHeight(), true, true, true, false));
+		    Background backGroundResumeButton = new Background(bImageResumeButton);
+		    resumeButton.setBackground(backGroundResumeButton);
+			
+	        pauseButton.setOnAction(new EventHandler<ActionEvent>() {
+				int clickCounter = 0;
+				public void handle(ActionEvent event) {
+					clickCounter += 1;
+					if (clickCounter%2 != 0 ) {
+						animator.stop();
+						pauseButton.setBackground(backGroundResumeButton);
+
+						
+					} else {
+						animator.start();
+						pauseButton.setBackground(backGroundPauseButton);
+
+					}
+
+				}
+	        });
+	        
+			Button quitButton = new Button();
+			quitButton.setPrefSize(TILESIZE*2.5, TILESIZE*1.5);
+		    BackgroundImage bImageQuitButton = new BackgroundImage(quitButtonPicture, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(quitButton.getWidth(), quitButton.getHeight(), true, true, true, false));
+		    Background backGroundQuitButton = new Background(bImageQuitButton);
+		    quitButton.setBackground(backGroundQuitButton);
+
+
+	        quitButton.setOnAction(new EventHandler<ActionEvent>() {
+
+				public void handle(ActionEvent event) {
+					animator.stop();
+		        	Pane endTitle = animator.createEndScreen(primaryStage);
+		        	root.getChildren().add(endTitle);
+				}
+	        });
+
+	        utilityPane.getChildren().addAll(pauseButton, quitButton);
+			
 		animator.setForeground(foreground);
 		animator.setPrimaryStage(primaryStage);
 		animator.setRoot(root);
@@ -399,9 +450,11 @@ public class GameInterface extends Application {
         	switch(event.getCode())
         	{
         	case P:
+        		pauseButton.setBackground(backGroundResumeButton);
         	    animator.stop();
         	    break;
-                case R:
+            case R:
+            	pauseButton.setBackground(backGroundPauseButton);
         	    animator.start();
         	    break;
         	default:
@@ -409,6 +462,7 @@ public class GameInterface extends Application {
 
         	  }
         	});
+                
                 gamePlayLayer.setOnKeyPressed(event -> {
         	if(qPressed) {
         	   event.consume();

@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import enemies.Demon;
 import enemies.Fire;
@@ -9,8 +10,6 @@ import enemies.Spirit;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.RotateTransition;
-import javafx.animation.ScaleTransition;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -33,8 +32,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import parents.Enemy;
 import parents.Point;
 import parents.Tower;
@@ -45,7 +45,7 @@ import towers.TowerWind;
 
 public class GameLoopGUI extends AnimationTimer{
 
-	public static final int WINDOWWIDTH = 1200, WINDOWHEIGHT = 800 ;
+	public static final int WINDOWWIDTH = 1300, WINDOWHEIGHT = 800 ;
 	public static final int BoardWIDTH = 800, BoardHEIGHT = 800 ;
 	public static final int COLUMN = 10, ROW = 10;
 	public static final int OFFSETX = 80, OFFSETY = 80;
@@ -92,8 +92,6 @@ public class GameLoopGUI extends AnimationTimer{
 
 	}
 
-
-
 	public void handle(long arg0) {
     	if ( frameCounter == 0 || frameCounter % ENEMYSPAWNRATE == 0) {
     		Enemy spawned = GAME.spawnEnemies();
@@ -114,6 +112,7 @@ public class GameLoopGUI extends AnimationTimer{
        ArrayList<Enemy> EnemiesReachedEnd = GAME.removeEnemiesReachedEnd();
 
        moveEnemiesOnGUI(foreground);
+       addEnemyEffect();
        cleanRemovedEnemiesfromGUI(KilledEnemies, foreground);
        cleanRemovedEnemiesfromGUI(EnemiesReachedEnd, foreground);
 
@@ -142,8 +141,10 @@ public class GameLoopGUI extends AnimationTimer{
                 endBGLayer.setOpacity(0.75);
 		endScreen.setPrefSize(BoardWIDTH, BoardHEIGHT);
 		Label endTitleCard = new Label( GAME.getEndingCard());
+		endTitleCard.setFont(Font.font("Verdana",FontWeight.BOLD,25));
 		Button restartButton = new Button("", new ImageView(newGameBG));
-	        BackgroundImage bImageRestart = new BackgroundImage(newGameBG,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(10, 1, true, true, true, false));
+	        BackgroundImage bImageRestart = new BackgroundImage(newGameBG,BackgroundRepeat.NO_REPEAT, 
+	        		BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(10, 1, true, true, true, false));
 	        Background backGroundRestart = new Background(bImageRestart);
 	        restartButton.setBackground(backGroundRestart);
 	        restartButton.setPrefSize(10, 1);
@@ -162,11 +163,12 @@ public class GameLoopGUI extends AnimationTimer{
 	        exitButton.setPrefSize(10, 1);
 	        exitButton.setOnAction(e -> primaryStage.close());
 		exitButton.setOnAction(e -> primaryStage.close());
-		HBox endScreenButtons = new HBox();
+		VBox endScreenButtons = new VBox();
 		endScreenButtons.setAlignment(Pos.CENTER);
-		endScreenButtons.getChildren().addAll(restartButton,exitButton);
-		endScreen.getChildren().addAll(endBGLayer, endTitleCard, endScreenButtons);
-		restartButton.relocate(WINDOWWIDTH/2, WINDOWHEIGHT/2);
+		endScreenButtons.getChildren().addAll(endTitleCard,restartButton,exitButton);
+		endScreen.getChildren().addAll(endBGLayer, endScreenButtons);
+		endScreenButtons.relocate(WINDOWWIDTH/3 , 
+				WINDOWHEIGHT/3);
 		return endScreen;
 	}
 
@@ -195,7 +197,10 @@ public class GameLoopGUI extends AnimationTimer{
 		if (anEnemy instanceof Lava) rect.setFill(new ImagePattern(enemyLava));
 		if (anEnemy instanceof Spirit) rect.setFill(new ImagePattern(enemySpirit));
 		if (anEnemy instanceof Demon) rect.setFill(new ImagePattern(enemyDemon));
-
+		Random rand = new Random();
+		if ( rand.nextInt(1) == 0) {
+    		rect.setOpacity(0.8);
+    	}
 		container.getChildren().addAll(enemyHealthbar, rect);
 
 		foreground.getChildren().add(anEnemy.getNode());
@@ -214,17 +219,28 @@ public class GameLoopGUI extends AnimationTimer{
     		Rectangle enemyHealthbar = updateHealthBars(anEnemy);
     		if (enemyUI instanceof VBox) {
     			((VBox)enemyUI).getChildren().set(0, enemyHealthbar);
-    			Node rect = ((VBox)enemyUI).getChildren().get(1);
-    			if (rect.getOpacity() == 1.0) {
-    				rect.setOpacity(rect.getOpacity() - 0.5);
-    			} else if ( rect.getOpacity() == 0.5){
-    				rect.setOpacity(rect.getOpacity() + 0.5);
-    			}
+    		
     		}
 
         }
 	}
-
+	public void addEnemyEffect() {
+		if (GameLoopGUI.frameCounter % 50 == 0) {
+			for (int i = 0; i < GAME.getEnemyList().size(); i++) {
+        	Enemy anEnemy = GAME.getEnemyList().get(i);
+        	Node enemyUI = anEnemy.getNode();
+    		if (enemyUI instanceof VBox) {
+    			Node sprite = ((VBox)enemyUI).getChildren().get(1);
+    			if ( sprite.getOpacity() == 1.0) {
+            		sprite.setOpacity(0.85);
+            	} else {
+            		sprite.setOpacity(1.0);
+            		}
+    		}
+		}
+        }
+	}
+	
 	/**
 	 * Creates a line on GUI connecting a tower to the enemy it is targeting.
 	 * @param foreground
@@ -309,7 +325,7 @@ public class GameLoopGUI extends AnimationTimer{
 			rect.setFill(new ImagePattern(defenderSamurai));
 			tracker.setStroke(Color.RED);
 		}
-
+		/*
 		RotateTransition rt = new RotateTransition(Duration.millis(1500), rect);
 	    rt.setFromAngle(-45);
 		rt.setByAngle(60);
@@ -317,7 +333,8 @@ public class GameLoopGUI extends AnimationTimer{
 	    rt.setAutoReverse(true);
 
 	    rt.play();
-
+	    */
+		
 		foreground.getChildren().addAll(aDefender.getNode(), rect);
 		rect.relocate(aDefender.getXCoord(), aDefender.getYCoord());
 

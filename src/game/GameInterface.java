@@ -15,6 +15,7 @@ import javafx.scene.effect.Effect;
 import javafx.scene.effect.SepiaTone;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
@@ -80,28 +81,44 @@ public class GameInterface extends Application {
 
 	public AudioClip fireAlarm = new AudioClip(this.getClass().getResource("/sound/fireAlarm.mp3").toString());
 
-	
-
-	
 	public static void main(String[] args) {
 		Application.launch();
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		GameLoopGUI loopGUI = new GameLoopGUI();
-		initGame(primaryStage, loopGUI);
-	}
-
-	public void initGame(Stage primaryStage, GameLoopGUI animator) {
 		primaryStage.setMaxHeight(WINDOWHEIGHT);
 		primaryStage.setMaxWidth(WINDOWWIDTH);
-        MainGame GAME = animator.getGAME();
-        // The basic Layout of the Screen
-        StackPane root = new StackPane();
+		StackPane root = new StackPane();
         Scene scene = new Scene(root, WINDOWWIDTH, WINDOWHEIGHT);
         primaryStage.setTitle("Fire Force No. 9");
         primaryStage.setScene(scene);
+        Image icon = new Image(getClass().getResourceAsStream("/img/EnemyFire.png"));
+		primaryStage.getIcons().add(icon);
+		
+		GameLoopGUI loopGUI = new GameLoopGUI();
+		
+		//Loading Screen
+        Rectangle loadingScreen = new Rectangle(WINDOWWIDTH,WINDOWHEIGHT);
+        loadingScreen.setFill(new ImagePattern(loadingScreenBG));
+        //Loading Screen Transition
+        FadeTransition ft = new FadeTransition(Duration.millis(2000), loadingScreen);
+             ft.setFromValue(0);
+             ft.setToValue(1.0);
+             ft.setCycleCount(2);
+             ft.setAutoReverse(true);
+             ft.play();
+        root.getChildren().add(loadingScreen);
+        primaryStage.show();
+        
+        ft.setOnFinished((e)-> initGame(primaryStage, root, loopGUI) );
+	}
+
+	public void initGame(Stage primaryStage, StackPane root, GameLoopGUI animator) {
+		
+        MainGame GAME = animator.getGAME();
+        // The basic Layout of the Screen
+        
 
         //setting up startup Menu
         Pane startUpMenu = new Pane();
@@ -120,25 +137,13 @@ public class GameInterface extends Application {
         //Credits
         Rectangle creditsScreen = new Rectangle(WINDOWWIDTH,WINDOWHEIGHT);
         creditsScreen.setFill(new ImagePattern(creditsRollBG));
-
-        //Loading Screen
-        Rectangle loadingScreen = new Rectangle(WINDOWWIDTH,WINDOWHEIGHT);
-        loadingScreen.setFill(new ImagePattern(loadingScreenBG));
-
+        
         //Opening screen
         Rectangle startButtonLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
         startButtonLayer.setFill(new ImagePattern(gameStartBG));
         Rectangle openingTitle = new Rectangle(200,200);
         openingTitle.setFill(new ImagePattern(screenTitle));
-
-        //Loading Screen Transition
-        FadeTransition ft = new FadeTransition(Duration.millis(2000), loadingScreen);
-             ft.setFromValue(0);
-             ft.setToValue(1.0);
-             ft.setCycleCount(2);
-             ft.setAutoReverse(true);
-             ft.play();
-
+       
         //Opening Screen Transition
 		ScaleTransition st = new ScaleTransition(Duration.millis(2000), openingTitle);
 		     st.setByX(1.5f);
@@ -186,7 +191,8 @@ public class GameInterface extends Application {
 	        openingScreenButtons.getChildren().addAll(startGameButton,creditsButton);
 	        openingScreenButtons.setAlignment(Pos.CENTER);
 	        openingScreenButtons.setTranslateY(300);
-
+	    root.getChildren().addAll(gamePlayLayer,startButtonLayer,
+	        		openingTitle,openingScreenButtons);
 		startGameButton.setOnAction(new EventHandler<ActionEvent>() {
 		  public void handle(ActionEvent event) {
 		  root.getChildren().removeAll(gamePlayLayer, openingTitle,openingScreenButtons);
@@ -207,11 +213,7 @@ public class GameInterface extends Application {
                   tt.stop();
                   }
                 });
-
-		root.getChildren().add(loadingScreen);
-		ft.setOnFinished((e)->{root.getChildren().addAll(gamePlayLayer,startButtonLayer,openingTitle,openingScreenButtons); });
-
-
+        
 		//Game Play Layer
 		Rectangle gamePlayBG = new Rectangle(WINDOWWIDTH,WINDOWHEIGHT);
         gamePlayBG.setFill(new ImagePattern(bigGameBG));
@@ -238,18 +240,18 @@ public class GameInterface extends Application {
 		 * Health updates when enemies reach the end of the checkpoint.
 		 */
 		HBox health = new HBox(); //make the Hbox so that you can set a left and right thing
-		Image heart = new Image("/img/PlayerHeart.png");
-		Rectangle heartRect = new Rectangle(50, 50, new ImagePattern(heart));
-		playerObject.setHealthLabel();
-		Label stats_health = new Label("Player's Health   ");
-		stats_health.setFont(Font.font("Verdana",FontWeight.BOLD,25));
-		stats_health.setTextFill(Color.DARKRED);
-		stats_health.setAlignment(Pos.BASELINE_RIGHT);
-		playerObject.getHealthLabel().setFont(Font.font("Verdana",FontWeight.BOLD,25));
-		playerObject.getHealthLabel().setTextFill(Color.DARKRED);
-
-		health.getChildren().addAll(heartRect,stats_health, playerObject.getHealthLabel());
-		utilityPane.getChildren().add(health);
+			Image heart = new Image("/img/PlayerHeart.png");
+			Rectangle heartRect = new Rectangle(50, 50, new ImagePattern(heart));
+			playerObject.setHealthLabel();
+			Label stats_health = new Label("Player's Health   ");
+			stats_health.setFont(Font.font("Verdana",FontWeight.BOLD,25));
+			stats_health.setTextFill(Color.DARKRED);
+			stats_health.setAlignment(Pos.BASELINE_RIGHT);
+			playerObject.getHealthLabel().setFont(Font.font("Verdana",FontWeight.BOLD,25));
+			playerObject.getHealthLabel().setTextFill(Color.DARKRED);
+	
+			health.getChildren().addAll(heartRect,stats_health, playerObject.getHealthLabel());
+			utilityPane.getChildren().add(health);
 
 
 		/* The gold component of the utility box.
@@ -257,28 +259,22 @@ public class GameInterface extends Application {
 		 * is spent whenever the player purchases a spell or a tower.
 		 */
 		Image goldimg = new Image("/img/PlayerGold.png");
-		Rectangle goldRect = new Rectangle(50, 50, new ImagePattern(goldimg));
-		Label stats_gold = new Label("Player's Gold");
-		stats_gold.setFont(Font.font("Verdana",FontWeight.BOLD,25));
-		playerObject.setMoneyLabel();
-
-		playerObject.getMoneyLabel().setMaxWidth(Double.MAX_VALUE);
-		AnchorPane.setLeftAnchor(playerObject.getMoneyLabel(), 20.0);
-		AnchorPane.setRightAnchor(playerObject.getMoneyLabel(), 0.0);
-		playerObject.getMoneyLabel().setAlignment(Pos.CENTER);
-		playerObject.getMoneyLabel().setFont(Font.font("Verdana",FontWeight.BOLD,25));
-		playerObject.getMoneyLabel().setTextFill(Color.GOLD);
-
-
-
-
-		HBox gold = new HBox(); //make the Hbox so that you can set a left and right thing
-		utilityPane.getChildren().add(gold);
-
-		gold.setSpacing(23);
-
-		gold.getChildren().addAll(goldRect ,stats_gold, playerObject.getMoneyLabel());
-
+			Rectangle goldRect = new Rectangle(50, 50, new ImagePattern(goldimg));
+			Label stats_gold = new Label("Player's Gold");
+			stats_gold.setFont(Font.font("Verdana",FontWeight.BOLD,25));
+			playerObject.setMoneyLabel();
+	
+			playerObject.getMoneyLabel().setMaxWidth(Double.MAX_VALUE);
+			AnchorPane.setLeftAnchor(playerObject.getMoneyLabel(), 20.0);
+			AnchorPane.setRightAnchor(playerObject.getMoneyLabel(), 0.0);
+			playerObject.getMoneyLabel().setAlignment(Pos.CENTER);
+			playerObject.getMoneyLabel().setFont(Font.font("Verdana",FontWeight.BOLD,25));
+			playerObject.getMoneyLabel().setTextFill(Color.GOLD);
+	
+			HBox gold = new HBox(); //make the Hbox so that you can set a left and right thing
+			gold.setSpacing(23);
+			gold.getChildren().addAll(goldRect ,stats_gold, playerObject.getMoneyLabel());
+			utilityPane.getChildren().add(gold);
 		/* Creating the buttons to place towers
 		 */
 
@@ -286,7 +282,6 @@ public class GameInterface extends Application {
 		 * LABELS FOR ALL THE BUTTONS
 		 *
 		 */
-
 
 		HBox waterLabel = new HBox();
 		Label waterDescription = new Label(new TowerWater().toString()); //The text describing cost, damage, etc
@@ -411,7 +406,6 @@ public class GameInterface extends Application {
 					if (clickCounter%2 != 0 ) {
 						animator.stop();
 						pauseButton.setBackground(backGroundResumeButton);
-
 						
 					} else {
 						animator.start();
@@ -433,7 +427,7 @@ public class GameInterface extends Application {
 
 				public void handle(ActionEvent event) {
 					animator.stop();
-		        	Pane endTitle = animator.createEndScreen(primaryStage);
+		        	Pane endTitle = animator.createEndScreen(primaryStage, root);
 		        	root.getChildren().add(endTitle);
 				}
 	        });
@@ -444,7 +438,7 @@ public class GameInterface extends Application {
 		animator.setPrimaryStage(primaryStage);
 		animator.setRoot(root);
 
-                scene.setOnKeyPressed(event -> {
+        primaryStage.getScene().setOnKeyPressed(event -> {
         	switch(event.getCode())
         	{
         	case P:
@@ -470,7 +464,7 @@ public class GameInterface extends Application {
                 case Q:
         	  qPressed = true;
           	  animator.stop();
-          	  Pane endTitle = animator.createEndScreen(primaryStage);
+          	  Pane endTitle = animator.createEndScreen(primaryStage,root);
           	  root.getChildren().add(endTitle);
           	  event.consume();
           	  break;
@@ -480,7 +474,7 @@ public class GameInterface extends Application {
 
         	   }
         	});
-       //Finish setting up StartScreen
+        //Finish setting up StartScreen
         Rectangle startScreenLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
         startScreenLayer.setFill(new ImagePattern(gameStartBG));
 
@@ -494,8 +488,6 @@ public class GameInterface extends Application {
 	        startStoryButton.setBackground(backGroundStartStory);
 	        startStoryButton.setPrefSize(10, 1);
 	        startStoryButton.setOnAction(new GameStartButtonHandler(GAME, "STORY", animator, root, startUpMenu, fireAlarm));
-	
-	
 	        // Survival Button
 	        Button startSurvivalButton = new Button("", new ImageView(startSurvivalBG));
 	        BackgroundImage bImageStartSurvival = new BackgroundImage(startSurvivalBG,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(10, 1, true, true, true, false));
@@ -511,23 +503,38 @@ public class GameInterface extends Application {
 	        exitButton.setBackground(backGroundExit);
 	        exitButton.setPrefSize(10, 1);
 	        exitButton.setOnAction(e -> primaryStage.close());
-
-
-
+	        
+	        //Visual Effect for starting Game
+	        EventHandler<MouseEvent> mapNotChosenHandler = new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent event) {
+					if (ChooseMapHandler.mapWasChosen == false) {
+						ScaleTransition st = new ScaleTransition(Duration.millis(2000), chooseMapSign);
+					     st.setByX(1.25f);
+					     st.setByY(1.25f);
+					     st.setCycleCount(2);
+					     st.setAutoReverse(true);
+					     st.play();
+					}
+				}
+				
+	        };
+	        startSurvivalButton.addEventFilter(MouseEvent.MOUSE_CLICKED, mapNotChosenHandler);
+	        startStoryButton.addEventFilter(MouseEvent.MOUSE_CLICKED, mapNotChosenHandler);
         HBox chooseMapButtons = new HBox();
         chooseMapButtons.setAlignment(Pos.CENTER);
 
 		ToggleGroup mapGroup = new ToggleGroup();
-		ToggleButton loopMapButton = new ToggleButton("", new ImageView(selectLoopBG));
+			//Loop Map BUtton
+			ToggleButton loopMapButton = new ToggleButton("", new ImageView(selectLoopBG));
             BackgroundImage bImageLoop = new BackgroundImage(selectLoopBG,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(100, 100, true, true, true, false));
             Background backGroundLoop = new Background(bImageLoop);
             loopMapButton.setBackground(backGroundLoop);
             loopMapButton.setPrefSize(100, 100);
             loopMapButton.setOnAction(new ChooseMapHandler(background, "LOOPY", GAME ));
             loopMapButton.setPadding(Insets.EMPTY);
-
-
-		ToggleButton zigzagMapButton = new ToggleButton("", new ImageView(selectZigZagBG));
+            
+            //ZigZagMapButton
+            ToggleButton zigzagMapButton = new ToggleButton("", new ImageView(selectZigZagBG));
             BackgroundImage bImageZigZag = new BackgroundImage(selectZigZagBG,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(100, 100, true, true, true, false));
             Background backGroundZigZag = new Background(bImageZigZag);
             zigzagMapButton.setBackground(backGroundZigZag);
@@ -537,35 +544,32 @@ public class GameInterface extends Application {
             zigzagMapButton.setToggleGroup(mapGroup);
             zigzagMapButton.setPadding(Insets.EMPTY);
             chooseMapButtons.getChildren().addAll(zigzagMapButton, loopMapButton);
-            mapGroup.selectedToggleProperty().addListener( new ChangeListener<Toggle>(){
-                public void changed(ObservableValue<? extends Toggle> ov,
-                    Toggle toggle, Toggle new_toggle) {
-                        if (new_toggle == null) {}
-                        else {
-                        	for (Node aButton: chooseMapButtons.getChildren()) {
-                            	if ( (aButton instanceof ToggleButton )
-                            			&& ((ToggleButton)aButton).isSelected()) {
-                            		aButton.setEffect(new SepiaTone());
-                            	} else {
-                            		if (aButton.getEffect() != null) {
-                            			aButton.setEffect(null);
-                            		}
-                            	}
-                            }
-                        };
-                    }//closing new changelistener object
-                });
             
-            mapSelectLayer.getChildren().addAll(chooseMapSign,chooseMapButtons,initGameButtons);
-            initGameButtons.getChildren().addAll(startSurvivalButton, startStoryButton, exitButton);
+            //Visual Effect for Map Buttons
+            mapGroup.selectedToggleProperty().addListener( new ChangeListener<Toggle>(){
+            public void changed(ObservableValue<? extends Toggle> ov,
+                Toggle toggle, Toggle new_toggle) {
+                    if (new_toggle == null) {}
+                    else {
+                    	for (Node aButton: chooseMapButtons.getChildren()) {
+                        	if ( (aButton instanceof ToggleButton )
+                        			&& ((ToggleButton)aButton).isSelected()) {
+                        		aButton.setEffect(new SepiaTone());
+                        	} else {
+                        		if (aButton.getEffect() != null) {
+                        			aButton.setEffect(null);
+                        		}
+                        	}
+                        }
+                    };
+                }//closing new changelistener object
+            });
+            
+        mapSelectLayer.getChildren().addAll(chooseMapSign,chooseMapButtons,initGameButtons);
+        initGameButtons.getChildren().addAll(startSurvivalButton, startStoryButton, exitButton);
                 
 
 		startUpMenu.getChildren().addAll(startScreenLayer,mapSelectLayer);
-
-		Image icon = new Image(getClass().getResourceAsStream("/img/EnemyFire.png"));
-		primaryStage.getIcons().add(icon);
-
-		primaryStage.show();
 
 	}
 }

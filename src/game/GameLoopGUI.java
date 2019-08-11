@@ -2,13 +2,12 @@ package game;
 
 import java.util.ArrayList;
 import java.util.Random;
-
 import enemies.Demon;
 import enemies.Fire;
 import enemies.Lava;
 import enemies.Spirit;
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,7 +23,6 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -35,6 +33,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import parents.Enemy;
 import parents.Point;
 import parents.Tower;
@@ -80,6 +79,7 @@ public class GameLoopGUI extends AnimationTimer{
 	private Stage primaryStage = new Stage();
 	private Pane foreground = new Pane();
 	private StackPane root = new StackPane();
+	private int currentWave = 0;
 
 	public GameLoopGUI(GameInterface GUI, Stage primaryStage, StackPane root, Pane foreground) {
 		this.GUI = GUI;
@@ -93,7 +93,13 @@ public class GameLoopGUI extends AnimationTimer{
 	}
 
 	public void handle(long arg0) {
-    	if ( frameCounter == 0 || frameCounter % ENEMYSPAWNRATE == 0) {
+		if (GAME.getWaveNumber() != currentWave) {
+			this.stop();
+			declareWaveNumber();
+			currentWave = GAME.getWaveNumber();
+		}
+
+		if ( frameCounter == 0 || frameCounter % ENEMYSPAWNRATE == 0) {
     		Enemy spawned = GAME.spawnEnemies();
     		if (spawned != null) {
     			paintNewEnemy(spawned, foreground);
@@ -128,12 +134,12 @@ public class GameLoopGUI extends AnimationTimer{
 
        if (GAME.isOver()) {
     	   this.stop();
-    	   Pane endTitle = createEndScreen(primaryStage);
+    	   Pane endTitle = createEndScreen(primaryStage, root);
     	   root.getChildren().add(endTitle);
        }
     }
 
-	public Pane createEndScreen(Stage primaryStage) {
+	public Pane createEndScreen(Stage primaryStage, StackPane root) {
 		Pane endScreen = new Pane();
 		endScreen.setPrefSize(WINDOWWIDTH, WINDOWHEIGHT);
 		Rectangle endBGLayer = new Rectangle(WINDOWWIDTH, WINDOWHEIGHT);
@@ -152,7 +158,8 @@ public class GameLoopGUI extends AnimationTimer{
 		restartButton.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
 					cleanUp();
-					GUI.initGame(primaryStage, new GameLoopGUI());
+					root.getChildren().clear();
+					GUI.initGame(primaryStage, root, new GameLoopGUI());
 				}
 			}
 		);
@@ -171,14 +178,30 @@ public class GameLoopGUI extends AnimationTimer{
 				WINDOWHEIGHT/3);
 		return endScreen;
 	}
-
+	
+	public void declareWaveNumber() {
+		VBox waveDeclarePane = new VBox();
+		waveDeclarePane.setPrefSize(BoardWIDTH, BoardHEIGHT);
+		root.getChildren().add(waveDeclarePane);
+		Label waveLabel = new Label("WAVE" + GAME.getWaveNumber());
+		waveLabel.setFont(Font.font("Verdana",FontWeight.BOLD,50));
+		waveLabel.setTextFill(Color.ORANGERED);
+		waveDeclarePane.getChildren().add(waveLabel);
+		waveDeclarePane.setAlignment(Pos.CENTER);
+		FadeTransition ft = new FadeTransition(Duration.millis(3000), waveDeclarePane);
+			ft.setFromValue(1.0);
+		    ft.setToValue(0.0);
+		    ft.play();
+		    ft.setOnFinished((e) -> root.getChildren().remove(waveDeclarePane));
+	    this.start();
+		
+	}
 	/**
 	 * Creates an entirely new game and resets the state of mode and map to unchosen to require fresh input from player.
 	 */
 	public void cleanUp() {
 		GAME = new MainGame();
 		GameLoopGUI.frameCounter = 0;
-		ChooseModeHandler.modeWasChosen = false;
 		ChooseMapHandler.mapWasChosen = false;
 	}
 
@@ -247,27 +270,35 @@ public class GameLoopGUI extends AnimationTimer{
 	 * @param towerList
 	 */
 	public void paintEnemyTrackers(Pane foreground, ArrayList<Point[]> pairList) {
+		if (GAME.getTowerList().size() > 0) {
+			for (Tower aTower: GAME.getTowerList()) {
+				aTower.getNode().setOpacity(0);Node tracker = aTower.getNode();
+				Enemy target = aTower.getTarget();
+				if (aTower.getTarget() != null && aTower.enemyIsWithinRange(target) && !target.isKilled()) {
+					if (tracker instanceof Line) {
+						tracker.setOpacity(0.5);
+						((Line)tracker).setStroke(Color.WHITE);
+						((Line) tracker).setEndX(target.getXCoord() + TILESIZE/2);
+						((Line) tracker).setEndY(target.getYCoord() + TILESIZE/2);
+					}
+				} else {
+					tracker.setOpacity(0);;
+				}	
+			}
+		}
+		// Visual effects when Towers attack
 		if (pairList.size() > 0) {
 			for (Point[] pair: pairList) {
 				Point aTower = pair[0];
 				Point target = pair[1];
 				Node tracker = aTower.getNode();
 				if (target != null ) {
+					tracker.setOpacity(1.0);
 					if (tracker instanceof Line) {
-						tracker.setOpacity(1.0);
-						((Line) tracker).setStartX(aTower.getXCoord() + TILESIZE/2);
-						((Line) tracker).setStartY(aTower.getYCoord() + TILESIZE/2 );
-						((Line) tracker).setEndX(target.getXCoord() + TILESIZE/2);
-						((Line) tracker).setEndY(target.getYCoord() + TILESIZE/2);
+						((Line)tracker).setStroke(Color.DEEPSKYBLUE);
 					}
 				} else {
-					tracker.setOpacity(0);;
-				}
-			}
-		} else {
-			if (GAME.getTowerList().size() > 0) {
-				for (Tower aTower: GAME.getTowerList()) {
-					aTower.getNode().setOpacity(0);
+					tracker.setOpacity(0.5);
 				}
 			}
 		}
@@ -300,30 +331,33 @@ public class GameLoopGUI extends AnimationTimer{
 	}
 	/**
 	 * Creates sprite for a tower on the foreground, including the picture that represents the tower and a line which will connect with an enemy when the tower finds a target.
-	 * @param aDefender
+	 * @param aTower
 	 * @param foreground
 	 */
-	public void paintTowerOnGUI(Tower aDefender, Pane foreground) {
+	public void paintTowerOnGUI(Tower aTower, Pane foreground) {
 		Rectangle rect = new Rectangle(TILESIZE,TILESIZE);
 		Line tracker = new Line();
-		tracker.setStrokeWidth(2.0);
+		tracker.setStartX(aTower.getXCoord() + TILESIZE/2);
+		tracker.setStartY(aTower.getYCoord() + TILESIZE/2 );
+		tracker.setStrokeWidth(4.0);
 		tracker.setOpacity(0.0);
-		aDefender.setNode(tracker);
-		if (aDefender instanceof TowerIce) {
+		aTower.setNode(tracker);
+		tracker.setStroke(Color.WHITE);
+		if (aTower instanceof TowerIce) {
 			rect.setFill(new ImagePattern(defenderIce));
-			tracker.setStroke(Color.ALICEBLUE);
+			//tracker.setStroke(Color.ALICEBLUE);
 		}
-		if (aDefender instanceof TowerWater) {
+		if (aTower instanceof TowerWater) {
 			rect.setFill(new ImagePattern(defenderWaterSprite));
-			tracker.setStroke(Color.DEEPSKYBLUE);
+			//tracker.setStroke(Color.DEEPSKYBLUE);
 		}
-		if (aDefender instanceof TowerWind) {
+		if (aTower instanceof TowerWind) {
 			rect.setFill(new ImagePattern(defenderWind));
-			tracker.setStroke(Color.PALEGOLDENROD);
+			//tracker.setStroke(Color.PALEGOLDENROD);
 		}
-		if (aDefender instanceof TowerSamurai) {
+		if (aTower instanceof TowerSamurai) {
 			rect.setFill(new ImagePattern(defenderSamurai));
-			tracker.setStroke(Color.RED);
+			//tracker.setStroke(Color.RED);
 		}
 		/*
 		RotateTransition rt = new RotateTransition(Duration.millis(1500), rect);
@@ -335,8 +369,8 @@ public class GameLoopGUI extends AnimationTimer{
 	    rt.play();
 	    */
 		
-		foreground.getChildren().addAll(aDefender.getNode(), rect);
-		rect.relocate(aDefender.getXCoord(), aDefender.getYCoord());
+		foreground.getChildren().addAll(aTower.getNode(), rect);
+		rect.relocate(aTower.getXCoord(), aTower.getYCoord());
 
 	}
 

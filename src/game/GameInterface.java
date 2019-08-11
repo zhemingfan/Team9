@@ -239,7 +239,7 @@ public class GameInterface extends Application {
 		 */
 		HBox health = new HBox(); //make the Hbox so that you can set a left and right thing
 		Image heart = new Image("/img/PlayerHeart.png");
-		Rectangle heartRect = new Rectangle(75, 75, new ImagePattern(heart));
+		Rectangle heartRect = new Rectangle(50, 50, new ImagePattern(heart));
 		playerObject.setHealthLabel();
 		Label stats_health = new Label("Player's Health   ");
 		stats_health.setFont(Font.font("Verdana",FontWeight.BOLD,25));
@@ -256,7 +256,7 @@ public class GameInterface extends Application {
 		 * Gold updates when enemies are killed, granting players respective the monster's respective bounty. Gold
 		 * is spent whenever the player purchases a spell or a tower.
 		 */
-		Image goldimg = new Image("/img/goldCoins.png");
+		Image goldimg = new Image("/img/PlayerGold.png");
 		Rectangle goldRect = new Rectangle(50, 50, new ImagePattern(goldimg));
 		Label stats_gold = new Label("Player's Gold");
 		stats_gold.setFont(Font.font("Verdana",FontWeight.BOLD,25));

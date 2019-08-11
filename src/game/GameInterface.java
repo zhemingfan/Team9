@@ -508,9 +508,9 @@ public class GameInterface extends Application {
 	        EventHandler<MouseEvent> mapNotChosenHandler = new EventHandler<MouseEvent>() {
 				public void handle(MouseEvent event) {
 					if (ChooseMapHandler.mapWasChosen == false) {
-						ScaleTransition st = new ScaleTransition(Duration.millis(2000), chooseMapSign);
-					     st.setByX(1.25f);
-					     st.setByY(1.25f);
+						ScaleTransition st = new ScaleTransition(Duration.millis(1500), chooseMapSign);
+					     st.setByX(0.25);
+					     st.setByY(0.25);
 					     st.setCycleCount(2);
 					     st.setAutoReverse(true);
 					     st.play();

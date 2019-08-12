@@ -1,5 +1,4 @@
 package parents;
-import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Tower extends Point{
@@ -44,7 +43,7 @@ public class Tower extends Point{
    * @param anEnemy
    * @return if an enemy is within the tower's attack range
    */
-  protected boolean enemyIsWithinRange(Enemy anEnemy) {
+  public boolean enemyIsWithinRange(Enemy anEnemy) {
     return this.getDistance(anEnemy) <= range;
   }
 
@@ -83,5 +82,9 @@ public class Tower extends Point{
   public String toString() {
 	  return "\n" + "\n" + "Range: " + range + "\n" + "Damage: " + damage + "\n" + "Price: " + price + "\n";
   }
+
+public double getRange() {
+	return this.range;
+}
 
 }

@@ -6,7 +6,6 @@ import enemies.Demon;
 import enemies.Fire;
 import enemies.Lava;
 import enemies.Spirit;
-import game.MainGame.GameMode;
 import javafx.scene.media.AudioClip;
 import parents.Enemy;
 import parents.Point;
@@ -117,12 +116,12 @@ public class MainGame {
 			if (this.wonStoryMode()) {
 				endCard = "YOU WON!";
 			} else {
-				endCard = "YOU FAILED TO SURVIVE " + (MainGame.MAX_WAVES_STORYMODE - 1)+ " WAVES! ";
+				endCard = "YOU FAILED TO SURVIVE " + MainGame.MAX_WAVES_STORYMODE + " WAVES! ";
 			}
 		}
 
 		if ( this.currentMode.equals(GameMode.SURVIVAL) ) {
-			endCard = "YOU LASTED " + this.waveCounter + " WAVES! ";
+			endCard = "NUMBER OF WAVES YOU LASTED: " + this.waveCounter;
 		}
 
 		return endCard;

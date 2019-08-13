@@ -331,23 +331,18 @@ public class MainGame {
 
 	/**
 	 * Commands all towers that have been added to target and attack an enemy in the current alive enemies list.
-	 * Returns a list of pairs containing a tower and its targeted enemy.
-	 * @return the list of pairs containing a tower and its targeted enemy.
+	 * Towers have different attack rates so not all towers will be dealing damage at any given time.
 	 */
-	public ArrayList<Point[] > DefendersAttackEnemies(int frameCounter) {
-		ArrayList<Point[]> pairList = new ArrayList<Point[]>();
+	public void DefendersAttackEnemies(int frameCounter) {
 		for (int i = 0; i < towerList.size(); i++) {
 			Tower aTower = towerList.get(i);
 			if ( (frameCounter - aTower.getframeCreated()) % aTower.getAttackRate() == 0) {
 				Enemy target = aTower.findTarget(enemyList);
 				if (target != null) {
 					aTower.attack(target);
-					Point[] pair = new Point[] {aTower, target};
-					pairList.add(pair);
 				}
 			}
 		}
-		return pairList;
 	}
 
 	public void spellAttackEnemies() {

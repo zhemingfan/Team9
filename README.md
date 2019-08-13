@@ -34,6 +34,7 @@ HOW TO PLAY
 When the game is first launched you'll be greeted by a start menu with 2 map icons and 2 start buttons. The buttons will send you into
 2 different game modes: Survival for endless random waves of enemies and Story for 5 structured waves and a final boss enemy.
 
+1. Click "Start" to progress to map/mode select or click "Credits" to view credits
 1. Click on the map you want to play on.
 2. Click on the start button of the mode you wish to play.
 

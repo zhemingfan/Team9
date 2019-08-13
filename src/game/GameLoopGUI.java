@@ -6,6 +6,7 @@ import enemies.Demon;
 import enemies.Fire;
 import enemies.Lava;
 import enemies.Spirit;
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
@@ -108,11 +109,9 @@ public class GameLoopGUI extends AnimationTimer{
 
        GAME.EnemiesAdvance(elapsedTime);
 
-       ArrayList<Point[]> pairList = new ArrayList<Point[]>();
+       GAME.DefendersAttackEnemies(frameCounter);
 
-       pairList = GAME.DefendersAttackEnemies(frameCounter);
-
-       paintEnemyTrackers(foreground, pairList);
+       paintEnemyTrackers();
 
        ArrayList<Enemy> KilledEnemies = GAME.removeKilledEnemies();
        ArrayList<Enemy> EnemiesReachedEnd = GAME.removeEnemiesReachedEnd();
@@ -269,7 +268,7 @@ public class GameLoopGUI extends AnimationTimer{
 	 * @param foreground
 	 * @param towerList
 	 */
-	public void paintEnemyTrackers(Pane foreground, ArrayList<Point[]> pairList) {
+	public void paintEnemyTrackers() {
 		if (GAME.getTowerList().size() > 0) {
 			for (Tower aTower: GAME.getTowerList()) {
 				aTower.getNode().setOpacity(0);Node tracker = aTower.getNode();
@@ -286,22 +285,7 @@ public class GameLoopGUI extends AnimationTimer{
 				}	
 			}
 		}
-		// Visual effects when Towers attack
-		if (pairList.size() > 0) {
-			for (Point[] pair: pairList) {
-				Point aTower = pair[0];
-				Point target = pair[1];
-				Node tracker = aTower.getNode();
-				if (target != null ) {
-					tracker.setOpacity(1.0);
-					if (tracker instanceof Line) {
-						((Line)tracker).setStroke(Color.DEEPSKYBLUE);
-					}
-				} else {
-					tracker.setOpacity(0.5);
-				}
-			}
-		}
+		
 	}
 
 	/**
@@ -345,29 +329,27 @@ public class GameLoopGUI extends AnimationTimer{
 		tracker.setStroke(Color.WHITE);
 		if (aTower instanceof TowerIce) {
 			rect.setFill(new ImagePattern(defenderIce));
-			//tracker.setStroke(Color.ALICEBLUE);
+			tracker.setStroke(Color.ALICEBLUE);
 		}
 		if (aTower instanceof TowerWater) {
 			rect.setFill(new ImagePattern(defenderWaterSprite));
-			//tracker.setStroke(Color.DEEPSKYBLUE);
+			tracker.setStroke(Color.DEEPSKYBLUE);
 		}
 		if (aTower instanceof TowerWind) {
 			rect.setFill(new ImagePattern(defenderWind));
-			//tracker.setStroke(Color.PALEGOLDENROD);
+			tracker.setStroke(Color.PALEGOLDENROD);
 		}
 		if (aTower instanceof TowerSamurai) {
 			rect.setFill(new ImagePattern(defenderSamurai));
-			//tracker.setStroke(Color.RED);
+			tracker.setStroke(Color.RED);
 		}
-		/*
+		
 		RotateTransition rt = new RotateTransition(Duration.millis(1500), rect);
 	    rt.setFromAngle(-45);
 		rt.setByAngle(60);
 	    rt.setCycleCount(Animation.INDEFINITE);
 	    rt.setAutoReverse(true);
-
 	    rt.play();
-	    */
 		
 		foreground.getChildren().addAll(aTower.getNode(), rect);
 		rect.relocate(aTower.getXCoord(), aTower.getYCoord());

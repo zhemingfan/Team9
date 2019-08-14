@@ -93,6 +93,9 @@ public class GameLoopGUI extends AnimationTimer{
 
 	}
 
+    /**
+     * Code below is for the new wave announcement text at the start of each new wave
+     */
 	public void handle(long arg0) {
 		if (GAME.getWaveNumber() != currentWave) {
 			this.stop();
@@ -125,11 +128,12 @@ public class GameLoopGUI extends AnimationTimer{
        playerObject.getHealthLabel().setText(playerObject.toStringHealth());
        frameCounter += 1;
 
-
+       //If loops for slowly increasing the enemy spawn rate. Spawn rate will increase (technically decrease)
+       //faster in survival mode
        if(GAME.getGameMode().equals("STORY")) {
     	   if(frameCounter % 1000 == 0 &&  ENEMYSPAWNRATE > 50) ENEMYSPAWNRATE -= 10;
        }
-       else if (frameCounter % 2000 == 0 &&  ENEMYSPAWNRATE > 50) ENEMYSPAWNRATE -= 10;
+       else {if (frameCounter % 2000 == 0 &&  ENEMYSPAWNRATE > 50) ENEMYSPAWNRATE -= 10;}
 
        if (GAME.isOver()) {
     	   this.stop();

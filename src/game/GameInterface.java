@@ -37,7 +37,11 @@ import towers.TowerWater;
 import towers.TowerWind;
 
 public class GameInterface extends Application {
-
+	
+	public static void main(String[] args) {
+		Application.launch();
+	}
+	
 	public static final int WINDOWWIDTH = 1300, WINDOWHEIGHT = 800 ;
 	public static final int BoardWIDTH = 800, BoardHEIGHT = 800 ;
 	public static final int COLUMN = 10, ROW = 10;
@@ -80,10 +84,6 @@ public class GameInterface extends Application {
 	private boolean qPressed;
 
 	public AudioClip fireAlarm = new AudioClip(this.getClass().getResource("/sound/fireAlarm.mp3").toString());
-
-	public static void main(String[] args) {
-		Application.launch();
-	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -387,6 +387,8 @@ public class GameInterface extends Application {
 
 			utilityPane.getChildren().addAll(waterLabel, iceLabel, windLabel, samuraiLabel, rainSpellLabel);
 
+			
+			//Pause/resume and quit buttons responds to both clicks AND keypresses
 			Button pauseButton = new Button();
 			pauseButton.setPrefSize(TILESIZE*2.5, TILESIZE*1.5);
 		    BackgroundImage bImagePauseButton = new BackgroundImage(pauseButtonPicture, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(pauseButton.getWidth(), pauseButton.getHeight(), true, true, true, false));

@@ -21,6 +21,12 @@ public class TowerIce extends Tower{
 		this.attackRate = 95;
 	}
 
+	/**
+	 * The ice tower is special since it targets the enemies closest to the end
+	 * of the path like a sort of aggressive defender
+	 * @param enemiesWithinRange - Arraylist of enemies
+	 * @return - The enemy closest to the end of the path
+	 */
 	public Enemy findEnemyClosestEnd (ArrayList<Enemy> enemiesWithinRange) {
 		int largestCPIndex = 0;
 		for(Enemy item: enemiesWithinRange) {
@@ -44,6 +50,10 @@ public class TowerIce extends Tower{
 		return closest;
 	}
 
+	/**
+	 * This method uses the above method to determine it's attacking target
+	 * @return - The target enemy found.
+	 */
 	public Enemy findTarget(ArrayList<Enemy> currentEnemies) {
 	    this.target = null;
 	    ArrayList<Enemy> withinRange = new ArrayList<Enemy>();

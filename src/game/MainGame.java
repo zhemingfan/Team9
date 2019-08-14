@@ -345,6 +345,11 @@ public class MainGame {
 		}
 	}
 
+	/**
+	 * Uses the rain spell to attack ALL enemies on the game screen. Plays
+	 * the rain sound effect too.
+	 * First has to check if the player can afford the spell
+	 */
 	public void spellAttackEnemies() {
 		RainSpell rainAttack = new RainSpell();
 		if(player.enoughFunds(rainAttack.getPrice())) {

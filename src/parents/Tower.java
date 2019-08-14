@@ -23,10 +23,18 @@ public class Tower extends Point{
   public int getAttackRate() {
 	  return this.attackRate;
   }
+  /**
+   * Sets the frame number in the animator in which this tower was created
+   * @param i - the frame in the animator in question
+   */
   public void setframeCreated(int i) {
 	  if (i >= 0) this.frameCreated = i;
   }
-
+/**
+ * 
+ * @return - The frame created. This is for the purpose of having the towers
+ * shoot at different time intervals
+ */
   public int getframeCreated() {
 	  return this.frameCreated;
   }
@@ -82,7 +90,10 @@ public class Tower extends Point{
   public String toString() {
 	  return "\n" + "\n" + "Range: " + range + "\n" + "Damage: " + damage + "\n" + "Price: " + price + "\n";
   }
-
+/**
+ * 
+ * @return - This tower's range of attack
+ */
 public double getRange() {
 	return this.range;
 }
